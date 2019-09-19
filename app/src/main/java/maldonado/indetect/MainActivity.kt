@@ -16,7 +16,7 @@ import com.wonderkiln.camerakit.*
 class MainActivity : AppCompatActivity() {
     lateinit var textViewResult: TextView
     lateinit var btnDetectObject: Button
-    lateinit var btnToggleCamera:Button
+    lateinit var btnToggleCamera: Button
     lateinit var imageViewResult: ImageView
     lateinit var cameraView: CameraView
 
@@ -101,6 +101,6 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         // private const val LABEL_PATH = "labels.txt"
-        private const val INPUT_SIZE = 224
+        private const val INPUT_SIZE = 300
     }
 }

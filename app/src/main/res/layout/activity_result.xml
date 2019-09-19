@@ -65,7 +65,7 @@
             android:textAllCaps="true"
             android:layout_marginTop="20dp"
             android:padding="10dp"
-            android:text="Recognition Engine Processing ..."
+            android:text="Car Identification Engine Processing ..."
             />
 
     </LinearLayout>

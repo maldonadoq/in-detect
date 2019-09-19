@@ -19,14 +19,14 @@
 
         <com.wonderkiln.camerakit.CameraView
             android:id="@+id/cameraView"
-            android:layout_width="300dp"
-            android:layout_height="280dp"
+            android:layout_width="320dp"
+            android:layout_height="320dp"
             android:layout_gravity="center" />
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="horizontal">
@@ -35,7 +35,8 @@
                 android:id="@+id/imageViewResult"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:contentDescription="TODO" />
 
             <TextView
                 android:id="@+id/textViewResult"
@@ -52,32 +53,28 @@
 
         <Button
             android:id="@+id/btnToggleCamera"
-            android:layout_width="230dp"
+            android:layout_width="315dp"
             android:layout_height="50dp"
             android:layout_gravity="bottom|center"
-            android:text="@string/toggle_camera"
-            android:background="@drawable/button_style"
-            android:drawableStart="@drawable/ic_switch_camera_black_24dp"
-            android:textColor="@color/white"
             android:elevation="12dp"
-
-
+            android:text="@string/toggle_camera"
+            android:textColor="@color/white"
+            android:background="@drawable/button_style"
+            android:drawableLeft="@android:drawable/stat_notify_sync"
             />
 
         <Button
-            android:layout_marginTop="10dp"
             android:id="@+id/btnDetectObject"
-            android:layout_width="230dp"
+            android:layout_width="315dp"
             android:layout_height="50dp"
             android:layout_gravity="bottom|center"
-            android:text="@string/detect_object"
-            android:textColor="@color/colorPrimary"
-            android:background="@drawable/button_style_x"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_stylex"
             android:elevation="12dp"
-            android:visibility="gone"
-            android:drawableStart="@drawable/ic_all_out_black_24dp"
+            android:text="@string/detect_car"
+            android:textColor="@color/colorPrimary"
+            android:drawableLeft="@android:drawable/presence_online"
             />
-
 
     </LinearLayout>
 

@@ -10,6 +10,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.wonderkiln.camerakit.*
 
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var textViewResult: TextView
     lateinit var btnDetectObject: Button
     lateinit var btnToggleCamera: Button
+    lateinit var btnUploadPhoto:  Button
     lateinit var imageViewResult: ImageView
     lateinit var cameraView: CameraView
 
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         btnToggleCamera = findViewById(R.id.btnToggleCamera)
         btnDetectObject = findViewById(R.id.btnDetectObject)
+        btnUploadPhoto = findViewById(R.id.btnUploadPhoto)
 
         val resultDialog = Dialog(this)
         val customProgressView = LayoutInflater.from(this).inflate(R.layout.activity_result, null)
@@ -80,7 +83,10 @@ class MainActivity : AppCompatActivity() {
             resultDialog.show()
             tvTextResults.visibility = View.GONE
             ivImageResult.visibility = View.GONE
+        }
 
+        btnUploadPhoto.setOnClickListener {
+            Toast.makeText(this, "Hi there! Saluuute.", Toast.LENGTH_LONG).show()
         }
 
         resultDialog.setOnDismissListener {

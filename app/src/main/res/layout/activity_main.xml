@@ -50,30 +50,47 @@
 
         </LinearLayout>
 
-
-        <Button
-            android:id="@+id/btnToggleCamera"
-            android:layout_width="315dp"
+        <LinearLayout
+            android:layout_width="325dp"
             android:layout_height="50dp"
-            android:layout_gravity="bottom|center"
-            android:elevation="12dp"
-            android:text="@string/toggle_camera"
-            android:textColor="@color/white"
-            android:background="@drawable/button_style"
-            android:drawableLeft="@android:drawable/stat_notify_sync"
-            />
+            android:layout_gravity="bottom|center">
+
+            <Button
+                android:id="@+id/btnDetectObject"
+                android:layout_width="253dp"
+                android:layout_height="50dp"
+                android:background="@drawable/button_style"
+                android:elevation="12dp"
+                android:textColor="@color/white"
+                android:text="@string/detect_car"
+                android:drawableLeft="@android:drawable/checkbox_off_background"
+                android:layout_marginLeft="5dp"
+                />
+
+            <Button
+                android:id="@+id/btnToggleCamera"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:elevation="12dp"
+                android:textColor="@color/white"
+                android:background="@drawable/button_style"
+                android:drawableLeft="@android:drawable/stat_notify_sync"
+                android:layout_marginLeft="12dp"
+                />
+
+            </LinearLayout>
 
         <Button
-            android:id="@+id/btnDetectObject"
+            android:id="@+id/btnUploadPhoto"
             android:layout_width="315dp"
             android:layout_height="50dp"
             android:layout_gravity="bottom|center"
             android:layout_marginTop="10dp"
             android:background="@drawable/button_stylex"
             android:elevation="12dp"
-            android:text="@string/detect_car"
+            android:text="@string/upload_photo"
             android:textColor="@color/colorPrimary"
-            android:drawableLeft="@android:drawable/presence_online"
+            android:drawableLeft="@android:drawable/ic_menu_upload"
             />
 
     </LinearLayout>

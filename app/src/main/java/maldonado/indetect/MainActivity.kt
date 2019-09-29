@@ -16,6 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.wonderkiln.camerakit.*
+import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
     lateinit var btnDetectObject: Button
@@ -29,6 +30,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var tvTextResults: TextView
     lateinit var aviLoaderHolder: View
     lateinit var resultDialog: Dialog
+
+    // model
+    lateinit var classifier: Classifier
+    private val executor = Executors.newSingleThreadExecutor()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,6 +99,8 @@ class MainActivity : AppCompatActivity() {
             tvLoadingText.visibility = View.VISIBLE
             aviLoaderHolder.visibility = View.VISIBLE
         }
+
+        initTensorFlowAndLoadModel()
     }
 
     private fun recognize(tbitmap: Bitmap) {
@@ -102,9 +109,10 @@ class MainActivity : AppCompatActivity() {
         aviLoaderHolder.visibility = View.GONE
         tvLoadingText.visibility = View.GONE
 
-        val results = "Sabpe"
+        //val results = "Sabpe"
+        val results = classifier.recognizeImage(bitmap)
         ivImageResult.setImageBitmap(bitmap)
-        tvTextResults.text = results
+        tvTextResults.text = results.toString()
 
         tvTextResults.visibility = View.VISIBLE
         ivImageResult.visibility = View.VISIBLE
@@ -124,9 +132,11 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         // private const val LABEL_PATH = "labels.txt"
-        private const val INPUT_SIZE = 300
+        private const val INPUT_SIZE = 224
         private const val IMAGE_PICK_CODE = 1000
         private const val PERMISSION_CODE = 1001
+        //private const val MODEL_PATH = "mobilenet_quant_v1_224.tflite"
+        //private const val LABEL_PATH = "labels.txt"
     }
 
     private fun pickImageFromGalley() {
@@ -161,5 +171,26 @@ class MainActivity : AppCompatActivity() {
             imageViewTmp.setImageURI(data?.data)
             // recognize(imageViewTmp.drawable)
         }
+    }
+
+    // tensor
+    override fun onDestroy() {
+        super.onDestroy()
+        executor.execute { classifier.close() }
+    }
+
+    private fun initTensorFlowAndLoadModel() {
+        executor.execute {
+            try {
+                classifier = Classifier.create(assets)
+                makeButtonVisible()
+            } catch (e: Exception) {
+                throw RuntimeException("Error initializing TensorFlow!", e)
+            }
+        }
+    }
+
+    private fun makeButtonVisible() {
+        runOnUiThread { btnDetectObject.visibility = View.VISIBLE }
     }
 }

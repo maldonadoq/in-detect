@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
+import android.graphics.*
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,23 +16,26 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.wonderkiln.camerakit.*
+import java.util.*
 import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
-    lateinit var btnDetectObject: Button
-    lateinit var btnToggleCamera: Button
-    lateinit var btnUploadPhoto:  Button
-    lateinit var cameraView: CameraView
-    lateinit var imageViewTmp: ImageView
+    private lateinit var btnDetectObject: Button
+    private lateinit var btnToggleCamera: Button
+    private lateinit var btnUploadPhoto:  Button
+    private lateinit var cameraView: CameraView
+    private lateinit var imageViewTmp: ImageView
 
-    lateinit var ivImageResult: ImageView
-    lateinit var tvLoadingText: TextView
-    lateinit var tvTextResults: TextView
-    lateinit var aviLoaderHolder: View
-    lateinit var resultDialog: Dialog
+    private lateinit var ivImageResult: ImageView
+    private lateinit var tvLoadingText: TextView
+    private lateinit var tvTextResults: TextView
+    private lateinit var aviLoaderHolder: View
+    private lateinit var resultDialog: Dialog
+
+    private lateinit var random: Random
 
     // model
-    lateinit var classifier: Classifier
+    private lateinit var classifier: Classifier
     private val executor = Executors.newSingleThreadExecutor()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,17 +103,30 @@ class MainActivity : AppCompatActivity() {
             aviLoaderHolder.visibility = View.VISIBLE
         }
 
+        random = Random()
         initTensorFlowAndLoadModel()
     }
 
-    private fun recognize(tbitmap: Bitmap) {
-        var bitmap = Bitmap.createScaledBitmap(tbitmap, INPUT_SIZE, INPUT_SIZE, false)
+    private fun recognize(tBitmap: Bitmap) {
+        val bitmap = Bitmap.createScaledBitmap(tBitmap, TF_OD_API_INPUT_SIZE, TF_OD_API_INPUT_SIZE, false)
 
         aviLoaderHolder.visibility = View.GONE
         tvLoadingText.visibility = View.GONE
 
         //val results = "Sabpe"
         val results = classifier.recognizeImage(bitmap)
+
+        val canvas = Canvas(bitmap)
+        val paint = Paint()
+
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = 2.0f
+
+        for (result in results) {
+            paint.color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256))
+            canvas.drawRoundRect(result.location, 5.0f, 5.0f, paint)
+        }
+
         ivImageResult.setImageBitmap(bitmap)
         tvTextResults.text = results.toString()
 
@@ -131,12 +147,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        // private const val LABEL_PATH = "labels.txt"
-        private const val INPUT_SIZE = 224
         private const val IMAGE_PICK_CODE = 1000
         private const val PERMISSION_CODE = 1001
-        //private const val MODEL_PATH = "mobilenet_quant_v1_224.tflite"
-        //private const val LABEL_PATH = "labels.txt"
+        private const val TF_OD_API_INPUT_SIZE = 300
     }
 
     private fun pickImageFromGalley() {

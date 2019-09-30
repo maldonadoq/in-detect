@@ -30,10 +30,12 @@ class Classifier(
 
         // TensorFlow
         // Configuration values for the prepackaged SSD model.
-        private const val TF_OD_API_INPUT_SIZE = 300
+        private const val TF_OD_API_INPUT_SIZE = 300        // Main
         private const val TF_OD_API_MODEL_FILE = "detect.tflite"
         private const val TF_OD_API_LABELS_FILE = "labelmap.txt"
         private const val NUM_DETECTIONS = 10
+
+        private const val MINIMUM_CONFIDENCE_TF_OD_API = 0.5f
 
         @Throws(IOException::class)
         fun create(assetManager: AssetManager): Classifier {
@@ -80,16 +82,18 @@ class Classifier(
             // SSD Mobilenet V1 Model assumes class 0 is background class
             // in label file and class labels start from 1 to number_of_classes+1,
             // while outputClasses correspond to class index from 0 to number_of_classes
-
-            recognitions.add(
-                IClassifier.Recognition(
-                    "" + i,
-                    labelList[outputClasses[0][i].toInt() + 1],
-                    //"Sapbe",
-                    outputScores[0][i],
-                    detection
+            val score = outputScores[0][i]
+            if (score >= MINIMUM_CONFIDENCE_TF_OD_API) {
+                recognitions.add(
+                    IClassifier.Recognition(
+                        "" + i,
+                        labelList[outputClasses[0][i].toInt() + 1],
+                        //"Sapbe",
+                        score,
+                        detection
+                    )
                 )
-            )
+            }
         }
 
         return recognitions

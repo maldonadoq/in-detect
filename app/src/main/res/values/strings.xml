@@ -2,6 +2,7 @@
     <string name="app_name">InDetect</string>
     <string name="toggle_camera">Switch Camera</string>
     <string name="detect_car">Identify Car</string>
+    <string name="detect_object">Identify Object</string>
     <string name="upload_photo">Upload Photo</string>
     <string name="image_result_descr">Image Result</string>
 </resources>

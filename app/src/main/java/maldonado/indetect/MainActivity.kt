@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.graphics.*
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
@@ -21,6 +22,8 @@ import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
     private lateinit var btnDetectObject: Button
+    private lateinit var btnDetectCar: Button
+
     private lateinit var btnToggleCamera: Button
     private lateinit var btnUploadPhoto:  Button
     private lateinit var cameraView: CameraView
@@ -32,10 +35,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var aviLoaderHolder: View
     private lateinit var resultDialog: Dialog
 
+    private lateinit var bitmap: Bitmap
     private lateinit var random: Random
+    private var btnType = 0
 
     // model
-    private lateinit var classifier: Classifier
+    private lateinit var objectClassifier: ObjectClassifier
+    private lateinit var carClassifier: CarClassifier
+
     private val executor = Executors.newSingleThreadExecutor()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         imageViewTmp = ImageView(this)
         btnToggleCamera = findViewById(R.id.btnToggleCamera)
         btnDetectObject = findViewById(R.id.btnDetectObject)
+        btnDetectCar = findViewById(R.id.btnDetectCar)
         btnUploadPhoto = findViewById(R.id.btnUploadPhoto)
 
         resultDialog = Dialog(this)
@@ -75,6 +83,19 @@ class MainActivity : AppCompatActivity() {
         btnToggleCamera.setOnClickListener { cameraView.toggleFacing() }
 
         btnDetectObject.setOnClickListener {
+            btnType = 1
+            tvLoadingText.text = "Object Identification Engine Processing ..."
+
+            cameraView.captureImage()
+            resultDialog.show()
+            tvTextResults.visibility = View.GONE
+            ivImageResult.visibility = View.GONE
+        }
+
+        btnDetectCar.setOnClickListener {
+            btnType = -1
+            tvLoadingText.text = "Car Identification Engine Processing ..."
+
             cameraView.captureImage()
             resultDialog.show()
             tvTextResults.visibility = View.GONE
@@ -108,13 +129,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun recognize(tBitmap: Bitmap) {
-        val bitmap = Bitmap.createScaledBitmap(tBitmap, TF_OD_API_INPUT_SIZE, TF_OD_API_INPUT_SIZE, false)
-
         aviLoaderHolder.visibility = View.GONE
         tvLoadingText.visibility = View.GONE
 
-        //val results = "Sabpe"
-        val results = classifier.recognizeImage(bitmap)
+        var results = ArrayList<IClassifier.Recognition>()
+
+        if(btnType > 0){
+            bitmap = Bitmap.createScaledBitmap(tBitmap, TF_OD_API_INPUT_OBJ_SIZE, TF_OD_API_INPUT_OBJ_SIZE, false)
+            results = objectClassifier.recognizeImage(bitmap)
+        }
+        else if(btnType < 0){
+            bitmap = Bitmap.createScaledBitmap(tBitmap, TF_OD_API_INPUT_CAR_SIZE, TF_OD_API_INPUT_CAR_SIZE, false)
+            results = carClassifier.recognizeImage(bitmap)
+        }
 
         val canvas = Canvas(bitmap)
         val paint = Paint()
@@ -127,6 +154,7 @@ class MainActivity : AppCompatActivity() {
             canvas.drawRoundRect(result.location, 5.0f, 5.0f, paint)
         }
 
+        //bitmap = Bitmap.createScaledBitmap(bitmap, 400, 600, false)
         ivImageResult.setImageBitmap(bitmap)
         tvTextResults.text = results.toString()
 
@@ -149,7 +177,8 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val IMAGE_PICK_CODE = 1000
         private const val PERMISSION_CODE = 1001
-        private const val TF_OD_API_INPUT_SIZE = 300
+        private const val TF_OD_API_INPUT_OBJ_SIZE = 300
+        private const val TF_OD_API_INPUT_CAR_SIZE = 224
     }
 
     private fun pickImageFromGalley() {
@@ -189,13 +218,15 @@ class MainActivity : AppCompatActivity() {
     // tensor
     override fun onDestroy() {
         super.onDestroy()
-        executor.execute { classifier.close() }
+        executor.execute { objectClassifier.close() }
+        executor.execute { carClassifier.close() }
     }
 
     private fun initTensorFlowAndLoadModel() {
         executor.execute {
             try {
-                classifier = Classifier.create(assets)
+                objectClassifier = ObjectClassifier.create(assets)
+                carClassifier = CarClassifier.create(assets)
                 makeButtonVisible()
             } catch (e: Exception) {
                 throw RuntimeException("Error initializing TensorFlow!", e)

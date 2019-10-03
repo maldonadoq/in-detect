@@ -23,11 +23,6 @@ import android.util.Log
 import java.nio.file.Files.size
 
 
-
-
-
-
-
 @Suppress("DEPRECATION")
 class CarClassifier(
     var inputSize: Int = 0,
@@ -54,9 +49,6 @@ class CarClassifier(
         private const val TF_OD_API_INPUT_STD = 128.0f        //
         private const val TF_OD_API_MODEL_FILE = "car_graph.pb"
         private const val TF_OD_API_LABELS_FILE = "car_labels.txt"
-        private const val NUM_DETECTIONS = 3
-        private const val THRESHOLD = 0.1f
-
 
         private const val INPUT_NAME = "input"
         private const val OUTPUT_NAME = "final_result"
@@ -106,13 +98,13 @@ class CarClassifier(
             floatValues[i * 3 + 2] = ((`val` and 0xFF) - TF_OD_API_INPUT_MEAN) / TF_OD_API_INPUT_STD
         }
 
-        Log.i("car", "ByteBuffer")
+        Log.i("car", floatValues[0].toString())
 
         // Copy the input data into TensorFlow.
         inferenceInterface.feed(INPUT_NAME, floatValues, (1 * inputSize * inputSize *3).toLong())
         Log.i("car", "Feed Ok")
 
-        inferenceInterface.run(outputNames, logStats)
+        inferenceInterface.run(outputNames, true)
         Log.i("car", "Run Ok")
 
         inferenceInterface.fetch(OUTPUT_NAME, outputs)

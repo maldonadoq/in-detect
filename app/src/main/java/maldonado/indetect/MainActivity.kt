@@ -7,18 +7,15 @@ import android.content.pm.PackageManager
 import android.graphics.*
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.wonderkiln.camerakit.*
 import java.util.*
 import java.util.concurrent.Executors
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var btnDetectObject: Button
@@ -57,7 +54,9 @@ class MainActivity : AppCompatActivity() {
         btnUploadPhoto = findViewById(R.id.btnUploadPhoto)
 
         resultDialog = Dialog(this)
-        val customProgressView = LayoutInflater.from(this).inflate(R.layout.activity_result, null)
+        val customProgressView = LayoutInflater.from(this).inflate(R.layout.activity_result,
+            null)
+
         resultDialog.setCancelable(false)
         resultDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         resultDialog.setContentView(customProgressView)
@@ -135,26 +134,35 @@ class MainActivity : AppCompatActivity() {
         var results = ArrayList<IClassifier.Recognition>()
 
         if(btnType > 0){
-            bitmap = Bitmap.createScaledBitmap(tBitmap, TF_OD_API_INPUT_OBJ_SIZE, TF_OD_API_INPUT_OBJ_SIZE, false)
+            bitmap = Bitmap.createScaledBitmap(tBitmap, TF_OD_API_INPUT_OBJ_SIZE,
+                TF_OD_API_INPUT_OBJ_SIZE, false)
             results = objectClassifier.recognizeImage(bitmap)
         }
         else if(btnType < 0){
-            bitmap = Bitmap.createScaledBitmap(tBitmap, TF_OD_API_INPUT_CAR_SIZE, TF_OD_API_INPUT_CAR_SIZE, false)
+            bitmap = Bitmap.createScaledBitmap(tBitmap, TF_OD_API_INPUT_CAR_SIZE,
+                TF_OD_API_INPUT_CAR_SIZE, false)
             results = carClassifier.recognizeImage(bitmap)
         }
 
         val canvas = Canvas(bitmap)
-        val paint = Paint()
+        val boxPaint = Paint()
+        boxPaint.style = Paint.Style.STROKE
+        boxPaint.strokeWidth = 3.0f
 
-        paint.style = Paint.Style.STROKE
-        paint.strokeWidth = 2.0f
+        val textPaint = Paint()
+        textPaint.color = Color.WHITE
+        textPaint.textSize = 15.0f
 
         for (result in results) {
-            paint.color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256))
-            canvas.drawRoundRect(result.location, 5.0f, 5.0f, paint)
+            boxPaint.color = Color.argb(255, random.nextInt(256), random.nextInt(
+                256), random.nextInt(256))
+            canvas.drawRoundRect(result.location, 5.0f, 5.0f, boxPaint)
+
+            canvas.drawText(String.format("%s %.2f", result.title, (100 * result.confidence)),
+                result.location.left + 8, result.location.top + 15, textPaint)
         }
 
-        //bitmap = Bitmap.createScaledBitmap(bitmap, 400, 600, false)
+        // bitmap = Bitmap.createScaledBitmap(bitmap, 300, 350, false)
         ivImageResult.setImageBitmap(bitmap)
         tvTextResults.text = results.toString()
 

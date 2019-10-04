@@ -35,7 +35,6 @@ dependencies {
     implementation 'com.wonderkiln:camerakit:0.13.0'
 
     implementation 'org.tensorflow:tensorflow-lite:+'
-    implementation 'org.tensorflow:tensorflow-android:+'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

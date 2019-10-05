@@ -50,7 +50,8 @@ class ObjectClassifier(
     }
 
     @SuppressLint("UseSparseArrays")
-    override fun recognizeImage(bitmap: Bitmap): ArrayList<IClassifier.Recognition> {
+    override fun recognizeImage(tBitmap: Bitmap): ArrayList<IClassifier.Recognition> {
+        val bitmap = Bitmap.createScaledBitmap(tBitmap, inputSize, inputSize, false)
         val byteBuffer = convertBitmapToByteBuffer(bitmap)
 
         // copy data into TensorFlow
@@ -75,12 +76,12 @@ class ObjectClassifier(
 
         for (i in 0 until NUM_DETECTIONS) {
             val detection = RectF(
-                outputLocations[0][i][1] * inputSize,
-                outputLocations[0][i][0] * inputSize,
-                outputLocations[0][i][3] * inputSize,
-                outputLocations[0][i][2] * inputSize
+                outputLocations[0][i][1] * tBitmap.width,
+                outputLocations[0][i][0] * tBitmap.height,
+                outputLocations[0][i][3] * tBitmap.width,
+                outputLocations[0][i][2] * tBitmap.height
             )
-            // SSD Mobilenet V1 Model assumes class 0 is background class
+            // SSD Mobile-net V1 Model assumes class 0 is background class
             // in label file and class labels start from 1 to number_of_classes+1,
             // while outputClasses correspond to class index from 0 to number_of_classes
             val score = outputScores[0][i]

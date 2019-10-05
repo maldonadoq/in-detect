@@ -51,7 +51,9 @@ class FlowerClassifier(
     }
 
     @SuppressLint("UseSparseArrays")
-    override fun recognizeImage(bitmap: Bitmap): ArrayList<IClassifier.Recognition> {
+    override fun recognizeImage(tBitmap: Bitmap): ArrayList<IClassifier.Recognition> {
+        val bitmap = Bitmap.createScaledBitmap(tBitmap, inputSize, inputSize, false)
+
         val byteBuffer = convertBitmapToByteBuffer(bitmap)
         val labelProbArray = Array(1) { FloatArray(labelSize) }
 

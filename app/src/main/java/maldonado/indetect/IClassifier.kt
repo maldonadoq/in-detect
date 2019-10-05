@@ -11,13 +11,11 @@ interface IClassifier {
         var location: RectF
     )  {
         override fun toString(): String {
-            //"%.4f".format(num)
-            //return "Title = %.s (%.4f)".format(title, confidence)
-            return  "Title = $title ($confidence)"
+            return String.format("Title = %s (%.2f)", title, confidence)
         }
     }
 
-    fun recognizeImage(bitmap: Bitmap): List<Recognition>
+    fun recognizeImage(tBitmap: Bitmap): List<Recognition>
 
     fun close()
 }

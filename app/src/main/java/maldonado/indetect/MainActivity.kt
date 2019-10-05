@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -32,7 +33,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var aviLoaderHolder: View
     private lateinit var resultDialog: Dialog
 
-    private lateinit var bitmap: Bitmap
     private lateinit var random: Random
     private var btnType = 0
 
@@ -77,7 +77,9 @@ class MainActivity : AppCompatActivity() {
             override fun onError(cameraKitError: CameraKitError) { }
 
             override fun onImage(cameraKitImage: CameraKitImage) {
-                recognize(cameraKitImage.bitmap)
+                val bitmap = cameraKitImage.bitmap
+                recognize(Bitmap.createScaledBitmap(bitmap, (bitmap.width*0.5).toInt(),
+                    (bitmap.height*0.5).toInt(), false))
             }
 
             override fun onVideo(cameraKitVideo: CameraKitVideo) { }
@@ -140,7 +142,7 @@ class MainActivity : AppCompatActivity() {
         initTensorFlowAndLoadModel()
     }
 
-    private fun recognize(tBitmap: Bitmap) {
+    private fun recognize(bitmap: Bitmap) {
         aviLoaderHolder.visibility = View.GONE
         tvLoadingText.visibility = View.GONE
 
@@ -148,18 +150,12 @@ class MainActivity : AppCompatActivity() {
 
         when(btnType){
             1 -> {
-                bitmap = Bitmap.createScaledBitmap(tBitmap, INPUT_OBJ_SIZE,
-                    INPUT_OBJ_SIZE, false)
                 results = objectClassifier.recognizeImage(bitmap)
             }
             2 -> {
-                bitmap = Bitmap.createScaledBitmap(tBitmap, INPUT_CAR_SIZE,
-                    INPUT_CAR_SIZE, false)
                 results = carClassifier.recognizeImage(bitmap)
             }
             3 -> {
-                bitmap = Bitmap.createScaledBitmap(tBitmap, INPUT_FLOWER_SIZE,
-                    INPUT_FLOWER_SIZE, false)
                 results = flowerClassifier.recognizeImage(bitmap)
             }
         }
@@ -167,20 +163,20 @@ class MainActivity : AppCompatActivity() {
         val canvas = Canvas(bitmap)
         val boxPaint = Paint()
         boxPaint.style = Paint.Style.STROKE
-        boxPaint.strokeWidth = 3.0f
+        boxPaint.strokeWidth = 15.0f
 
         val textPaint = Paint()
         textPaint.color = Color.WHITE
-        textPaint.textSize = 15.0f
+        textPaint.textSize = 50.0f
 
         for (result in results) {
             if(!result.location.isEmpty){
                 boxPaint.color = Color.argb(255, random.nextInt(256), random.nextInt(
                     256), random.nextInt(256))
-                canvas.drawRoundRect(result.location, 5.0f, 5.0f, boxPaint)
+                canvas.drawRoundRect(result.location, 30.0f, 30.0f, boxPaint)
 
                 canvas.drawText(String.format("%s %.2f", result.title, (100 * result.confidence)),
-                    result.location.left + 8, result.location.top + 15, textPaint)
+                    result.location.left + 40, result.location.top + 60, textPaint)
             }
         }
 
@@ -206,9 +202,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val IMAGE_PICK_CODE = 1000
         private const val PERMISSION_CODE = 1001
-        private const val INPUT_OBJ_SIZE = 300
-        private const val INPUT_CAR_SIZE = 224
-        private const val INPUT_FLOWER_SIZE = 224
     }
 
     private fun pickImageFromGalley() {
@@ -238,7 +231,13 @@ class MainActivity : AppCompatActivity() {
         // super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
             imageViewTmp.setImageURI(data?.data)
-            // recognize(imageViewTmp.drawable)
+
+            btnType = 1
+            val bt = (imageViewTmp.drawable as BitmapDrawable).bitmap
+            recognize(Bitmap.createScaledBitmap(bt, (bt.width*0.5).toInt(), (bt.height*0.5).toInt(),
+                false))
+
+            resultDialog.show()
         }
     }
 

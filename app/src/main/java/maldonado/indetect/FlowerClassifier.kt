@@ -14,15 +14,7 @@ import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 import java.util.*
 import kotlin.collections.List
-import java.util.HashMap
 import android.graphics.RectF
-import android.bluetooth.BluetoothClass.Device
-import android.app.Activity
-import android.util.Log
-import java.nio.file.Files.size
-
-
-
 
 @Suppress("DEPRECATION")
 class FlowerClassifier(
@@ -40,9 +32,8 @@ class FlowerClassifier(
         // TensorFlow
         // Configuration values for the prepackaged SSD model.
         private const val TF_OD_API_INPUT_SIZE = 224        // Main
-        private const val TF_OD_API_MODEL_FILE = "flower_graph.lite"
+        private const val TF_OD_API_MODEL_FILE = "flower_model.lite"
         private const val TF_OD_API_LABELS_FILE = "flower_labels.txt"
-        private const val MINIMUM_CONFIDENCE_TF_OD_API = 0.5f
         private const val IMAGE_MEAN = 127.5f
         private const val IMAGE_STD = 127.5f
 
@@ -61,44 +52,22 @@ class FlowerClassifier(
 
     @SuppressLint("UseSparseArrays")
     override fun recognizeImage(bitmap: Bitmap): ArrayList<IClassifier.Recognition> {
-
-        Log.i("Flower", labelList.size.toString())
-
         val byteBuffer = convertBitmapToByteBuffer(bitmap)
         val labelProbArray = Array(1) { FloatArray(labelSize) }
 
-        var st = "Init Label Prob: "
-        for(i in 0 until (labelProbArray.size)){
-            st += " " + labelProbArray[i]
-        }
-
-        Log.i("Flower", st)
-
-        Log.i("Flower", "Init Run")
         interpreter!!.run(byteBuffer, labelProbArray)
-        Log.i("Flower", "Run Ok")
-
-        st = "End Label Prob: "
-        for(i in 0 until (labelProbArray.size)){
-            st += " " + labelProbArray[i]
-        }
-        Log.i("Flower", st)
 
         val recognitions = ArrayList<IClassifier.Recognition>()
-
-
         for (i in 0 until labelSize) {
             val score = labelProbArray[0][i]
-            if (score >= MINIMUM_CONFIDENCE_TF_OD_API) {
-                recognitions.add(
-                    IClassifier.Recognition(
-                        "" + i,
-                        if(labelList.size > i ) labelList[i]  else "unknown",
-                        score,
-                        RectF(0.0f, 0.0f, 10.0f, 10.0f)
-                    )
+            recognitions.add(
+                IClassifier.Recognition(
+                    "" + i,
+                    if(labelList.size > i ) labelList[i]  else "unknown",
+                    score,
+                    RectF()
                 )
-            }
+            )
         }
 
         return recognitions

@@ -16,10 +16,10 @@ import com.wonderkiln.camerakit.*
 import java.util.*
 import java.util.concurrent.Executors
 
-
 class MainActivity : AppCompatActivity() {
     private lateinit var btnDetectObject: Button
     private lateinit var btnDetectCar: Button
+    private lateinit var btnDetectFlower: Button
 
     private lateinit var btnToggleCamera: Button
     private lateinit var btnUploadPhoto:  Button
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     // model
     private lateinit var objectClassifier: ObjectClassifier
-    // private lateinit var carClassifier: CarClassifier
+    private lateinit var carClassifier: CarClassifier
     private lateinit var flowerClassifier: FlowerClassifier
 
     private val executor = Executors.newSingleThreadExecutor()
@@ -50,9 +50,11 @@ class MainActivity : AppCompatActivity() {
         cameraView = findViewById(R.id.cameraView)
         imageViewTmp = ImageView(this)
         btnToggleCamera = findViewById(R.id.btnToggleCamera)
+        btnUploadPhoto = findViewById(R.id.btnUploadPhoto)
+
         btnDetectObject = findViewById(R.id.btnDetectObject)
         btnDetectCar = findViewById(R.id.btnDetectCar)
-        btnUploadPhoto = findViewById(R.id.btnUploadPhoto)
+        btnDetectFlower = findViewById(R.id.btnDetectFlower)
 
         resultDialog = Dialog(this)
         val customProgressView = LayoutInflater.from(this).inflate(R.layout.activity_result,
@@ -65,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         ivImageResult = customProgressView.findViewById(R.id.iViewResult)
         tvLoadingText = customProgressView.findViewById(R.id.tvLoadingRecognition)
         tvTextResults = customProgressView.findViewById(R.id.tvResult)
+
         // The Loader Holder is used due to a bug in the Avi Loader library
         aviLoaderHolder = customProgressView.findViewById<View>(R.id.aviLoaderHolderView)
 
@@ -93,8 +96,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnDetectCar.setOnClickListener {
-            btnType = -1
+            btnType = 2
             tvLoadingText.text = "Car Identification Engine Processing ..."
+
+            cameraView.captureImage()
+            resultDialog.show()
+            tvTextResults.visibility = View.GONE
+            ivImageResult.visibility = View.GONE
+        }
+
+        btnDetectFlower.setOnClickListener {
+            btnType = 3
+            tvLoadingText.text = "Flower Identification Engine Processing ..."
 
             cameraView.captureImage()
             resultDialog.show()
@@ -133,15 +146,22 @@ class MainActivity : AppCompatActivity() {
 
         var results = ArrayList<IClassifier.Recognition>()
 
-        if(btnType > 0){
-            bitmap = Bitmap.createScaledBitmap(tBitmap, TF_OD_API_INPUT_OBJ_SIZE,
-                TF_OD_API_INPUT_OBJ_SIZE, false)
-            results = objectClassifier.recognizeImage(bitmap)
-        }
-        else if(btnType < 0){
-            bitmap = Bitmap.createScaledBitmap(tBitmap, TF_OD_API_INPUT_CAR_SIZE,
-                TF_OD_API_INPUT_CAR_SIZE, false)
-            results = flowerClassifier.recognizeImage(bitmap)
+        when(btnType){
+            1 -> {
+                bitmap = Bitmap.createScaledBitmap(tBitmap, INPUT_OBJ_SIZE,
+                    INPUT_OBJ_SIZE, false)
+                results = objectClassifier.recognizeImage(bitmap)
+            }
+            2 -> {
+                bitmap = Bitmap.createScaledBitmap(tBitmap, INPUT_CAR_SIZE,
+                    INPUT_CAR_SIZE, false)
+                results = carClassifier.recognizeImage(bitmap)
+            }
+            3 -> {
+                bitmap = Bitmap.createScaledBitmap(tBitmap, INPUT_FLOWER_SIZE,
+                    INPUT_FLOWER_SIZE, false)
+                results = flowerClassifier.recognizeImage(bitmap)
+            }
         }
 
         val canvas = Canvas(bitmap)
@@ -154,15 +174,16 @@ class MainActivity : AppCompatActivity() {
         textPaint.textSize = 15.0f
 
         for (result in results) {
-            boxPaint.color = Color.argb(255, random.nextInt(256), random.nextInt(
-                256), random.nextInt(256))
-            canvas.drawRoundRect(result.location, 5.0f, 5.0f, boxPaint)
+            if(!result.location.isEmpty){
+                boxPaint.color = Color.argb(255, random.nextInt(256), random.nextInt(
+                    256), random.nextInt(256))
+                canvas.drawRoundRect(result.location, 5.0f, 5.0f, boxPaint)
 
-            canvas.drawText(String.format("%s %.2f", result.title, (100 * result.confidence)),
-                result.location.left + 8, result.location.top + 15, textPaint)
+                canvas.drawText(String.format("%s %.2f", result.title, (100 * result.confidence)),
+                    result.location.left + 8, result.location.top + 15, textPaint)
+            }
         }
 
-        // bitmap = Bitmap.createScaledBitmap(bitmap, 300, 350, false)
         ivImageResult.setImageBitmap(bitmap)
         tvTextResults.text = results.toString()
 
@@ -185,8 +206,9 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val IMAGE_PICK_CODE = 1000
         private const val PERMISSION_CODE = 1001
-        private const val TF_OD_API_INPUT_OBJ_SIZE = 300
-        private const val TF_OD_API_INPUT_CAR_SIZE = 224
+        private const val INPUT_OBJ_SIZE = 300
+        private const val INPUT_CAR_SIZE = 224
+        private const val INPUT_FLOWER_SIZE = 224
     }
 
     private fun pickImageFromGalley() {
@@ -224,7 +246,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         executor.execute { objectClassifier.close() }
-        // executor.execute { carClassifier.close() }
+        executor.execute { carClassifier.close() }
         executor.execute { flowerClassifier.close() }
     }
 
@@ -232,7 +254,7 @@ class MainActivity : AppCompatActivity() {
         executor.execute {
             try {
                 objectClassifier = ObjectClassifier.create(assets)
-                // carClassifier = CarClassifier.create(assets)
+                carClassifier = CarClassifier.create(assets)
                 flowerClassifier = FlowerClassifier.create(assets)
 
                 makeButtonVisible()

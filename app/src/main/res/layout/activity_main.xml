@@ -63,7 +63,7 @@
 
             <Button
                 android:id="@+id/btnDetectCar"
-                android:layout_width="250dp"
+                android:layout_width="119dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/button_stylex"
                 android:elevation="12dp"
@@ -71,6 +71,18 @@
                 android:text="@string/detect_car"
                 android:drawableLeft="@android:drawable/checkbox_off_background"
                 android:layout_marginLeft="5dp"
+                />
+
+            <Button
+                android:id="@+id/btnDetectFlower"
+                android:layout_width="119dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_stylex"
+                android:elevation="12dp"
+                android:textColor="@color/colorPrimary"
+                android:text="@string/detect_flower"
+                android:drawableLeft="@android:drawable/checkbox_off_background"
+                android:layout_marginLeft="12dp"
                 />
 
             <Button

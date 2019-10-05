@@ -31,7 +31,7 @@ class ObjectClassifier(
         // TensorFlow
         // Configuration values for the prepackaged SSD model.
         private const val TF_OD_API_INPUT_SIZE = 300        // Main
-        private const val TF_OD_API_MODEL_FILE = "object_graph.tflite"
+        private const val TF_OD_API_MODEL_FILE = "object_graph.lite"
         private const val TF_OD_API_LABELS_FILE = "object_labels.txt"
         private const val NUM_DETECTIONS = 10
 

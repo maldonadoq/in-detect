@@ -38,7 +38,8 @@ class MainActivity : AppCompatActivity() {
 
     // model
     private lateinit var objectClassifier: ObjectClassifier
-    private lateinit var carClassifier: CarClassifier
+    // private lateinit var carClassifier: CarClassifier
+    private lateinit var flowerClassifier: FlowerClassifier
 
     private val executor = Executors.newSingleThreadExecutor()
 
@@ -102,7 +103,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnUploadPhoto.setOnClickListener {
-            //Toast.makeText(this, "Hi there! Saluuute.", Toast.LENGTH_LONG).show()
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                 if(checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) ==
                     PackageManager.PERMISSION_DENIED){
@@ -141,7 +141,7 @@ class MainActivity : AppCompatActivity() {
         else if(btnType < 0){
             bitmap = Bitmap.createScaledBitmap(tBitmap, TF_OD_API_INPUT_CAR_SIZE,
                 TF_OD_API_INPUT_CAR_SIZE, false)
-            results = carClassifier.recognizeImage(bitmap)
+            results = flowerClassifier.recognizeImage(bitmap)
         }
 
         val canvas = Canvas(bitmap)
@@ -208,9 +208,6 @@ class MainActivity : AppCompatActivity() {
                 if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     pickImageFromGalley()
                 }
-                else{
-                    Toast.makeText(this, "Bukake", Toast.LENGTH_SHORT).show()
-                }
             }
         }
     }
@@ -227,14 +224,17 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         executor.execute { objectClassifier.close() }
-        executor.execute { carClassifier.close() }
+        // executor.execute { carClassifier.close() }
+        executor.execute { flowerClassifier.close() }
     }
 
     private fun initTensorFlowAndLoadModel() {
         executor.execute {
             try {
                 objectClassifier = ObjectClassifier.create(assets)
-                carClassifier = CarClassifier.create(assets)
+                // carClassifier = CarClassifier.create(assets)
+                flowerClassifier = FlowerClassifier.create(assets)
+
                 makeButtonVisible()
             } catch (e: Exception) {
                 throw RuntimeException("Error initializing TensorFlow!", e)

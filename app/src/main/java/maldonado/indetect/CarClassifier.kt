@@ -8,8 +8,6 @@ import java.io.BufferedReader
 import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStreamReader
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 import java.util.*
@@ -39,8 +37,13 @@ class CarClassifier(
 
             val classifier = CarClassifier()
             classifier.interpreter = Interpreter(classifier.loadModelFile(assetManager))
+            Log.i("Car", "Load Model Ok")
+
             classifier.labelList = classifier.loadLabelList(assetManager)
+            Log.i("Car", "Load Label List Ok")
+
             classifier.inputSize = TF_OD_API_INPUT_SIZE
+            Log.i("Car", "Input Size: " + classifier.inputSize)
 
             return classifier
         }
@@ -48,22 +51,23 @@ class CarClassifier(
 
     @SuppressLint("UseSparseArrays")
     override fun recognizeImage(bitmap: Bitmap): ArrayList<IClassifier.Recognition> {
-        val byteBufferInput = convertBitmapToByteBuffer(bitmap)
+        Log.i("Car", "Init Recognize Image")
+        val floatBufferInput = convertBitmapToFloatBuffer(bitmap)
 
         // copy data into TensorFlow
-        val byteBufferOutput = ByteArray(196)
+        val floatBufferOutput = FloatArray(labelList.size)
 
         Log.i("Car", "Init Run Ok")
 
-        interpreter!!.run(byteBufferInput, byteBufferOutput)
+        interpreter!!.run(floatBufferInput, floatBufferOutput)
 
         Log.i("Car", "Run Ok")
 
         // Show the best detections.
         // after scaling them back to the input size.
-        val recognitions = ArrayList<IClassifier.Recognition>()
+        // val recognitions = ArrayList<IClassifier.Recognition>()
 
-        return recognitions
+        return ArrayList()
     }
 
     override fun close() {
@@ -73,6 +77,7 @@ class CarClassifier(
 
     @Throws(IOException::class)
     private fun loadModelFile(assetManager: AssetManager): MappedByteBuffer {
+        Log.i("Car", "Init Load Model")
         val fileDescriptor = assetManager.openFd(TF_OD_API_MODEL_FILE)
         val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
         val fileChannel = inputStream.channel
@@ -83,6 +88,7 @@ class CarClassifier(
 
     @Throws(IOException::class)
     private fun loadLabelList(assetManager: AssetManager): List<String> {
+        Log.i("Car", "Init Load Labels")
         val labelList = ArrayList<String>()
         val reader = BufferedReader(InputStreamReader(assetManager.open(TF_OD_API_LABELS_FILE)))
         while (true) {
@@ -93,12 +99,37 @@ class CarClassifier(
         return labelList
     }
 
-    private fun convertBitmapToByteBuffer(bitmap: Bitmap): ByteBuffer {
-        val byteBuffer = ByteBuffer.allocateDirect(BATCH_SIZE * inputSize * inputSize * PIXEL_SIZE)
-        byteBuffer.order(ByteOrder.nativeOrder())
+    private fun convertBitmapToFloatBuffer(bitmap: Bitmap): FloatArray {
+        Log.i("Car", "Init Bitmap to FloatBuffer")
+        val floatBuffer = FloatArray(BATCH_SIZE * inputSize * inputSize * PIXEL_SIZE)
+        Log.i("Car", "Init FloatBuffer Separate")
+
         val intValues = IntArray(inputSize * inputSize)
+        Log.i("Car", "Init IntValues Separate")
+
         bitmap.getPixels(intValues, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
-        var pixel = 0
+        Log.i("Car", "Init GetPixels")
+
+        Log.i("Car", "Int Values Size: " + intValues.size)
+        Log.i("Car", "Int Float Buffer Size: " + floatBuffer.size)
+        for(i in 0 until intValues.size-1){
+            val `val` = intValues[i]
+            floatBuffer[i * 3] = (((`val` shr 16) and 0xFF) - 128) / 128.0f
+            floatBuffer[i * 3 + 1] = (((`val` shr 8) and 0xFF) - 128) / 128.0f
+            floatBuffer[i * 3 + 2] = ((`val` and 0xFF) - 128) / 128.0f
+        }
+
+        Log.i("Car", "Init Print Image")
+        for (i in 0 until inputSize) {
+            var st = ""
+            for (j in 0 until inputSize) {
+                st += " " + floatBuffer[i*inputSize + j].toString()
+            }
+            Log.i("Car", st)
+        }
+        Log.i("Car", "End Print Image")
+
+        /*var pixel = 0
         for (i in 0 until inputSize) {
             for (j in 0 until inputSize) {
                 val `val` = intValues[pixel++]
@@ -110,7 +141,8 @@ class CarClassifier(
                 byteBuffer.put((((`val` shr 8 and 0xFF) - 128) / 126.0f).toByte())
                 byteBuffer.put((((`val` and 0xFF) - 128) / 126.0f).toByte())*/
             }
-        }
-        return byteBuffer
+        }*/
+
+        return floatBuffer
     }
 }

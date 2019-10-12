@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.wonderkiln.camerakit.*
 import java.util.*
 import java.util.concurrent.Executors
+import android.text.method.ScrollingMovementMethod
+import kotlin.collections.HashMap
 
 class MainActivity : AppCompatActivity() {
     private lateinit var btnDetectObject: Button
@@ -25,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var aviLoaderHolder: View
     private lateinit var resultDialog: Dialog
 
+    private lateinit var dictionaryList: HashMap<String, String>
     private lateinit var random: Random
     private var btnType = 0
 
@@ -53,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         ivImageResult = customProgressView.findViewById(R.id.iViewResult)
         tvLoadingText = customProgressView.findViewById(R.id.tvLoadingRecognition)
         tvTextResults = customProgressView.findViewById(R.id.tvResult)
+        tvTextResults.movementMethod = ScrollingMovementMethod()
 
         // The Loader Holder is used due to a bug in the Avi Loader library
         aviLoaderHolder = customProgressView.findViewById<View>(R.id.aviLoaderHolderView)
@@ -89,6 +93,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         random = Random()
+        dictionaryList = loadDictionary(assets, "dictionary.txt")
         initTensorFlowAndLoadModel()
     }
 
@@ -116,8 +121,14 @@ class MainActivity : AppCompatActivity() {
                 result.location.left + 40, result.location.top + 60, textPaint)
         }
 
+        val objects = uniqueList(results)
+        tvTextResults.text = ""
+
+        for (obj in objects){
+            tvTextResults.append(obj + ": " + dictionaryList[obj] + "\n")
+        }
+
         ivImageResult.setImageBitmap(bitmap)
-        tvTextResults.text = results.toString()
 
         tvTextResults.visibility = View.VISIBLE
         ivImageResult.visibility = View.VISIBLE

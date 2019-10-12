@@ -1,0 +1,80 @@
+Persona:Una persona es un ser capaz de vivir en sociedad y que tiene sensibilidad, además de contar con inteligencia y voluntad, aspectos típicos de la humanidad.
+Bicicleta:Es un medio de transporte sano, ecológico, sostenible y económico, válido para trasladarse tanto por ciudad como por zonas rurales.
+Auto:En una definición más genérica, se refiere a un vehículo autopropulsado destinado al transporte de personas o mercancías sin necesidad de carriles.
+Motocicleta:Vehículo automóvil de dos ruedas y manubrio, que tiene capacidad para una o dos personas..
+Avioneta:Un avión es un vehículo que puede desplazarse por el aire gracias a que cuenta con un motor y con alas..
+Autobus:Vehículo automóvil con capacidad para gran número de viajeros, destinado al transporte de pasajeros por carretera..
+Tren:Vehículo constituido por varios vagones arrastrados por una locomotora, que circula sobre raíles y se utiliza para el transporte de personas o de mercancías..
+Camión:Es un vehículo motorizado diseñado para el transporte de productos y mercancías.
+Bote:.
+Semaforo:.
+Fire Hydrant:.
+Señal de Stop:.
+Parquímetro:.
+Banco:.
+Ave:.
+Gato:.
+Perro:.
+Caballo:.
+Oveja:.
+Vaca:.
+Elefante:.
+Oso:.
+Zebra:.
+Jirafa:.
+Mochila:.
+Paraguas:.
+Bolso:.
+Corbata:.
+Maleta:.
+Frisbee:.
+Skis:.
+Snowboard:.
+Pelota de Deporte:.
+Cometa:.
+Bate:.
+Guante:.
+Patineta:.
+Tabla de Surf:.
+Raqueta:.
+Botella:.
+Copa de Vino:.
+Taza:.
+Tenedor:.
+Cuchillo:.
+Cuchara:.
+Bowl:.
+Banana:.
+Manzana:.
+Sandwich:.
+Naranja:.
+Brocoli:.
+Zanahoria:.
+Hot dog:.
+Pizza:.
+Donut:.
+Pastel:.
+Silla:.
+Sofá:.
+Planta en Maceta:.
+Cama:.
+Comedor:.
+Baño:.
+TV:.
+Laptop:Dispositivo informático que se puede mover o transportar con relativa facilidad.
+Mouse:.
+Control Remoto:.
+Teclado:Dispositivo o periférico de entrada, en parte inspirado en el teclado de las máquinas de escribir, que utiliza un sistema de botones o teclas.
+Celular:Tipo de ordenador de bolsillo con las capacidades de un teléfono móvil (llamada telefónica, servicio de mensajes cortos, etc.).
+Microondas:Electrodoméstico usado en la cocina para calentar alimentos para comerlos que funciona mediante la generación de onda electromagnética en la frecuencia de la radiación en torno a los 2450 MHz.
+Horno:Dispositivo que genera calor y que lo mantiene dentro de un compartimiento cerrado.
+Tostadora:.
+Lavabo:Tipo de recipiente en el que se vierte el agua para el aseo personal.
+Refrigerador:Dispositivo empleado principalmente en cocina y en laboratorio que consiste en un armario aislado térmicamente, con un compartimento principal en el que se mantiene una temperatura de entre 2 y 6 Centigrados.
+Libro:Obra impresa, manuscrita o pintada en una serie de hojas de papel, pergamino, vitela u otro material, unidas por un lado y protegidas con tapas, también llamadas cubiertas.
+Reloj:Instrumento capaz de medir, mantener e indicar el tiempo en unidades convencionales.
+Florero:.
+Tijeras:Denominada frecuentemente en su plural tijeras,1​ es una herramienta manual que sirve para cortar tela, papel, cabello, etc..
+Oso de Peluche: Oso de juguete relleno.
+Secadora de Cabello:Dispositivo electromecánico que expulsa aire caliente o frío sobre el pelo húmedo o mojado, acelerando la evaporación del agua para secar el cabello.
+Cepillo de Dientes:Instrumento de higiene oral, utilizado para limpiar dientes y encías.

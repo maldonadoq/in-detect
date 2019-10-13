@@ -61,7 +61,7 @@ Bed:.
 Dining table:.
 Toilet:.
 Tv:.
-Laptop:A computer that is portable and suitable for use while travelling..
+Laptop:A computer that is portable and suitable for use while travelling.
 Mouse:.
 Remote:.
 Keyboard:.

@@ -1,80 +1,80 @@
 Person:A human being regarded as an individual.
-Bicycle:.
+Bicycle:A vehicle consisting of two wheels held in a frame one behind the other, propelled by pedals and steered with handlebars attached to the front wheel.
 Car:A road vehicle, typically with four wheels, powered by an internal combustion engine and able to carry a small number of people.
-Motorcycle:.
-Airplane:.
-Bus:.
-Train:.
-Truck:.
-Boat:.
-Traffic light:.
-Fire hydrant:.
-Stop sign:.
-Parking meter:.
-Bench:.
-Bird:.
-Cat:.
-Cog:.
-Horse:.
-Sheep:.
-Cow:.
-Elephant:.
-Bear:.
-Zebra:.
-Giraffe:.
-Backpack:.
-Umbrella:.
-Handbag:.
-Tie:.
-Suitcase:.
-Frisbee:.
-Skis:.
-Snowboard:.
-Sports ball:.
-Kite:.
-Baseball bat:.
-Baseball glove:.
-Skateboard:.
-Surfboard:.
-Tennis racket:.
-Bottle:.
-Wine glass:.
-Cup:.
-Fork:.
-Knife:.
-Spoon:.
-Bowl:.
-Banana:.
-Apple:.
-Sandwich:.
-Orange:.
-Broccoli:.
-Carrot:.
-Hot dog:.
-Pizza:.
-Donut:.
-Cake:.
+Motorcycle:A two-wheeled vehicle that is powered by a motor and has no pedals.
+Airplane:A powered flying vehicle with fixed wings and a weight greater than that of the air it displaces; an aeroplane.
+Bus:A large motor vehicle carrying passengers by road, typically one serving the public on a fixed route and for a fare.
+Train:A series of connected railway carriages or wagons moved by a locomotive or by integral motors..
+Truck:A large, heavy road vehicle used for carrying goods, materials, or troops; a lorry.
+Boat:A small vessel for travelling over water, propelled by oars, sails, or an engine.
+Traffic light:A set of automatically operated colored lights, typically red, amber, and green, for controlling traffic at road junctions and crosswalks.
+Fire hydrant:A fitting in a street or other public place with a nozzle by which a fire hose may be attached to a water main..
+Stop sign:A stop sign is a traffic sign designed to notify drivers that they must come to a complete stop and make sure no other vehicles are coming and no pedestrians are crossing before proceeding.
+Parking meter:A machine next to a parking space in a street, into which the driver puts money so as to be authorized to park the vehicle for a particular length of time.
+Bench:A long seat for several people, typically made of wood or stone.
+Bird:A warm-blooded egg-laying vertebrate animal distinguished by the possession of feathers, wings, a beak, and typically by being able to fly.
+Cat:A small domesticated carnivorous mammal with soft fur, a short snout, and retractable claws. It is widely kept as a pet or for catching mice, and many breeds have been developed.
+Dog:A domesticated carnivorous mammal that typically has a long snout, an acute sense of smell, non-retractable claws, and a barking, howling, or whining voice.
+Horse:A large plant-eating domesticated mammal with solid hoofs and a flowing mane and tail, used for riding, racing, and to carry and pull loads.
+Sheep:A domesticated ruminant mammal with a thick woolly coat and (typically only in the male) curving horns. It is kept in flocks for its wool or meat, and is proverbial for its tendency to follow others in the flock.
+Cow:A fully grown female animal of a domesticated breed of ox, kept to produce milk or beef.
+Elephant:A very large plant-eating mammal with a prehensile trunk, long curved ivory tusks, and large ears, native to Africa and southern Asia. It is the largest living land animal.
+Bear:A large, heavy mammal that walks on the soles of its feet, having thick fur and a very short tail. Bears are related to the dog family but most species are omnivorous.
+Zebra:An African wild horse with black-and-white stripes and an erect mane.
+Giraffe:A large African mammal with a very long neck and forelegs, having a coat patterned with brown patches separated by lighter lines. It is the tallest living animal.
+Backpack:A piece of equipment carried on a person's back.
+Umbrella:A device consisting of a circular canopy of cloth on a folding metal frame supported by a central rod, used as protection against rain.
+Handbag:A small bag used by a woman to carry everyday personal items.
+Tie:A piece of string, cord, or similar used for fastening or tying something.
+Suitcase:A case with a handle and a hinged lid, used for carrying clothes and other personal possessions.
+Frisbee:A concave plastic disc designed for skimming through the air as an outdoor game or amusement.
+Skis:Each of a pair of long, narrow pieces of hard, flexible material, typically pointed and turned up at the front, fastened under the feet for travelling over snow.
+Snowboard:A board resembling a short, broad ski, used for sliding downhill on snow.
+Sports ball:A solid or hollow spherical or egg-shaped object that is kicked, thrown, or hit in a game..
+Kite:A toy consisting of a light frame with thin material stretched over it, flown in the wind at the end of a long string.
+Baseball bat:A bat of the type used in baseball to hit pitched balls, having a cylindrical head which tapers towards the handle.
+Baseball glove:A padded leather glove worn by baseball fielders to catch a thrown or batted ball, often specifically one having individual pockets for each finger.
+Skateboard:A short narrow board with two small wheels fixed to the bottom of either end, on which a person can ride in a standing or crouching position, propelling themselves by occasionally pushing one foot against the ground.
+Surfboard:A long, narrow shaped board used in surfing.
+Tennis racket:A bat with a round or oval frame strung with catgut, nylon, etc., used especially in tennis, badminton, and squash.
+Bottle:A glass or plastic container with a narrow neck, used for storing drinks or other liquids.
+Wine glass:A glass with a stem and foot, used for drinking wine.
+Cup:A small bowl-shaped container for drinking from, typically having a handle.
+Fork:An implement with two or more prongs used for lifting food to the mouth or holding it when cutting.
+Knife:An instrument composed of a blade fixed into a handle, used for cutting or as a weapon.
+Spoon:An implement consisting of a small, shallow oval or round bowl on a long handle, used for eating, stirring, and serving food.
+Bowl:A round, deep dish or basin used for food or liquid.
+Banana:A long curved fruit which grows in clusters and has soft pulpy flesh and yellow skin when ripe.
+Apple:The round fruit of a tree of the rose family, which typically has thin green or red skin and crisp flesh.
+Sandwich:An item of food consisting of two pieces of bread with a filling between them, eaten as a light meal.
+Orange:A large round juicy citrus fruit with a tough bright reddish-yellow rind.
+Broccoli:A cultivated variety of cabbage bearing heads of green or purplish flower buds that are eaten as a vegetable.
+Carrot:A tapering orange-coloured root eaten as a vegetable.
+Hot dog:A frankfurter, especially one served hot in a long, soft roll and topped with various condiments.
+Pizza:A dish of Italian origin, consisting of a flat round base of dough baked with a topping of tomatoes and cheese, typically with added meat, fish, or vegetables.
+Donut:A small fried cake of sweetened dough, typically in the shape of a ball or ring.
+Cake:An item of soft sweet food made from a mixture of flour, fat, eggs, sugar, and other ingredients, baked and sometimes iced or decorated.
 Chair:A separate seat for one person, typically with a back and four legs.
-Couch:.
-Potted plant:.
-Bed:.
-Dining table:.
-Toilet:.
-Tv:.
+Couch:A long upholstered piece of furniture for several people to sit on.
+Potted plant:A plant grown or suitable for growing in a flowerpot, especially indoors.
+Bed:A piece of furniture for sleep or rest, typically a framework with a mattress.
+Dining table:A piece of furniture for sleep or rest, typically a framework with a mattress
+Toilet:A fixed receptacle into which a person may urinate or defecate, typically consisting of a large bowl connected to a system for flushing away the waste into a sewer.
+Tv:A system for converting visual images (with sound) into electrical signals, transmitting them by radio or other means, and displaying them electronically on a screen.
 Laptop:A computer that is portable and suitable for use while travelling.
-Mouse:.
-Remote:.
-Keyboard:.
+Mouse:A small handheld device which is moved across a mat or flat surface to move the cursor on a computer screen.
+Remote:A remote control device.
+Keyboard:A panel of keys that operate a computer or typewriter.
 Cell phone:A phone with access to a cellular radio system so it can be used over a wide area, without a physical connection to a network; a mobile phone.
-Microwave:.
-Oven:.
-Toaster:.
-Sink:.
-Refrigerator:.
-Book:.
+Microwave:An oven that uses microwaves to cook or heat food.
+Oven:An enclosed compartment, usually part of a cooker, for cooking and heating food.
+Toaster:An electrical device for making toast.
+Sink:A fixed basin with a water supply and outflow pipe.
+Refrigerator:An appliance or compartment which is artificially kept cool and used to store food and drink. Modern refrigerators generally make use of the cooling effect produced when a volatile liquid is forced to evaporate in a sealed system in which it can be condensed back to liquid outside the refrigerator.
+Book:A written or printed work consisting of pages glued or sewn together along one side and bound in covers.
 Clock:A mechanical or electrical device for measuring time, indicating hours, minutes, and sometimes seconds by hands on a round dial or by displayed figures.
-Vase:.
-Scissors:.
-Teddy bear:.
-Hair drier:.
-Toothbrush:.
+Vase:A decorative container without handles, typically made of glass or china and used as an ornament or for displaying cut flowers.
+Scissors:An instrument used for cutting cloth, paper, and other material, consisting of two blades laid one on top of the other and fastened in the middle so as to allow them to be opened and closed by a thumb and finger inserted through rings on the end of their handles.
+Teddy bear:A soft toy bear.
+Hair dryer:An electrical device for drying a person's hair by blowing warm air over it.
+Toothbrush:A small brush with a long handle, used for cleaning the teeth.

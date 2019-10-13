@@ -50,7 +50,7 @@ class ObjectClassifier(
     }
 
     @SuppressLint("UseSparseArrays")
-    override fun recognizeImage(tBitmap: Bitmap): List<IClassifier.Recognition> {
+    override fun recognizeImage(tBitmap: Bitmap): ArrayList<IClassifier.Recognition> {
         val bitmap = Bitmap.createScaledBitmap(tBitmap, inputSize, inputSize, false)
         val byteBuffer = convertBitmapToByteBuffer(bitmap)
 

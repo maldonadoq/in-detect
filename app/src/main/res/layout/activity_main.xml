@@ -20,7 +20,7 @@
         <com.wonderkiln.camerakit.CameraView
             android:id="@+id/cameraView"
             android:layout_width="350dp"
-            android:layout_height="420dp"
+            android:layout_height="360dp"
             android:layout_gravity="center" />
 
 
@@ -53,7 +53,50 @@
                 android:layout_marginLeft="12dp"
                 />
 
-            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="335dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom|center"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/btnDetectCar"
+                android:layout_width="119dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_stylex"
+                android:elevation="12dp"
+                android:textColor="@color/colorPrimary"
+                android:text="@string/detect_car"
+                android:drawableLeft="@android:drawable/checkbox_off_background"
+                android:layout_marginLeft="5dp"
+                />
+
+            <Button
+                android:id="@+id/btnDetectFlower"
+                android:layout_width="119dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_stylex"
+                android:elevation="12dp"
+                android:textColor="@color/colorPrimary"
+                android:text="@string/detect_flower"
+                android:drawableLeft="@android:drawable/checkbox_off_background"
+                android:layout_marginLeft="12dp"
+                />
+
+            <Button
+                android:id="@+id/btnUploadPhoto"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:elevation="12dp"
+                android:background="@drawable/button_stylex"
+                android:textColor="@color/colorPrimary"
+                android:drawableLeft="@android:drawable/ic_menu_upload"
+                android:layout_marginLeft="12dp"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
 

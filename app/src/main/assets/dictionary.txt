@@ -58,7 +58,7 @@ Chair:A separate seat for one person, typically with a back and four legs.
 Couch:A long upholstered piece of furniture for several people to sit on.
 Potted plant:A plant grown or suitable for growing in a flowerpot, especially indoors.
 Bed:A piece of furniture for sleep or rest, typically a framework with a mattress.
-Dining table:A piece of furniture for sleep or rest, typically a framework with a mattress
+Dining table:A table on which meals are served in a dining room.
 Toilet:A fixed receptacle into which a person may urinate or defecate, typically consisting of a large bowl connected to a system for flushing away the waste into a sewer.
 Tv:A system for converting visual images (with sound) into electrical signals, transmitting them by radio or other means, and displaying them electronically on a screen.
 Laptop:A computer that is portable and suitable for use while travelling.

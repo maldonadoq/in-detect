@@ -16,7 +16,7 @@ Parking meter
 Bench
 Bird
 Cat
-Cog
+Dog
 Horse
 Sheep
 Cow

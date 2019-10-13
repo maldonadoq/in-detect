@@ -1,91 +1,91 @@
 ???
-Persona
-Bicicleta
-Auto
-Motocicleta
-Avioneta
+Person
+Bicycle
+Car
+Motorcycle
+Airplane
 Bus
-Tren
-Camión
-Bote
-Semaforo
-Fire Hydrant
+Train
+Truck
+Boat
+Traffic light
+Fire hydrant
 ???
-Señal de Stop
-Parquímetro
-Banco
-Ave
-Gato
-Perro
-Caballo
-Oveja
-Vaca
-Elefante
-Oso
+Stop sign
+Parking meter
+Bench
+Bird
+Cat
+Cog
+Horse
+Sheep
+Cow
+Elephant
+Bear
 Zebra
-Jirafa
+Giraffe
 ???
-Mochila
-Paraguas
+Backpack
+Umbrella
 ???
 ???
-Bolso
-Corbata
-Maleta
+Handbag
+Tie
+Suitcase
 Frisbee
 Skis
 Snowboard
-Pelota de Deporte
-Cometa
-Bate
-Guante
-Patineta
-Tabla de Surf
-Raqueta
-Botella
+Sports ball
+Kite
+Baseball bat
+Baseball glove
+Skateboard
+Surfboard
+Tennis racket
+Bottle
 ???
-Copa de Vino
-Taza
-Tenedor
-Cuchillo
-Cuchara
+Wine glass
+Cup
+Fork
+Knife
+Spoon
 Bowl
 Banana
-Manzana
+Apple
 Sandwich
-Naranja
-Brocoli
-Zanahoria
+Orange
+Broccoli
+Carrot
 Hot dog
 Pizza
 Donut
-Pastel
-Silla
-Sofá
-Planta en Maceta
-Cama
+Cake
+Chair
+Couch
+Potted plant
+Bed
 ???
-Comedor
+Dining table
 ???
 ???
-Baño
+Toilet
 ???
-TV
+Tv
 Laptop
 Mouse
-Control Remoto
-Teclado
-Celular
-Microondas
-Horno
-Tostadora
-Lavabo
-Refrigerador
+Remote
+Keyboard
+Cell phone
+Microwave
+Oven
+Toaster
+Sink
+Refrigerator
 ???
-Libro
-Reloj
-Florero
-Tijeras
-Oso de Peluche
-Secadora de Cabello
-Cepillo de Dientes
+Book
+Clock
+Vase
+Scissors
+Teddy bear
+Hair drier
+Toothbrush

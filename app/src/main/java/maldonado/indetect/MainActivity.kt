@@ -258,9 +258,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.m_object -> {
+                btnType = 1
+                stringType = "Object Identification Engine Processing ..."
+                btnDetectOk.text = "Detect Object"
+                return true
+            }
+            R.id.m_car -> {
+                btnType = 2
+                stringType = "Car Classifier Engine Processing ..."
+                btnDetectOk.text = "Classify Car"
+                return true
+            }
+            R.id.m_flower -> {
+                btnType = 3
+                stringType = "Flower Classifier Engine Processing ..."
+                btnDetectOk.text = "Classify Flower"
+                return true
+            }
         }
+        return super.onOptionsItemSelected(item)
     }
 }

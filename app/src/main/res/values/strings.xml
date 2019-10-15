@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">InDetect</string>
     <string name="toggle_camera">Switch Camera</string>
+    <string name="action_settings">Settings</string>
     <string name="detect_car">Car</string>
     <string name="detect_flower">Flower</string>
     <string name="detect_object">Identify Object</string>

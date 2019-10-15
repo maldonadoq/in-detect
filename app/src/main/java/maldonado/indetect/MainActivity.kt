@@ -9,19 +9,16 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
-import android.view.LayoutInflater
-import android.view.View
-import android.view.Window
+import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.wonderkiln.camerakit.*
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var btnDetectObject: Button
-    private lateinit var btnDetectCar: Button
-    private lateinit var btnDetectFlower: Button
+    private lateinit var btnDetectOk: Button
 
     private lateinit var btnToggleCamera: Button
     private lateinit var btnUploadPhoto:  Button
@@ -36,7 +33,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var dictionaryList: HashMap<String, String>
     private lateinit var random: Random
-    private var btnType = 0
+    private var btnType = 1
+    private var stringType = "Object Identification Engine Processing ..."
 
     // model
     private lateinit var objectClassifier: ObjectClassifier
@@ -48,15 +46,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
 
         cameraView = findViewById(R.id.cameraView)
         imageViewTmp = ImageView(this)
         btnToggleCamera = findViewById(R.id.btnToggleCamera)
         btnUploadPhoto = findViewById(R.id.btnUploadPhoto)
 
-        btnDetectObject = findViewById(R.id.btnDetectObject)
-        btnDetectCar = findViewById(R.id.btnDetectCar)
-        btnDetectFlower = findViewById(R.id.btnDetectFlower)
+        btnDetectOk = findViewById(R.id.btnDetectOk)
 
         resultDialog = Dialog(this)
         val customProgressView = LayoutInflater.from(this).inflate(R.layout.activity_result,
@@ -90,29 +87,8 @@ class MainActivity : AppCompatActivity() {
 
         btnToggleCamera.setOnClickListener { cameraView.toggleFacing() }
 
-        btnDetectObject.setOnClickListener {
-            btnType = 1
-            tvLoadingText.text = "Object Identification Engine Processing ..."
-
-            cameraView.captureImage()
-            resultDialog.show()
-            tvTextResults.visibility = View.GONE
-            ivImageResult.visibility = View.GONE
-        }
-
-        btnDetectCar.setOnClickListener {
-            btnType = 2
-            tvLoadingText.text = "Car Identification Engine Processing ..."
-
-            cameraView.captureImage()
-            resultDialog.show()
-            tvTextResults.visibility = View.GONE
-            ivImageResult.visibility = View.GONE
-        }
-
-        btnDetectFlower.setOnClickListener {
-            btnType = 3
-            tvLoadingText.text = "Flower Identification Engine Processing ..."
+        btnDetectOk.setOnClickListener {
+            tvLoadingText.text = stringType
 
             cameraView.captureImage()
             resultDialog.show()
@@ -273,6 +249,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun makeButtonVisible() {
-        runOnUiThread { btnDetectObject.visibility = View.VISIBLE }
+        runOnUiThread { btnDetectOk.visibility = View.VISIBLE }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> true
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

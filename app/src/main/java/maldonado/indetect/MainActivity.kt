@@ -217,7 +217,6 @@ class MainActivity : AppCompatActivity() {
         if(resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
             imageViewTmp.setImageURI(data?.data)
 
-            btnType = 1
             val bt = (imageViewTmp.drawable as BitmapDrawable).bitmap
             recognize(Bitmap.createScaledBitmap(bt, (bt.width*0.5).toInt(), (bt.height*0.5).toInt(),
                 false))

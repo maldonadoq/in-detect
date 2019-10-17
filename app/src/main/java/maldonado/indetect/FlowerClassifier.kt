@@ -59,10 +59,11 @@ class FlowerClassifier(
 
         interpreter!!.run(byteBuffer, labelProbArray)
 
-        val recognitions = ArrayList<IClassifier.Recognition>()
+        val cmp = Comparator<IClassifier.Recognition> { o1, o2 -> o2.confidence.compareTo(o1.confidence) }
+        val pq = PriorityQueue<IClassifier.Recognition>(1, cmp)
         for (i in 0 until labelSize) {
             val score = labelProbArray[0][i]
-            recognitions.add(
+            pq.add(
                 IClassifier.Recognition(
                     "" + i,
                     if(labelList.size > i ) labelList[i]  else "unknown",
@@ -70,6 +71,13 @@ class FlowerClassifier(
                     RectF()
                 )
             )
+        }
+
+        val recognitions = ArrayList<IClassifier.Recognition>()
+        val tMin = pq.size
+
+        for(i in 0 until tMin){
+            recognitions.add(pq.poll())
         }
 
         return recognitions

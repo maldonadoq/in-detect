@@ -15,6 +15,7 @@ import java.nio.channels.FileChannel
 import java.util.*
 import kotlin.collections.List
 import android.graphics.RectF
+import kotlin.math.min
 
 @Suppress("DEPRECATION")
 class CarClassifier(
@@ -34,9 +35,10 @@ class CarClassifier(
         private const val TF_OD_API_INPUT_SIZE = 224        // Main
         private const val TF_OD_API_MODEL_FILE = "car_model.lite"
         private const val TF_OD_API_LABELS_FILE = "car_labels.txt"
-        private const val MINIMUM_CONFIDENCE_TF_OD_API = 0.5f
+        private const val MINIMUM_CONFIDENCE_TF_OD_API = 0.1f
         private const val IMAGE_MEAN = 128
         private const val IMAGE_STD = 128.0f
+        private const val RESULTS = 3
 
         @Throws(IOException::class)
         fun create(assetManager: AssetManager): CarClassifier {
@@ -59,11 +61,13 @@ class CarClassifier(
         val labelProbArray = Array(1) { FloatArray(labelSize) }
         interpreter!!.run(byteBuffer, labelProbArray)
 
-        val recognitions = ArrayList<IClassifier.Recognition>()
+        val cmp = Comparator<IClassifier.Recognition> { o1, o2 -> o2.confidence.compareTo(o1.confidence) }
+        val pq = PriorityQueue<IClassifier.Recognition>(RESULTS, cmp)
+
         for (i in 0 until labelSize) {
             val score = labelProbArray[0][i]
             if (score >= MINIMUM_CONFIDENCE_TF_OD_API) {
-                recognitions.add(
+                pq.add(
                     IClassifier.Recognition(
                         "" + i,
                         if(labelList.size > i ) labelList[i]  else "unknown",
@@ -72,6 +76,13 @@ class CarClassifier(
                     )
                 )
             }
+        }
+
+        val recognitions = ArrayList<IClassifier.Recognition>()
+        val tMin = min(pq.size, RESULTS)
+
+        for(i in 0 until tMin){
+            recognitions.add(pq.poll())
         }
 
         return recognitions

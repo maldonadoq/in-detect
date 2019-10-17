@@ -27,3 +27,12 @@ fun loadDictionary(assetManager: AssetManager, filename: String): HashMap<String
     reader.close()
     return dictionaryList
 }
+
+fun recognitionToString(recognitionList: List<IClassifier.Recognition>): String{
+    var listString = ""
+    for (obj in recognitionList) {
+        listString += String.format("Title = %s (%.2f)\n", obj.title, obj.confidence)
+    }
+
+    return listString
+}

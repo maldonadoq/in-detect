@@ -158,11 +158,11 @@ class MainActivity : AppCompatActivity() {
             }
             2 -> {
                 val results = carClassifier.recognizeImage(bitmap)
-                tvTextResults.text = results.toString()
+                tvTextResults.text = recognitionToString(results)
             }
             3 -> {
                 val results = flowerClassifier.recognizeImage(bitmap)
-                tvTextResults.text = results.toString()
+                tvTextResults.text = recognitionToString(results)
             }
         }
 

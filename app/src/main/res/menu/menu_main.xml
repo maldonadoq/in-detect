@@ -1,21 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="maldonado.fitness.MainActivity">
-
+    tools:context="maldonado.indetect.MainActivity">
     <item
-        android:id="@+id/m_object"
-        app:showAsAction="never"
-        android:title="@string/detect_object">
-    </item>
-    <item
-        android:id="@+id/m_car"
-        app:showAsAction="never"
-        android:title="@string/classify_car">
-    </item>
-    <item
-        android:id="@+id/m_flower"
-        app:showAsAction="never"
-        android:title="@string/classify_flower">
-    </item>
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
 </menu>

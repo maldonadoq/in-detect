@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="maldonado.indetect.MainActivity">
+
+    <item
+        android:id="@+id/m_car"
+        app:showAsAction="never"
+        android:title="@string/classify_car">
+    </item>
+    <item
+        android:id="@+id/m_flash"
+        app:showAsAction="never"
+        android:title="@string/toggle_flash">
+    </item>
+    <item
+        android:id="@+id/m_front"
+        app:showAsAction="never"
+        android:title="@string/toggle_camera">
+    </item>
+    <item
+        android:id="@+id/m_upload"
+        app:showAsAction="never"
+        android:title="@string/upload_photo">
+    </item>
+</menu>

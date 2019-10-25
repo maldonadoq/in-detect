@@ -1,4 +1,4 @@
-package maldonado.indetect
+package maldonado.indetect.local
 
 import android.annotation.SuppressLint
 import android.content.res.AssetManager

@@ -1,4 +1,4 @@
-package maldonado.indetect
+package maldonado.indetect.server
 
 import android.app.Activity
 import android.content.Intent
@@ -13,6 +13,7 @@ import android.view.*
 import android.widget.Button
 import android.widget.ImageView
 import com.wonderkiln.camerakit.*
+import maldonado.indetect.R
 
 class ServerActivity : AppCompatActivity() {
 

@@ -5,7 +5,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
+import maldonado.indetect.local.LocalActivity
+import maldonado.indetect.server.user.SignInActivity
+import maldonado.indetect.server.user.SignUpActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,16 +18,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        val buttonLocal = findViewById<Button>(R.id.btnLocal)
-        val buttonServer = findViewById<Button>(R.id.btnServer)
-
-        buttonLocal.setOnClickListener{
+        val fab = findViewById<View>(R.id.fab)
+        fab.setOnClickListener {
             intent = Intent(this@MainActivity, LocalActivity::class.java)
             startActivity(intent)
         }
 
-        buttonServer.setOnClickListener{
-            intent = Intent(this@MainActivity, ServerActivity::class.java)
+        val buttonIn = findViewById<Button>(R.id.btnLocal)
+        val buttonUp = findViewById<Button>(R.id.btnServer)
+
+        buttonIn.setOnClickListener{
+            intent = Intent(this@MainActivity, SignInActivity::class.java)
+            startActivity(intent)
+        }
+
+        buttonUp.setOnClickListener{
+            intent = Intent(this@MainActivity, SignUpActivity::class.java)
             startActivity(intent)
         }
     }

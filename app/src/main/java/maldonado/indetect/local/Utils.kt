@@ -1,4 +1,4 @@
-package maldonado.indetect
+package maldonado.indetect.local
 
 import android.content.res.AssetManager
 import java.io.BufferedReader

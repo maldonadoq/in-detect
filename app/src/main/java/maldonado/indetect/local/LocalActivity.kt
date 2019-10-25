@@ -1,4 +1,4 @@
-package maldonado.indetect
+package maldonado.indetect.local
 
 import android.app.Activity
 import android.app.Dialog
@@ -19,6 +19,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.wonderkiln.camerakit.*
+import maldonado.indetect.R
 import java.util.*
 import java.util.concurrent.Executors
 import kotlin.collections.HashMap

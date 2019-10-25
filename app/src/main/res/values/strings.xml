@@ -14,4 +14,9 @@
 
     <string name="local">Run on Cellphone</string>
     <string name="server">Run on a Server</string>
+
+    <string name="in">Sign-In</string>
+    <string name="up">Sign-Up</string>
+
+    <string name="skip">Skip</string>
 </resources>

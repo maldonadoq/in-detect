@@ -1,4 +1,4 @@
-package maldonado.indetect
+package maldonado.indetect.local
 
 import android.annotation.SuppressLint
 import android.content.res.AssetManager
@@ -70,7 +70,7 @@ class CarClassifier(
                 pq.add(
                     IClassifier.Recognition(
                         "" + i,
-                        if(labelList.size > i ) labelList[i]  else "unknown",
+                        if (labelList.size > i) labelList[i] else "unknown",
                         score,
                         RectF()
                     )
@@ -115,8 +115,10 @@ class CarClassifier(
     }
 
     private fun convertBitmapToByteBuffer(bitmap: Bitmap): ByteBuffer {
-        val byteBuffer = ByteBuffer.allocateDirect(BATCH_SIZE * inputSize * inputSize
-                * PIXEL_SIZE * BYTES_CHANNEL)
+        val byteBuffer = ByteBuffer.allocateDirect(
+            BATCH_SIZE * inputSize * inputSize
+                * PIXEL_SIZE * BYTES_CHANNEL
+        )
 
         byteBuffer.order(ByteOrder.nativeOrder())
         val intValues = IntArray(inputSize * inputSize)

@@ -16,7 +16,7 @@
         android:id="@+id/init_logo"
         android:layout_gravity="bottom|center"
         android:layout_marginTop="80dp"
-        android:src="@mipmap/app_init4"
+        android:src="@mipmap/img_app_init"
         android:contentDescription="@string/app_name" />
 
     <Button

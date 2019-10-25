@@ -1,3 +1,6 @@
+#Google
+app/google-services.json
+
 *.iml
 .gradle
 /local.properties

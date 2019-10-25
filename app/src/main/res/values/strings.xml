@@ -15,8 +15,13 @@
     <string name="local">Run on Cellphone</string>
     <string name="server">Run on a Server</string>
 
-    <string name="in">Sign-In</string>
-    <string name="up">Sign-Up</string>
+    <string name="in">Sign In</string>
+    <string name="up">Sign Up</string>
 
     <string name="skip">Skip</string>
+
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot">Forgot your password</string>
 </resources>

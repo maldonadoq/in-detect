@@ -1,12 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".server.user.SignUpActivity">
 
+    <ImageView
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:id="@+id/init_logo"
+        android:layout_gravity="bottom|center"
+        android:layout_marginTop="60dp"
+        android:src="@mipmap/img_sign_up"
+        android:contentDescription="@string/app_name" />
 
+    <LinearLayout
+        android:layout_width="@dimen/sign"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="bottom|center"
+        >
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/ic_user"
+            android:layout_gravity="center"
+            android:contentDescription="@string/name"
+            />
+
+        <EditText
+            android:id="@+id/txtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="@string/name"
+            android:importantForAutofill="no" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="@dimen/sign"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom|center"
+        >
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/ic_email"
+            android:layout_gravity="center"
+            android:contentDescription="@string/email"
+            />
+
+        <EditText
+            android:id="@+id/txtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:hint="@string/email"
+            android:layout_gravity="bottom|center"
+            android:importantForAutofill="no"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="@dimen/sign"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom|center"
+        >
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/ic_password"
+            android:layout_gravity="center"
+            android:contentDescription="@string/password"
+            />
+
+        <EditText
+            android:id="@+id/txtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:hint="@string/password"
+            android:layout_gravity="bottom|center"
+            android:importantForAutofill="no"
+            />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnServer"
+        android:onClick="signUp"
+        android:layout_width="@dimen/sign"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ic_server_style"
+        android:text="@string/up"
+        android:textColor="@color/colorPrimary" />
 
 </LinearLayout>

@@ -24,4 +24,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="forgot">Forgot your password</string>
+
+    <string name="logout">LogOut</string>
+    <string name="user">User Image</string>
 </resources>

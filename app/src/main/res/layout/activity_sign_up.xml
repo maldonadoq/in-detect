@@ -38,6 +38,7 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:hint="@string/name"
+            android:textSize="@dimen/size"
             android:importantForAutofill="no" />
     </LinearLayout>
 
@@ -63,6 +64,7 @@
             android:ems="10"
             android:inputType="textEmailAddress"
             android:hint="@string/email"
+            android:textSize="@dimen/size"
             android:layout_gravity="bottom|center"
             android:importantForAutofill="no"
             />
@@ -90,6 +92,7 @@
             android:ems="10"
             android:inputType="textPassword"
             android:hint="@string/password"
+            android:textSize="@dimen/size"
             android:layout_gravity="bottom|center"
             android:importantForAutofill="no"
             />

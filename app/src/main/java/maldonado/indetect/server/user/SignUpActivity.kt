@@ -1,5 +1,6 @@
 package maldonado.indetect.server.user
 
+import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -18,6 +20,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var txtName: EditText
     private lateinit var txtEmail: EditText
     private lateinit var txtPassword: EditText
+    private lateinit var progressDialog: ProgressDialog
 
     private lateinit var dbReference: DatabaseReference
     private lateinit var database: FirebaseDatabase
@@ -30,6 +33,7 @@ class SignUpActivity : AppCompatActivity() {
         txtName = findViewById(R.id.txtName)
         txtEmail = findViewById(R.id.txtEmail)
         txtPassword = findViewById(R.id.txtPassword)
+        progressDialog = ProgressDialog(this)
 
         database = FirebaseDatabase.getInstance()
         auth = FirebaseAuth.getInstance()
@@ -47,12 +51,14 @@ class SignUpActivity : AppCompatActivity() {
         val password:String = txtPassword.text.toString()
 
         if(name.isNotEmpty() and email.isNotEmpty() and password.isNotEmpty()){
+            progressDialog.setMessage("Performing online registration ..")
+            progressDialog.show()
 
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this){
                     task ->
 
-                    if(task.isComplete){
+                    if(task.isSuccessful){
                         val user:FirebaseUser ?= auth.currentUser
                         verifyEmail(user)
 
@@ -60,6 +66,15 @@ class SignUpActivity : AppCompatActivity() {
 
                         userDB.child("Name").setValue(name)
                         action()
+                    }
+
+                    progressDialog.dismiss()
+                }
+                .addOnFailureListener {
+                    exception ->
+
+                    if (exception is FirebaseAuthUserCollisionException){
+                        Toast.makeText(this, "This user already exist!", Toast.LENGTH_LONG).show()
                     }
                 }
         }

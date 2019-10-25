@@ -1,5 +1,6 @@
 package maldonado.indetect.server.user
 
+import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,11 +9,11 @@ import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import maldonado.indetect.R
-import maldonado.indetect.server.ServerActivity
 
 class SignInActivity : AppCompatActivity() {
     private lateinit var txtEmail: EditText
     private lateinit var txtPassword: EditText
+    private lateinit var progressDialog: ProgressDialog
 
     private lateinit var auth: FirebaseAuth
 
@@ -22,6 +23,7 @@ class SignInActivity : AppCompatActivity() {
 
         txtEmail = findViewById(R.id.txtEmail)
         txtPassword = findViewById(R.id.txtPassword)
+        progressDialog = ProgressDialog(this)
 
         auth = FirebaseAuth.getInstance()
     }
@@ -44,15 +46,20 @@ class SignInActivity : AppCompatActivity() {
         val password:String = txtPassword.text.toString()
 
         if(email.isNotEmpty() and password.isNotEmpty()){
+            progressDialog.setMessage("Performing online registration ..")
+            progressDialog.show()
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this){
                     task ->
-                    if(task.isComplete){
+                    if(task.isSuccessful){
                         action()
+                        Toast.makeText(this, "Welcome: $email" , Toast.LENGTH_LONG).show()
                     }
                     else{
                         Toast.makeText(this, "Authentication Error!", Toast.LENGTH_LONG).show()
                     }
+
+                    progressDialog.dismiss()
                 }
         }
         else{
@@ -61,7 +68,7 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun action(){
-        intent = Intent(this@SignInActivity, ServerActivity::class.java)
+        intent = Intent(this@SignInActivity, ProfileActivity::class.java)
         startActivity(intent)
     }
 }

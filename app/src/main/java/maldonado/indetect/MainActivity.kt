@@ -7,16 +7,28 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import com.google.firebase.auth.FirebaseAuth
 import maldonado.indetect.local.LocalActivity
+import maldonado.indetect.server.user.ProfileActivity
 import maldonado.indetect.server.user.SignInActivity
 import maldonado.indetect.server.user.SignUpActivity
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
+
+        auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
+
+        /*if(user != null){
+            intent = Intent(this@MainActivity, ProfileActivity::class.java)
+            startActivity(intent)
+        }*/
 
         val fab = findViewById<View>(R.id.fab)
         fab.setOnClickListener {

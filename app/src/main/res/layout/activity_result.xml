@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/aviLoaderHolderView"
+            android:id="@+id/result_AviLoaderHolderView"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_marginTop="110dp"
@@ -21,7 +21,7 @@
             >
 
             <com.wang.avi.AVLoadingIndicatorView
-                android:id="@+id/aviLoader"
+                android:id="@+id/result_AviLoader"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="visible"
@@ -31,7 +31,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/tvLoadingRecognition"
+            android:id="@+id/result_TvLoadingRecognition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimary"
@@ -44,7 +44,7 @@
             />
 
         <ImageView
-            android:id="@+id/iViewResult"
+            android:id="@+id/result_IViewResult"
             android:layout_marginTop="20dp"
             android:layout_width="300dp"
             android:layout_height="400dp"
@@ -54,7 +54,7 @@
             />
 
         <TextView
-            android:id="@+id/tvResult"
+            android:id="@+id/result_TvResult"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -63,7 +63,7 @@
             android:gravity="center"
             android:textColor="@color/colorPrimary"
             android:scrollbars="vertical"
-            android:textSize="16sp"
+            android:textSize="@dimen/size"
             />
     </LinearLayout>
 

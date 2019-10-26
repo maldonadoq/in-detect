@@ -25,9 +25,9 @@ class ServerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_server)
 
-        cameraView = findViewById(R.id.cameraView)
+        cameraView = findViewById(R.id.server_CameraView)
         imageViewTmp = ImageView(this)
-        btnDetectOk = findViewById(R.id.btnDetectOk)
+        btnDetectOk = findViewById(R.id.server_BtnDetectOk)
 
 
         cameraView.addCameraKitListener(object : CameraKitEventListener {
@@ -90,7 +90,7 @@ class ServerActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // super.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
             imageViewTmp.setImageURI(data?.data)
 

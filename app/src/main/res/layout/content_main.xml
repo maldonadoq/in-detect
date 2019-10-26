@@ -13,14 +13,13 @@
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:id="@+id/init_logo"
         android:layout_gravity="bottom|center"
         android:layout_marginTop="80dp"
         android:src="@mipmap/img_app_init"
         android:contentDescription="@string/app_name" />
 
     <Button
-        android:id="@+id/btnLocal"
+        android:id="@+id/cm_BtnSignIn"
         android:layout_width="170dp"
         android:layout_height="40dp"
         android:layout_gravity="bottom|center"
@@ -30,7 +29,7 @@
         android:textColor="@color/white" />
 
     <Button
-        android:id="@+id/btnServer"
+        android:id="@+id/cm_BtnSignUp"
         android:layout_width="170dp"
         android:layout_height="40dp"
         android:layout_gravity="bottom|center"

@@ -10,22 +10,19 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import maldonado.indetect.R
 
+
 class SignInActivity : AppCompatActivity() {
     private lateinit var txtEmail: EditText
     private lateinit var txtPassword: EditText
     private lateinit var progressDialog: ProgressDialog
 
-    private lateinit var auth: FirebaseAuth
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
-        txtEmail = findViewById(R.id.txtEmail)
-        txtPassword = findViewById(R.id.txtPassword)
+        txtEmail = findViewById(R.id.si_TxtEmail)
+        txtPassword = findViewById(R.id.si_TxtPassword)
         progressDialog = ProgressDialog(this)
-
-        auth = FirebaseAuth.getInstance()
     }
 
     fun signIn(view: View){
@@ -48,7 +45,7 @@ class SignInActivity : AppCompatActivity() {
         if(email.isNotEmpty() and password.isNotEmpty()){
             progressDialog.setMessage("Performing online registration ..")
             progressDialog.show()
-            auth.signInWithEmailAndPassword(email, password)
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this){
                     task ->
                     if(task.isSuccessful){

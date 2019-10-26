@@ -30,9 +30,9 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
-        txtName = findViewById(R.id.txtName)
-        txtEmail = findViewById(R.id.txtEmail)
-        txtPassword = findViewById(R.id.txtPassword)
+        txtName = findViewById(R.id.su_TxtName)
+        txtEmail = findViewById(R.id.su_TxtEmail)
+        txtPassword = findViewById(R.id.su_TxtPassword)
         progressDialog = ProgressDialog(this)
 
         database = FirebaseDatabase.getInstance()

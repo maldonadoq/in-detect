@@ -27,4 +27,7 @@
 
     <string name="logout">LogOut</string>
     <string name="user">User Image</string>
+
+    <string name="default_email">maldonadoq.percy@gmail.com</string>
+    <string name="default_password">maldonado</string>
 </resources>

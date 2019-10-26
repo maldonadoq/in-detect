@@ -14,30 +14,19 @@ import maldonado.indetect.server.user.SignInActivity
 import maldonado.indetect.server.user.SignUpActivity
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var auth: FirebaseAuth
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        auth = FirebaseAuth.getInstance()
-        val user = auth.currentUser
-
-        /*if(user != null){
-            intent = Intent(this@MainActivity, ProfileActivity::class.java)
-            startActivity(intent)
-        }*/
-
-        val fab = findViewById<View>(R.id.fab)
+        val fab = findViewById<View>(R.id.main_Fab)
         fab.setOnClickListener {
             intent = Intent(this@MainActivity, LocalActivity::class.java)
             startActivity(intent)
         }
 
-        val buttonIn = findViewById<Button>(R.id.btnLocal)
-        val buttonUp = findViewById<Button>(R.id.btnServer)
+        val buttonIn = findViewById<Button>(R.id.cm_BtnSignIn)
+        val buttonUp = findViewById<Button>(R.id.cm_BtnSignUp)
 
         buttonIn.setOnClickListener{
             intent = Intent(this@MainActivity, SignInActivity::class.java)
@@ -46,6 +35,14 @@ class MainActivity : AppCompatActivity() {
 
         buttonUp.setOnClickListener{
             intent = Intent(this@MainActivity, SignUpActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if(FirebaseAuth.getInstance().currentUser != null){
+            intent = Intent(this@MainActivity, ProfileActivity::class.java)
             startActivity(intent)
         }
     }

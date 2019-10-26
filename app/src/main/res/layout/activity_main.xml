@@ -10,7 +10,7 @@
     <include layout="@layout/content_main" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/main_Fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -21,9 +21,9 @@
         android:layout_width="wrap_content"
         android:text="@string/skip"
         android:elevation="6dp"
-        android:textSize="18sp"
+        android:textSize="@dimen/size"
         android:textColor="#fff"
-        app:layout_anchor="@id/fab"
+        app:layout_anchor="@id/main_Fab"
         app:layout_anchorGravity="center"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

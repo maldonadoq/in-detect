@@ -9,7 +9,6 @@
     <ImageView
         android:layout_width="240dp"
         android:layout_height="240dp"
-        android:id="@+id/init_logo"
         android:layout_gravity="bottom|center"
         android:layout_marginTop="60dp"
         android:src="@mipmap/img_sign_in"
@@ -32,12 +31,13 @@
             />
 
         <EditText
-            android:id="@+id/txtEmail"
+            android:id="@+id/si_TxtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textEmailAddress"
             android:hint="@string/email"
+            android:text="@string/default_email"
             android:textSize="@dimen/size"
             android:layout_gravity="bottom|center"
             android:importantForAutofill="no"
@@ -60,12 +60,13 @@
             />
 
         <EditText
-            android:id="@+id/txtPassword"
+            android:id="@+id/si_TxtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPassword"
             android:textSize="@dimen/size"
+            android:text="@string/default_password"
             android:hint="@string/password"
             android:layout_gravity="bottom|center"
             android:importantForAutofill="no"
@@ -73,7 +74,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btnServer"
+        android:id="@+id/si_BtnSignIn"
         android:onClick="signIn"
         android:layout_width="@dimen/sign"
         android:layout_height="40dp"

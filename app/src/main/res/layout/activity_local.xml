@@ -12,10 +12,10 @@
     android:paddingEnd="@dimen/right_margin"
     android:paddingRight="@dimen/right_margin"
     android:paddingBottom="@dimen/bottom_margin"
-    tools:context=".LocalActivity">
+    tools:context=".local.LocalActivity">
 
     <com.wonderkiln.camerakit.CameraView
-        android:id="@+id/cameraView"
+        android:id="@+id/local_CameraView"
         android:layout_width="match_parent"
         android:layout_height="445dp"
         android:layout_gravity="center" />
@@ -28,7 +28,7 @@
         android:layout_marginTop="10dp">
 
         <Button
-            android:id="@+id/btnDetectOk"
+            android:id="@+id/local_BtnDetectOk"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/ic_local_style"

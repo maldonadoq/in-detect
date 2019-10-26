@@ -52,9 +52,9 @@ class LocalActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_local)
 
-        cameraView = findViewById(R.id.cameraView)
+        cameraView = findViewById(R.id.local_CameraView)
         imageViewTmp = ImageView(this)
-        btnDetectOk = findViewById(R.id.btnDetectOk)
+        btnDetectOk = findViewById(R.id.local_BtnDetectOk)
 
         resultDialog = Dialog(this)
         val dialogView = LayoutInflater.from(this).inflate(R.layout.activity_result,
@@ -63,10 +63,10 @@ class LocalActivity : AppCompatActivity() {
         resultDialog.setCancelable(false)
         resultDialog.setContentView(dialogView)
 
-        ivImageResult = dialogView.findViewById(R.id.iViewResult)
-        tvTextResults = dialogView.findViewById(R.id.tvResult)
-        tvLoadingText = dialogView.findViewById(R.id.tvLoadingRecognition)
-        aviLoaderHolder = dialogView.findViewById<View>(R.id.aviLoaderHolderView)
+        ivImageResult = dialogView.findViewById(R.id.result_IViewResult)
+        tvTextResults = dialogView.findViewById(R.id.result_TvResult)
+        tvLoadingText = dialogView.findViewById(R.id.result_TvLoadingRecognition)
+        aviLoaderHolder = dialogView.findViewById<View>(R.id.result_AviLoaderHolderView)
         tvTextResults.movementMethod = ScrollingMovementMethod()
 
         cameraView.addCameraKitListener(object : CameraKitEventListener {
@@ -189,7 +189,7 @@ class LocalActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // super.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
             imageViewTmp.setImageURI(data?.data)
 

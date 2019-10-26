@@ -9,7 +9,6 @@
     <ImageView
         android:layout_width="240dp"
         android:layout_height="240dp"
-        android:id="@+id/init_logo"
         android:layout_gravity="bottom|center"
         android:layout_marginTop="60dp"
         android:src="@mipmap/img_sign_up"
@@ -32,7 +31,7 @@
             />
 
         <EditText
-            android:id="@+id/txtName"
+            android:id="@+id/su_TxtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -58,7 +57,7 @@
             />
 
         <EditText
-            android:id="@+id/txtEmail"
+            android:id="@+id/su_TxtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -86,7 +85,7 @@
             />
 
         <EditText
-            android:id="@+id/txtPassword"
+            android:id="@+id/su_TxtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -99,7 +98,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btnServer"
+        android:id="@+id/su_BtnSignUp"
         android:onClick="signUp"
         android:layout_width="@dimen/sign"
         android:layout_height="40dp"

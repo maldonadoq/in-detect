@@ -10,8 +10,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.auth.UserProfileChangeRequest
 import maldonado.indetect.R
 import maldonado.indetect.server.ServerActivity
 
@@ -21,9 +20,6 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var txtEmail: EditText
     private lateinit var txtPassword: EditText
     private lateinit var progressDialog: ProgressDialog
-
-    private lateinit var dbReference: DatabaseReference
-    private lateinit var database: FirebaseDatabase
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,10 +36,7 @@ class SignUpActivity : AppCompatActivity() {
         txtPassword = findViewById(R.id.su_TxtPassword)
         progressDialog = ProgressDialog(this)
 
-        database = FirebaseDatabase.getInstance()
         auth = FirebaseAuth.getInstance()
-
-        dbReference = database.reference.child("User")
     }
 
     private fun createAccount(){
@@ -61,11 +54,12 @@ class SignUpActivity : AppCompatActivity() {
 
                     if(task.isSuccessful){
                         val user:FirebaseUser ?= auth.currentUser
+                        val update = UserProfileChangeRequest.Builder()
+                            .setDisplayName(name)
+                            .build()
+
                         verifyEmail(user)
-
-                        val userDB = dbReference.child(user?.uid.toString())
-
-                        userDB.child("Name").setValue(name)
+                        user?.updateProfile(update)
                         action()
                     }
 

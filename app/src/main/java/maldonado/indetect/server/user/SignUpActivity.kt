@@ -4,7 +4,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
@@ -30,6 +30,11 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
+        val btnSignUp = findViewById<Button>(R.id.su_BtnSignUp)
+        btnSignUp.setOnClickListener{
+            createAccount()
+        }
+
         txtName = findViewById(R.id.su_TxtName)
         txtEmail = findViewById(R.id.su_TxtEmail)
         txtPassword = findViewById(R.id.su_TxtPassword)
@@ -39,10 +44,6 @@ class SignUpActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         dbReference = database.reference.child("User")
-    }
-
-    fun signUp(view: View) {
-        createAccount()
     }
 
     private fun createAccount(){

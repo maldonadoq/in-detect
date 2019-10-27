@@ -1,11 +1,14 @@
 package maldonado.indetect.server.user
 
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.view.LayoutInflater
+import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import maldonado.indetect.R
@@ -22,20 +25,47 @@ class SignInActivity : AppCompatActivity() {
 
         txtEmail = findViewById(R.id.si_TxtEmail)
         txtPassword = findViewById(R.id.si_TxtPassword)
+
+        val btnSignIn = findViewById<Button>(R.id.si_BtnSignIn)
+        val txtForgot = findViewById<TextView>(R.id.si_Forgot)
+        val txtSignUp = findViewById<TextView>(R.id.si_SignUp)
+
+        btnSignIn.setOnClickListener{
+            loginUser()
+        }
+        txtForgot.setOnClickListener{
+            forgot()
+        }
+        txtSignUp.setOnClickListener{
+            intent = Intent(this@SignInActivity, SignUpActivity::class.java)
+            startActivity(intent)
+        }
+
         progressDialog = ProgressDialog(this)
     }
 
-    fun signIn(view: View){
-        loginUser()
-    }
+    private fun forgot(){
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_forgot, null)
+        val builder = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setTitle("Recuperate your Account")
+            .setNegativeButton("Cancel"){
+                _, _ ->
 
-    fun forgot(view: View){
+            }
+            .setPositiveButton("Send"){
+                _, _ ->
+                val forgotTxtEmail = dialogView.findViewById<EditText>(R.id.forgot_TxtEmail)
 
-    }
+                val email = forgotTxtEmail.text.toString()
 
-    fun register(view: View){
-        intent = Intent(this@SignInActivity, SignUpActivity::class.java)
-        startActivity(intent)
+                if(email.isNotEmpty()){
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                }
+
+            }
+
+        builder.show()
     }
 
     private fun loginUser(){

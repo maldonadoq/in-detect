@@ -57,7 +57,7 @@ class LocalActivity : AppCompatActivity() {
         btnDetectOk = findViewById(R.id.local_BtnDetectOk)
 
         resultDialog = Dialog(this)
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.activity_result,
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_result,
             null)
 
         resultDialog.setCancelable(false)

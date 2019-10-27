@@ -9,6 +9,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".server.user.ProfileActivity">
 
+
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
@@ -17,22 +18,93 @@
         android:src="@mipmap/img_user"
         android:contentDescription="@string/user" />
 
-    <TextView
-        android:layout_marginTop="50dp"
+    <LinearLayout
         android:layout_width="@dimen/sign"
-        android:layout_gravity="center|bottom"
         android:layout_height="wrap_content"
-        android:id="@+id/profile_TxtEmail"
-        />
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="bottom|center"
+        android:padding="5dp"
+        >
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/ic_user"
+            android:layout_gravity="center"
+            android:contentDescription="@string/name"
+            />
+
+        <TextView
+            android:id="@+id/profile_TxtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="7dp"
+            android:ems="10"
+            android:textSize="@dimen/size"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="@dimen/sign"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:layout_gravity="bottom|center"
+        >
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/ic_email"
+            android:layout_gravity="center"
+            android:contentDescription="@string/email"
+            />
+
+        <TextView
+            android:id="@+id/profile_TxtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:paddingHorizontal="7dp"
+            android:textSize="@dimen/size"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="@dimen/sign"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:layout_gravity="bottom|center"
+        >
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/ic_password"
+            android:layout_gravity="center"
+            android:contentDescription="@string/password"
+            />
+
+        <TextView
+            android:id="@+id/profile_TxtPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:paddingHorizontal="7dp"
+            android:textSize="@dimen/size"
+            />
+    </LinearLayout>
 
     <Button
-        android:id="@+id/profile_BtnSignOut"
+        android:id="@+id/profile_Btn_Car"
         android:layout_width="170dp"
         android:layout_height="40dp"
         android:layout_gravity="bottom|center"
         android:layout_marginTop="50dp"
         android:background="@drawable/ic_server_style"
-        android:text="@string/logout"
+        android:text="@string/classify_car"
         android:textColor="@color/colorPrimary" />
 
 </LinearLayout>

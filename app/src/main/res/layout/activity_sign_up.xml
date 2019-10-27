@@ -11,95 +11,86 @@
         android:layout_height="240dp"
         android:layout_gravity="bottom|center"
         android:layout_marginTop="60dp"
-        android:src="@mipmap/img_sign_up"
-        android:contentDescription="@string/app_name" />
+        android:contentDescription="@string/app_name"
+        android:src="@mipmap/img_sign_up" />
 
     <LinearLayout
         android:layout_width="@dimen/sign"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
         android:layout_gravity="bottom|center"
-        >
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@mipmap/ic_user"
             android:layout_gravity="center"
             android:contentDescription="@string/name"
-            />
+            android:src="@mipmap/ic_user" />
 
         <EditText
             android:id="@+id/su_TxtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
             android:hint="@string/name"
-            android:textSize="@dimen/size"
-            android:importantForAutofill="no" />
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:textSize="@dimen/size" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="@dimen/sign"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_gravity="bottom|center"
-        >
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@mipmap/ic_email"
             android:layout_gravity="center"
             android:contentDescription="@string/email"
-            />
+            android:src="@mipmap/ic_email" />
 
         <EditText
             android:id="@+id/su_TxtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textEmailAddress"
-            android:hint="@string/email"
-            android:textSize="@dimen/size"
             android:layout_gravity="bottom|center"
+            android:ems="10"
+            android:hint="@string/email"
             android:importantForAutofill="no"
-            />
+            android:inputType="textEmailAddress"
+            android:textSize="@dimen/size" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="@dimen/sign"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_gravity="bottom|center"
-        >
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@mipmap/ic_password"
             android:layout_gravity="center"
             android:contentDescription="@string/password"
-            />
+            android:src="@mipmap/ic_password" />
 
         <EditText
             android:id="@+id/su_TxtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:hint="@string/password"
-            android:textSize="@dimen/size"
             android:layout_gravity="bottom|center"
+            android:ems="10"
+            android:hint="@string/password"
             android:importantForAutofill="no"
-            />
+            android:inputType="textPassword"
+            android:textSize="@dimen/size" />
     </LinearLayout>
 
     <Button
         android:id="@+id/su_BtnSignUp"
-        android:onClick="signUp"
         android:layout_width="@dimen/sign"
         android:layout_height="40dp"
         android:layout_gravity="bottom|center"

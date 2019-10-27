@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/fab_margin"
+    >
+
+    <EditText
+        android:id="@+id/forgot_TxtEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:hint="@string/email"
+        android:textSize="@dimen/size"
+        android:layout_gravity="bottom|center"
+        android:importantForAutofill="no"
+        />
+
+</RelativeLayout>

@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_app_logo_neo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".server.user.ProfileActivity" />
+        <activity android:name=".server.user.ProfileActivity"/>
         <activity android:name=".server.user.SignUpActivity" />
         <activity android:name=".server.user.SignInActivity" />
         <activity android:name=".local.LocalActivity" />

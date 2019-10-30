@@ -4,23 +4,25 @@
     tools:context="maldonado.indetect.MainActivity">
 
     <item
-        android:id="@+id/m_car"
-        app:showAsAction="never"
-        android:title="@string/classify_car">
-    </item>
-    <item
         android:id="@+id/m_flash"
-        app:showAsAction="never"
-        android:title="@string/toggle_flash">
-    </item>
+        app:showAsAction="ifRoom"
+        android:title="@string/toggle_flash"
+        android:icon="@mipmap/ic_flash"
+        />
     <item
         android:id="@+id/m_front"
-        app:showAsAction="never"
-        android:title="@string/toggle_camera">
-    </item>
+        app:showAsAction="always"
+        android:title="@string/toggle_camera"
+        android:icon="@mipmap/ic_camera"
+        />
     <item
         android:id="@+id/m_upload"
+        app:showAsAction="always"
+        android:title="@string/upload_photo"
+        android:icon="@mipmap/ic_open"
+        />
+    <item
+        android:id="@+id/m_car"
         app:showAsAction="never"
-        android:title="@string/upload_photo">
-    </item>
+        android:title="@string/classify_car"/>
 </menu>

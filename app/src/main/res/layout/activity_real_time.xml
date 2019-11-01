@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/defaultBackground"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/left_margin"
+    android:paddingLeft="@dimen/left_margin"
+    android:paddingTop="@dimen/top_margin"
+    android:paddingEnd="@dimen/right_margin"
+    android:paddingRight="@dimen/right_margin"
+    android:paddingBottom="@dimen/bottom_margin"
+    tools:context=".local.RealTimeActivity">
+
+    <com.otaliastudios.cameraview.CameraView
+        android:id="@+id/cameraView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:keepScreenOn="true" />
+
+    <husaynhakeem.io.facedetector.FaceBoundsOverlay
+        android:id="@+id/facesBoundsOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

@@ -1,4 +1,4 @@
-package maldonado.indetect.local
+package maldonado.indetect.local.model
 
 import android.graphics.Bitmap
 import android.graphics.RectF

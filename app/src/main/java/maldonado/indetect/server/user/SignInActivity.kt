@@ -80,7 +80,7 @@ class SignInActivity : AppCompatActivity() {
                     task ->
                     if(task.isSuccessful){
                         action()
-                        Toast.makeText(this, "Welcome: $email" , Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Welcome: $email" , Toast.LENGTH_SHORT).show()
                     }
                     else{
                         Toast.makeText(this, "Authentication Error!", Toast.LENGTH_LONG).show()

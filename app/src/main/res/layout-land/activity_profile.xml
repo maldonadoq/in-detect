@@ -88,7 +88,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@mipmap/ic_password"
+                android:src="@mipmap/ic_phone"
                 android:layout_gravity="center"
                 android:contentDescription="@string/password"
                 />

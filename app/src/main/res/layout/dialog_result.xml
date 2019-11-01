@@ -40,6 +40,7 @@
             android:textSize="18sp"
             android:textAllCaps="true"
             android:layout_marginTop="50dp"
+            android:text="@string/running"
             android:padding="10dp"
             />
 

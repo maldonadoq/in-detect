@@ -1,4 +1,4 @@
-package maldonado.indetect.local
+package maldonado.indetect.local.model
 
 import android.annotation.SuppressLint
 import android.content.res.AssetManager
@@ -14,35 +14,39 @@ import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 import java.util.*
 import kotlin.collections.List
-import java.util.HashMap
 import android.graphics.RectF
+import kotlin.math.min
 
 @Suppress("DEPRECATION")
-class ObjectClassifier(
+class CarClassifier(
     var interpreter: Interpreter? = null,
     var inputSize: Int = 0,
+    var labelSize: Int = 0,
     var labelList: List<String> = emptyList()
 ) : IClassifier {
 
     companion object {
         private const val BATCH_SIZE = 1
         private const val PIXEL_SIZE = 3
+        private const val BYTES_CHANNEL = 4
 
         // TensorFlow
         // Configuration values for the prepackaged SSD model.
-        private const val TF_OD_API_INPUT_SIZE = 300        // Main
-        private const val TF_OD_API_MODEL_FILE = "object_model.lite"
-        private const val TF_OD_API_LABELS_FILE = "object_labels.txt"
-        private const val NUM_DETECTIONS = 10
-
-        private const val MINIMUM_CONFIDENCE_TF_OD_API = 0.5f
+        private const val TF_OD_API_INPUT_SIZE = 224        // Main
+        private const val TF_OD_API_MODEL_FILE = "car_model.lite"
+        private const val TF_OD_API_LABELS_FILE = "car_labels.txt"
+        private const val MINIMUM_CONFIDENCE_TF_OD_API = 0.1f
+        private const val IMAGE_MEAN = 128
+        private const val IMAGE_STD = 128.0f
+        private const val RESULTS = 3
 
         @Throws(IOException::class)
-        fun create(assetManager: AssetManager): ObjectClassifier {
+        fun create(assetManager: AssetManager): CarClassifier {
 
-            val classifier = ObjectClassifier()
+            val classifier = CarClassifier()
             classifier.interpreter = Interpreter(classifier.loadModelFile(assetManager))
             classifier.labelList = classifier.loadLabelList(assetManager)
+            classifier.labelSize = classifier.labelList.size
             classifier.inputSize = TF_OD_API_INPUT_SIZE
 
             return classifier
@@ -52,49 +56,32 @@ class ObjectClassifier(
     @SuppressLint("UseSparseArrays")
     override fun recognizeImage(tBitmap: Bitmap): ArrayList<IClassifier.Recognition> {
         val bitmap = Bitmap.createScaledBitmap(tBitmap, inputSize, inputSize, false)
+
         val byteBuffer = convertBitmapToByteBuffer(bitmap)
+        val labelProbArray = Array(1) { FloatArray(labelSize) }
+        interpreter!!.run(byteBuffer, labelProbArray)
 
-        // copy data into TensorFlow
-        val outputLocations = Array(1) { Array(NUM_DETECTIONS) { FloatArray(4) } }
-        val outputClasses = Array(1) { FloatArray(NUM_DETECTIONS) }
-        val outputScores = Array(1) { FloatArray(NUM_DETECTIONS) }
-        val numDetections = FloatArray(1)
+        val cmp = Comparator<IClassifier.Recognition> { o1, o2 -> o2.confidence.compareTo(o1.confidence) }
+        val pq = PriorityQueue<IClassifier.Recognition>(RESULTS, cmp)
 
-        val inputArray = arrayOf<Any>(byteBuffer)
-
-        val outputMap = HashMap<Int, Any>()
-        outputMap[0] = outputLocations
-        outputMap[1] = outputClasses
-        outputMap[2] = outputScores
-        outputMap[3] = numDetections
-
-        interpreter!!.runForMultipleInputsOutputs(inputArray, outputMap)
-
-        // Show the best detections.
-        // after scaling them back to the input size.
-        val recognitions = ArrayList<IClassifier.Recognition>()
-
-        for (i in 0 until NUM_DETECTIONS) {
-            val detection = RectF(
-                outputLocations[0][i][1] * tBitmap.width,
-                outputLocations[0][i][0] * tBitmap.height,
-                outputLocations[0][i][3] * tBitmap.width,
-                outputLocations[0][i][2] * tBitmap.height
-            )
-            // SSD Mobile-net V1 Model assumes class 0 is background class
-            // in label file and class labels start from 1 to number_of_classes+1,
-            // while outputClasses correspond to class index from 0 to number_of_classes
-            val score = outputScores[0][i]
+        for (i in 0 until labelSize) {
+            val score = labelProbArray[0][i]
             if (score >= MINIMUM_CONFIDENCE_TF_OD_API) {
-                recognitions.add(
+                pq.add(
                     IClassifier.Recognition(
                         "" + i,
-                        labelList[outputClasses[0][i].toInt() + 1],
+                        if (labelList.size > i) labelList[i] else "unknown",
                         score,
-                        detection
+                        RectF()
                     )
                 )
             }
+        }
+        val recognitions = ArrayList<IClassifier.Recognition>()
+        val tMin = min(pq.size, RESULTS)
+
+        for(i in 0 until tMin){
+            recognitions.add(pq.poll())
         }
 
         return recognitions
@@ -128,17 +115,21 @@ class ObjectClassifier(
     }
 
     private fun convertBitmapToByteBuffer(bitmap: Bitmap): ByteBuffer {
-        val byteBuffer = ByteBuffer.allocateDirect(BATCH_SIZE * inputSize * inputSize * PIXEL_SIZE)
+        val byteBuffer = ByteBuffer.allocateDirect(
+            BATCH_SIZE * inputSize * inputSize
+                * PIXEL_SIZE * BYTES_CHANNEL
+        )
+
         byteBuffer.order(ByteOrder.nativeOrder())
         val intValues = IntArray(inputSize * inputSize)
         bitmap.getPixels(intValues, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
-        var pixel = 0
+
         for (i in 0 until inputSize) {
             for (j in 0 until inputSize) {
-                val `val` = intValues[pixel++]
-                byteBuffer.put((`val` shr 16 and 0xFF).toByte())
-                byteBuffer.put((`val` shr 8 and 0xFF).toByte())
-                byteBuffer.put((`val` and 0xFF).toByte())
+                val `val` = intValues[i * inputSize + j]
+                byteBuffer.putFloat(((`val` shr 16 and 0xFF) - IMAGE_MEAN) / IMAGE_STD)
+                byteBuffer.putFloat(((`val` shr 8 and 0xFF) - IMAGE_MEAN) / IMAGE_STD)
+                byteBuffer.putFloat(((`val` and 0xFF) - IMAGE_MEAN) / IMAGE_STD)
             }
         }
         return byteBuffer

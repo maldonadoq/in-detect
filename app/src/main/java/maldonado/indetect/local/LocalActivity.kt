@@ -20,6 +20,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.wonderkiln.camerakit.*
 import maldonado.indetect.R
+import maldonado.indetect.local.model.*
 import java.util.*
 import java.util.concurrent.Executors
 import kotlin.collections.HashMap
@@ -40,7 +41,6 @@ class LocalActivity : AppCompatActivity() {
     private lateinit var dictionaryList: HashMap<String, String>
     private lateinit var random: Random
     private var btnType = 1
-    private var stringType = "Object Identification Engine Processing ..."
 
     // model
     private lateinit var objectClassifier: ObjectClassifier
@@ -87,7 +87,6 @@ class LocalActivity : AppCompatActivity() {
         })
 
         btnDetectOk.setOnClickListener {
-            tvLoadingText.text = stringType
             cameraView.captureImage()
             resultDialog.show()
             tvTextResults.visibility = View.GONE
@@ -234,13 +233,11 @@ class LocalActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.m_object -> {
                 btnType = 1
-                stringType = "Object Identification Engine Processing ..."
                 btnDetectOk.text = "Detect Object"
                 return true
             }
             R.id.m_car -> {
                 btnType = 2
-                stringType = "Car Classifier Engine Processing ..."
                 btnDetectOk.text = "Classify Car"
                 return true
             }

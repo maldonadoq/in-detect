@@ -30,4 +30,6 @@
 
     <string name="default_email">maldonadoq.percy@gmail.com</string>
     <string name="default_password">maldonado</string>
+
+    <string name="running">Running Processing</string>
 </resources>

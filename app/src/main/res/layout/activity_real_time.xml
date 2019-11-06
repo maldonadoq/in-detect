@@ -20,8 +20,8 @@
         android:layout_height="match_parent"
         android:keepScreenOn="true" />
 
-    <husaynhakeem.io.facedetector.FaceBoundsOverlay
-        android:id="@+id/facesBoundsOverlay"
+    <maldonado.indetect.local.real.Overlay
+        android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

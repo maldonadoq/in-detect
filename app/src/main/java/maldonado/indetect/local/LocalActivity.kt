@@ -76,11 +76,9 @@ class LocalActivity : AppCompatActivity() {
 
             override fun onImage(cameraKitImage: CameraKitImage) {
                 val bitmap = cameraKitImage.bitmap
-                Log.i("Local", "init")
                 recognize(
                     Bitmap.createScaledBitmap(bitmap, (bitmap.width*0.5).toInt(),
                     (bitmap.height*0.5).toInt(), false))
-                Log.i("Local", "end")
             }
 
             override fun onVideo(cameraKitVideo: CameraKitVideo) { }
@@ -248,6 +246,10 @@ class LocalActivity : AppCompatActivity() {
             R.id.m_flash -> {
                 cameraView.toggleFlash()
                 return true
+            }
+            R.id.m_real -> {
+                intent = Intent(this@LocalActivity, RealTimeActivity::class.java)
+                startActivity(intent)
             }
             R.id.m_upload -> {
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){

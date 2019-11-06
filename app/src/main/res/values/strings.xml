@@ -4,8 +4,8 @@
 
     <string name="classify_car">Classify Car</string>
     <string name="detect_object">Detect Object</string>
-    <string name="classify_car_rt">Classify Car Real Time</string>
-    <string name="detect_object_rt">Detect Object Real Time</string>
+    <string name="classify_car_rt">Car Real Time</string>
+    <string name="detect_object_rt">Object Real Time</string>
 
     <string name="toggle_camera">Toggle Camera</string>
     <string name="toggle_flash">Toggle Flash</string>

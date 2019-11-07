@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/left_margin"
+    android:paddingLeft="@dimen/left_margin"
+    android:paddingTop="@dimen/top_margin"
+    android:paddingEnd="@dimen/right_margin"
+    android:paddingRight="@dimen/right_margin"
+    android:paddingBottom="@dimen/bottom_margin"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="bottom|center"
+            android:layout_marginTop="80dp"
+            android:src="@mipmap/img_user"
+            android:contentDescription="@string/user" />
+
+        <LinearLayout
+            android:layout_width="@dimen/sign"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="bottom|center"
+            android:padding="5dp"
+            >
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/ic_user"
+                android:layout_gravity="center"
+                android:contentDescription="@string/name"
+                />
+
+            <TextView
+                android:id="@+id/profile_TxtName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="7dp"
+                android:ems="10"
+                android:textSize="@dimen/size"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="@dimen/sign"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:layout_gravity="bottom|center"
+            >
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/ic_email"
+                android:layout_gravity="center"
+                android:contentDescription="@string/email"
+                />
+
+            <TextView
+                android:id="@+id/profile_TxtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:paddingHorizontal="7dp"
+                android:textSize="@dimen/size"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="@dimen/sign"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:layout_gravity="bottom|center"
+            >
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/ic_phone"
+                android:layout_gravity="center"
+                android:contentDescription="@string/password"
+                />
+
+            <TextView
+                android:id="@+id/profile_TxtPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:paddingHorizontal="7dp"
+                android:textSize="@dimen/size"
+                />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/profile_Btn_Car"
+            android:layout_width="170dp"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom|center"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/ic_server_style"
+            android:text="@string/classify_car"
+            android:textColor="@color/colorPrimary" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

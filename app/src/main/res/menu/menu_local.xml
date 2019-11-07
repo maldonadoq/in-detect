@@ -1,32 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="maldonado.indetect.MainActivity">
-
-
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/m_flash"
         app:showAsAction="ifRoom"
         android:title="@string/toggle_flash"
-        android:icon="@mipmap/ic_flash"
-        />
+        android:icon="@mipmap/ic_flash" />
     <item
         android:id="@+id/m_front"
         app:showAsAction="always"
         android:title="@string/toggle_camera"
-        android:icon="@mipmap/ic_camera"
-        />
-    <item
-        android:id="@+id/m_upload"
-        app:showAsAction="always"
-        android:title="@string/upload_photo"
-        android:icon="@mipmap/ic_open"
-        />
+        android:icon="@mipmap/ic_camera" />
     <item
         android:id="@+id/m_real"
         app:showAsAction="never"
-        android:title="@string/detect_object_rt"
-        />
+        android:title="@string/detect_object_rt" />
     <item
         android:id="@+id/m_object"
         app:showAsAction="never"

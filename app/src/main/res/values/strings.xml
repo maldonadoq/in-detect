@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">InDetect</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">InDetect</string>
+    <string name="nav_header_subtitle">maldonadoq@indetect.com</string>
+    <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_profile">Profile</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+
 
     <string name="classify_car">Classify Car</string>
     <string name="detect_object">Detect Object</string>
@@ -12,8 +24,8 @@
     <string name="upload_photo">Upload Photo</string>
     <string name="image_result_descr">Image Result</string>
 
-    <string name="local">Run on Cellphone</string>
-    <string name="server">Run on a Server</string>
+    <string name="local">Cellphone</string>
+    <string name="server">Server</string>
 
     <string name="in">Sign In</string>
     <string name="up">Sign Up</string>

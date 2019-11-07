@@ -106,7 +106,7 @@ class LocalFragment : Fragment() {
 
     private fun initTensorFlowAndLoadModel() {
         Log.i("TensorFlow", "Init")
-        objectClassifier = ObjectClassifier.create(root.context.assets)
+        //objectClassifier = ObjectClassifier.create(root.context.assets)
         //carClassifier = CarClassifier.create(root.context.assets)
         Log.i("TensorFlow", "End")
     }

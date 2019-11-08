@@ -1,4 +1,4 @@
-package maldonado.indetect.ui
+package maldonado.indetect.fragments
 
 import android.app.ProgressDialog
 import android.os.Bundle
@@ -13,6 +13,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import maldonado.indetect.R
 
 class SignUpFragment : Fragment() {
@@ -20,8 +22,10 @@ class SignUpFragment : Fragment() {
     private lateinit var txtName: EditText
     private lateinit var txtEmail: EditText
     private lateinit var txtPassword: EditText
+    private lateinit var txtPhone: EditText
     private lateinit var progressDialog: ProgressDialog
     private lateinit var auth: FirebaseAuth
+    private lateinit var dbReference: DatabaseReference
     private lateinit var root: View
 
     override fun onCreateView(
@@ -40,9 +44,11 @@ class SignUpFragment : Fragment() {
         txtName = root.findViewById(R.id.su_TxtName)
         txtEmail = root.findViewById(R.id.su_TxtEmail)
         txtPassword = root.findViewById(R.id.su_TxtPassword)
+        txtPhone = root.findViewById(R.id.su_TxtPhone)
         progressDialog = ProgressDialog(root.context)
 
         auth = FirebaseAuth.getInstance()
+        dbReference = FirebaseDatabase.getInstance().reference.child("User")
 
         return root
     }
@@ -51,6 +57,7 @@ class SignUpFragment : Fragment() {
         val name:String = txtName.text.toString()
         val email:String = txtEmail.text.toString()
         val password:String = txtPassword.text.toString()
+        val phone:String = txtPhone.text.toString()
 
         if(name.isNotEmpty() and email.isNotEmpty() and password.isNotEmpty()){
             progressDialog.setMessage("Performing online registration ..")
@@ -68,6 +75,11 @@ class SignUpFragment : Fragment() {
 
                         verifyEmail(user)
                         user?.updateProfile(update)
+
+                        val userDB = dbReference.child(user?.uid.toString())
+                        userDB.child("Type").setValue("1")
+                        userDB.child("Phone").setValue(phone)
+
                         action()
                     }
 
@@ -88,7 +100,7 @@ class SignUpFragment : Fragment() {
 
     private fun action(){
         val fm = fragmentManager?.beginTransaction()
-        fm?.replace(R.id.nav_host_fragment, ProfileFragment())
+        fm?.replace(R.id.nav_host_fragment, ServerFragment())
         fm?.addToBackStack(null)
         fm?.commit()
     }

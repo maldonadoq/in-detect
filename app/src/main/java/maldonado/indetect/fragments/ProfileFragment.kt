@@ -1,4 +1,4 @@
-package maldonado.indetect.ui
+package maldonado.indetect.fragments
 
 import android.os.Bundle
 import android.view.*

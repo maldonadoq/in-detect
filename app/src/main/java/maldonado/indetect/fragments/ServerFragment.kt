@@ -1,29 +1,25 @@
-package maldonado.indetect.ui
+package maldonado.indetect.fragments
 
 import android.app.Dialog
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
-import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.wonderkiln.camerakit.*
 import maldonado.indetect.R
-import maldonado.indetect.ui.model.CarClassifier
-import maldonado.indetect.ui.model.ObjectClassifier
-import maldonado.indetect.ui.model.loadDictionary
-import java.util.*
-import kotlin.collections.HashMap
+import java.io.ByteArrayOutputStream
 
-class LocalFragment : Fragment() {
+class ServerFragment : Fragment() {
 
     private lateinit var btnDetectOk: FloatingActionButton
-
     private lateinit var cameraView: CameraView
-    private lateinit var imageViewTmp: ImageView
 
     private lateinit var ivImageResult: ImageView
     private lateinit var tvTextResults: TextView
@@ -31,19 +27,14 @@ class LocalFragment : Fragment() {
     private lateinit var aviLoaderHolder: View
     private lateinit var resultDialog: Dialog
 
-    private lateinit var dictionaryList: HashMap<String, String>
-    private lateinit var random: Random
+    private lateinit var storage: StorageReference
 
     private lateinit var root: View
-
-    // model
-    private lateinit var objectClassifier: ObjectClassifier
-    private lateinit var carClassifier: CarClassifier
-    private var btnType = 1
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
+        storage = FirebaseStorage.getInstance().reference.child("Uploads")
     }
 
     override fun onCreateView(
@@ -52,11 +43,10 @@ class LocalFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        root = inflater.inflate(R.layout.fragment_local, container, false)
+        root = inflater.inflate(R.layout.fragment_server, container, false)
 
-        cameraView = root.findViewById(R.id.local_CameraView)
-        imageViewTmp = ImageView(root.context)
-        btnDetectOk = root.findViewById(R.id.local_BtnDetectOk)
+        cameraView = root.findViewById(R.id.server_CameraView)
+        btnDetectOk = root.findViewById(R.id.server_BtnDetectOk)
 
         resultDialog = Dialog(root.context)
         val dialogView = LayoutInflater.from(root.context).inflate(R.layout.dialog_result, null)
@@ -98,17 +88,7 @@ class LocalFragment : Fragment() {
             aviLoaderHolder.visibility = View.VISIBLE
         }
 
-        random = Random()
-        dictionaryList = loadDictionary(root.context.assets, "dictionary.txt")
-        initTensorFlowAndLoadModel()
         return root
-    }
-
-    private fun initTensorFlowAndLoadModel() {
-        Log.i("TensorFlow", "Init")
-        //objectClassifier = ObjectClassifier.create(root.context.assets)
-        //carClassifier = CarClassifier.create(root.context.assets)
-        Log.i("TensorFlow", "End")
     }
 
     private fun recognize(bitmap: Bitmap) {
@@ -119,6 +99,24 @@ class LocalFragment : Fragment() {
         tvTextResults.visibility = View.VISIBLE
         ivImageResult.visibility = View.VISIBLE
         resultDialog.setCancelable(true)
+
+        uploadImage(bitmap)
+    }
+
+    private fun uploadImage(bitmap: Bitmap){
+        val fileReference = storage.child(System.currentTimeMillis().toString() + ".jpg")
+
+        val bao = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bao)
+        val data = bao.toByteArray()
+
+        fileReference.putBytes(data)
+            .addOnSuccessListener {
+                Toast.makeText(resultDialog.context, "Uploaded!", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener{
+                Toast.makeText(resultDialog.context, "Failed to Upload Image!", Toast.LENGTH_SHORT).show()
+            }
     }
 
     override fun onResume() {
@@ -131,26 +129,12 @@ class LocalFragment : Fragment() {
         cameraView.stop()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        objectClassifier.close()
-        carClassifier.close()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_local, menu)
+        inflater.inflate(R.menu.menu_server, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.m_object -> {
-                btnType = 1
-                return true
-            }
-            R.id.m_car -> {
-                btnType = 2
-                return true
-            }
             R.id.m_front -> {
                 cameraView.toggleFacing()
                 return true

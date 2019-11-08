@@ -25,6 +25,7 @@
     <string name="image_result_descr">Image Result</string>
 
     <string name="local">Cellphone</string>
+    <string name="localT">Local</string>
     <string name="server">Server</string>
 
     <string name="in">Sign In</string>
@@ -35,6 +36,7 @@
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="phone">Phone</string>
     <string name="forgot">Forgot your password</string>
 
     <string name="logout">LogOut</string>
@@ -44,4 +46,7 @@
     <string name="default_password">maldonado</string>
 
     <string name="running">Running Processing</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

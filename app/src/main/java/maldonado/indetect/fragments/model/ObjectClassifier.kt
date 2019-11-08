@@ -1,4 +1,4 @@
-package maldonado.indetect.ui.model
+package maldonado.indetect.fragments.model
 
 import android.annotation.SuppressLint
 import android.content.res.AssetManager

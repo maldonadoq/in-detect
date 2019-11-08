@@ -3,53 +3,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_local">
+    app:startDestination="@+id/nav_home">
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="maldonado.indetect.ui.HomeFragment"
+        android:name="maldonado.indetect.fragments.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="maldonado.indetect.ui.GalleryFragment"
+        android:name="maldonado.indetect.fragments.GalleryFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
         android:id="@+id/nav_tools"
-        android:name="maldonado.indetect.ui.ToolsFragment"
+        android:name="maldonado.indetect.fragments.ToolsFragment"
         android:label="@string/menu_tools"
         tools:layout="@layout/fragment_tools" />
 
     <fragment
         android:id="@+id/nav_share"
-        android:name="maldonado.indetect.ui.ShareFragment"
+        android:name="maldonado.indetect.fragments.ShareFragment"
         android:label="@string/menu_share"
         tools:layout="@layout/fragment_share" />
 
     <fragment
         android:id="@+id/nav_local"
-        android:name="maldonado.indetect.ui.LocalFragment"
+        android:name="maldonado.indetect.fragments.LocalFragment"
         android:label="@string/local"
         tools:layout="@layout/fragment_local" />
 
     <fragment
+        android:id="@+id/nav_server"
+        android:name="maldonado.indetect.fragments.ServerFragment"
+        android:label="@string/server"
+        tools:layout="@layout/fragment_server" />
+
+    <fragment
         android:id="@+id/nav_sign_in"
-        android:name="maldonado.indetect.ui.SignInFragment"
+        android:name="maldonado.indetect.fragments.SignInFragment"
         android:label="@string/in"
         tools:layout="@layout/fragment_sign_in" />
 
     <fragment
         android:id="@+id/nav_sign_up"
-        android:name="maldonado.indetect.ui.SignUpFragment"
+        android:name="maldonado.indetect.fragments.SignUpFragment"
         android:label="@string/up"
         tools:layout="@layout/fragment_sign_up" />
 
     <fragment
         android:id="@+id/nav_profile"
-        android:name="maldonado.indetect.ui.ProfileFragment"
+        android:name="maldonado.indetect.fragments.ProfileFragment"
         android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>

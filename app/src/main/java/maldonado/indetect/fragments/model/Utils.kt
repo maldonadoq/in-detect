@@ -1,4 +1,4 @@
-package maldonado.indetect.ui.model
+package maldonado.indetect.fragments.model
 
 import android.content.res.AssetManager
 import java.io.BufferedReader

@@ -1,4 +1,4 @@
-package maldonado.indetect.ui
+package maldonado.indetect.fragments
 
 import android.app.AlertDialog
 import android.app.ProgressDialog
@@ -43,7 +43,10 @@ class SignInFragment : Fragment() {
             forgot()
         }
         txtSignUp.setOnClickListener{
-
+            val fm = fragmentManager?.beginTransaction()
+            fm?.replace(R.id.nav_host_fragment, SignUpFragment())
+            fm?.addToBackStack(null)
+            fm?.commit()
         }
 
         progressDialog = ProgressDialog(root.context)
@@ -102,7 +105,7 @@ class SignInFragment : Fragment() {
 
     private fun action(){
         val fm = fragmentManager?.beginTransaction()
-        fm?.replace(R.id.nav_host_fragment, ProfileFragment())
+        fm?.replace(R.id.nav_host_fragment, ServerFragment())
         fm?.addToBackStack(null)
         fm?.commit()
     }

@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <view class="androidx.appcompat.app.AlertController$RecycleListView"
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/galleryImageView"
+        android:id="@+id/galleryRecyclerView"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

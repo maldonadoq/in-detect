@@ -1,5 +1,6 @@
 package maldonado.indetect
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -15,17 +16,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-
-        /*val fab: FloatingActionButton = findViewById(R.id.main_Fab)
-        fab.setOnClickListener {
-            //val intent = Intent(applicationContext, LocalFragment::class.java)
-            //startActivity(intent)
-        }*/
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)

@@ -10,6 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.wonderkiln.camerakit.*
@@ -28,6 +30,7 @@ class ServerFragment : Fragment() {
     private lateinit var resultDialog: Dialog
 
     private lateinit var storage: StorageReference
+    private lateinit var db: DatabaseReference
 
     private lateinit var root: View
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +38,7 @@ class ServerFragment : Fragment() {
         setHasOptionsMenu(true)
 
         storage = FirebaseStorage.getInstance().reference.child("Uploads")
+        db = FirebaseDatabase.getInstance().reference.child("Uploads")
     }
 
     override fun onCreateView(
@@ -100,7 +104,8 @@ class ServerFragment : Fragment() {
         ivImageResult.visibility = View.VISIBLE
         resultDialog.setCancelable(true)
 
-        uploadImage(bitmap)
+        val tmp = Bitmap.createScaledBitmap(bitmap, 250, 250, false)
+        uploadImage(tmp)
     }
 
     private fun uploadImage(bitmap: Bitmap){
@@ -113,9 +118,20 @@ class ServerFragment : Fragment() {
         fileReference.putBytes(data)
             .addOnSuccessListener {
                 Toast.makeText(resultDialog.context, "Uploaded!", Toast.LENGTH_SHORT).show()
+
+                val imgDB = db.child(db.push().key.toString())
+                imgDB.child("name").setValue("No Name")
+
+                it.storage.downloadUrl
+                    .addOnSuccessListener {t ->
+                        imgDB.child("url").setValue(t.toString())
+                    }
+                    .addOnFailureListener{t ->
+                        imgDB.child("url").setValue(t.message.toString())
+                    }
             }
             .addOnFailureListener{
-                Toast.makeText(resultDialog.context, "Failed to Upload Image!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(resultDialog.context, it.message, Toast.LENGTH_SHORT).show()
             }
     }
 

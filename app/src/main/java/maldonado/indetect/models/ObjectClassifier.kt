@@ -1,4 +1,4 @@
-package maldonado.indetect.fragments.model
+package maldonado.indetect.models
 
 import android.annotation.SuppressLint
 import android.content.res.AssetManager
@@ -16,7 +16,6 @@ import java.util.*
 import kotlin.collections.List
 import java.util.HashMap
 import android.graphics.RectF
-import android.util.Log
 
 @Suppress("DEPRECATION")
 class ObjectClassifier(
@@ -41,17 +40,10 @@ class ObjectClassifier(
         @Throws(IOException::class)
         fun create(assetManager: AssetManager): ObjectClassifier {
 
-            Log.i("TensorFlow", assetManager.locales.toString())
-
-            Log.i("TensorFlow", "Object Init")
             val classifier = ObjectClassifier()
-            Log.i("TensorFlow", "Object Classifier Ok")
             classifier.labelList = classifier.loadLabelList(assetManager)
-            Log.i("TensorFlow", "Object Load Label Ok")
             classifier.interpreter = Interpreter(classifier.loadModelFile(assetManager))
-            Log.i("TensorFlow", "Object Load Model Ok")
             classifier.inputSize = TF_OD_API_INPUT_SIZE
-            Log.i("TensorFlow", "Object Return")
             return classifier
         }
     }
@@ -114,17 +106,11 @@ class ObjectClassifier(
 
     @Throws(IOException::class)
     private fun loadModelFile(assetManager: AssetManager): MappedByteBuffer {
-        Log.i("TensorFlow", "Load Model Init")
         val fileDescriptor = assetManager.openFd(TF_OD_API_MODEL_FILE)
-        Log.i("TensorFlow", "OpenFD OK")
         val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
-        Log.i("TensorFlow", "FD OK")
         val fileChannel = inputStream.channel
-        Log.i("TensorFlow", "FC OK")
         val startOffset = fileDescriptor.startOffset
-        Log.i("TensorFlow", "SO OK")
         val declaredLength = fileDescriptor.declaredLength
-        Log.i("TensorFlow", "DL OK")
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
     }
 
@@ -137,7 +123,6 @@ class ObjectClassifier(
             labelList.add(line)
         }
         reader.close()
-        Log.i("TensorFlow", labelList.toString())
         return labelList
     }
 

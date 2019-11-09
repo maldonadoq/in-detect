@@ -2,6 +2,9 @@ package maldonado.indetect.fragments
 
 import android.app.Dialog
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.view.*
@@ -11,9 +14,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.wonderkiln.camerakit.*
 import maldonado.indetect.R
-import maldonado.indetect.fragments.model.CarClassifier
-import maldonado.indetect.fragments.model.ObjectClassifier
-import maldonado.indetect.fragments.model.loadDictionary
+import maldonado.indetect.models.*
 import java.util.*
 import java.util.concurrent.Executors
 import kotlin.collections.HashMap
@@ -101,7 +102,7 @@ class LocalFragment : Fragment() {
 
         random = Random()
         dictionaryList = loadDictionary(root.context.assets, "dictionary.txt")
-        //initTensorFlowAndLoadModel()
+        initTensorFlowAndLoadModel()
         return root
     }
 
@@ -119,6 +120,42 @@ class LocalFragment : Fragment() {
     private fun recognize(bitmap: Bitmap) {
         aviLoaderHolder.visibility = View.GONE
         tvLoadingText.visibility = View.GONE
+
+        when(btnType){
+            1 -> {
+                val results = objectClassifier.recognizeImage(bitmap)
+
+                val canvas = Canvas(bitmap)
+                val boxPaint = Paint()
+                boxPaint.style = Paint.Style.STROKE
+                boxPaint.strokeWidth = 15.0f
+
+                val textPaint = Paint()
+                textPaint.color = Color.WHITE
+                textPaint.textSize = 50.0f
+
+                for (result in results) {
+                    boxPaint.color = Color.argb(255, random.nextInt(256), random.nextInt(
+                        256), random.nextInt(256))
+                    canvas.drawRoundRect(result.location, 30.0f, 30.0f, boxPaint)
+
+                    canvas.drawText(String.format("%s %.2f", result.title, (100 * result.confidence)),
+                        result.location.left + 40, result.location.top + 60, textPaint)
+                }
+
+                val objects = uniqueList(results)
+                tvTextResults.text = ""
+
+                for (obj in objects) {
+                    tvTextResults.append(obj + ": " + dictionaryList[obj] + "\n")
+                }
+
+            }
+            2 -> {
+                val results = carClassifier.recognizeImage(bitmap)
+                tvTextResults.text = recognitionToString(results)
+            }
+        }
 
         ivImageResult.setImageBitmap(bitmap)
         tvTextResults.visibility = View.VISIBLE

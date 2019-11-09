@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
@@ -77,10 +78,10 @@ class SignUpFragment : Fragment() {
                         user?.updateProfile(update)
 
                         val userDB = dbReference.child(user?.uid.toString())
-                        userDB.child("Type").setValue("1")
+                        userDB.child("Type").setValue("Normal")
                         userDB.child("Phone").setValue(phone)
 
-                        action()
+                        Navigation.findNavController(root).navigate(R.id.action_nav_sign_in_to_nav_server)
                     }
 
                     progressDialog.dismiss()
@@ -96,13 +97,6 @@ class SignUpFragment : Fragment() {
         else{
             Toast.makeText(root.context, "Fields can't be empty!", Toast.LENGTH_LONG).show()
         }
-    }
-
-    private fun action(){
-        val fm = fragmentManager?.beginTransaction()
-        fm?.replace(R.id.nav_host_fragment, ServerFragment())
-        fm?.addToBackStack(null)
-        fm?.commit()
     }
 
     private fun verifyEmail(user:FirebaseUser?){

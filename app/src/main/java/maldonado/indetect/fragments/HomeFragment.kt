@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import maldonado.indetect.R
 
 class HomeFragment : Fragment() {
@@ -21,17 +22,11 @@ class HomeFragment : Fragment() {
         val buttonUp = root.findViewById<Button>(R.id.cm_BtnSignUp)
 
         buttonIn.setOnClickListener{
-            val fm = fragmentManager?.beginTransaction()
-            fm?.replace(R.id.nav_host_fragment, SignInFragment())
-            fm?.addToBackStack(null)
-            fm?.commit()
+            Navigation.findNavController(it).navigate(R.id.action_nav_home_to_nav_sign_in)
         }
 
         buttonUp.setOnClickListener{
-            val fm = fragmentManager?.beginTransaction()
-            fm?.replace(R.id.nav_host_fragment, SignUpFragment())
-            fm?.addToBackStack(null)
-            fm?.commit()
+            Navigation.findNavController(it).navigate(R.id.action_nav_home_to_nav_sign_up)
         }
 
         return root

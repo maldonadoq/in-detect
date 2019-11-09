@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import maldonado.indetect.R
 
@@ -43,10 +44,7 @@ class SignInFragment : Fragment() {
             forgot()
         }
         txtSignUp.setOnClickListener{
-            val fm = fragmentManager?.beginTransaction()
-            fm?.replace(R.id.nav_host_fragment, SignUpFragment())
-            fm?.addToBackStack(null)
-            fm?.commit()
+            Navigation.findNavController(it).navigate(R.id.action_nav_sign_in_to_nav_server)
         }
 
         progressDialog = ProgressDialog(root.context)

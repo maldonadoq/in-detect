@@ -1,9 +1,7 @@
 package maldonado.indetect.fragments.adapter
 
 import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -36,23 +34,59 @@ class ImageAdapter(_ctx: Context, _uploads: List<Upload>): RecyclerView.Adapter<
     }
 
 
+    inner class ImageViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener
+    ,View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
 
-    class ImageViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var textName: TextView = itemView.findViewById(R.id.item_name)
         var imageView: ImageView = itemView.findViewById(R.id.item_image)
 
         init {
             itemView.setOnClickListener(this)
+            itemView.setOnCreateContextMenuListener(this)
         }
 
         override fun onClick(v: View?) {
+            val position = adapterPosition
+
+            if(position != RecyclerView.NO_POSITION){
+                listener.onItemClick(position)
+            }
         }
+
+        override fun onCreateContextMenu(
+            menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+
+            val doDelete = menu?.add(Menu.NONE, 1, 1, "Delete")
+            val doWhatever = menu?.add(Menu.NONE, 2, 2, "Whatever")
+
+            doDelete?.setOnMenuItemClickListener(this)
+            doWhatever?.setOnMenuItemClickListener(this)
+        }
+
+        override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+            val position = adapterPosition
+            if(position != RecyclerView.NO_POSITION){
+                when(menuItem?.itemId){
+                    1 -> {
+                        listener.onDeleteClick(position)
+                        return true
+                    }
+                    2 -> {
+                        listener.onRenameClick(position)
+                        return true
+                    }
+                }
+            }
+
+            return false
+        }
+
     }
 
     interface OnItemClickListener{
-        fun OnItemClick(position: Int)
-        fun OnWhatEverClick(position: Int)
-        fun OnDeleteClick(position: Int)
+        fun onItemClick(position: Int)
+        fun onRenameClick(position: Int)
+        fun onDeleteClick(position: Int)
     }
 
     fun setOnItemClickListener(_listener: OnItemClickListener){

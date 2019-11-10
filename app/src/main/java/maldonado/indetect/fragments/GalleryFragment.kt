@@ -13,8 +13,7 @@ import maldonado.indetect.R
 import maldonado.indetect.fragments.adapter.ImageAdapter
 import maldonado.indetect.fragments.adapter.Upload
 
-class GalleryFragment : Fragment() {
-
+class GalleryFragment : Fragment(), ImageAdapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var imageAdapter: ImageAdapter
     private lateinit var uploads: ArrayList<Upload>
@@ -54,6 +53,7 @@ class GalleryFragment : Fragment() {
                 }
 
                 imageAdapter = ImageAdapter(root.context, uploads)
+                imageAdapter.setOnItemClickListener(this@GalleryFragment)
                 recyclerView.adapter = imageAdapter
             }
 
@@ -61,5 +61,17 @@ class GalleryFragment : Fragment() {
                 Toast.makeText(root.context, databaseError.message, Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    override fun onItemClick(position: Int) {
+        Toast.makeText(root.context, "Normal Click at position: $position", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onRenameClick(position: Int) {
+        Toast.makeText(root.context, "Whatever Click at position: $position", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDeleteClick(position: Int) {
+        Toast.makeText(root.context, "Delete Click at position: $position", Toast.LENGTH_SHORT).show()
     }
 }

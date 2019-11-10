@@ -90,7 +90,7 @@ class SignUpFragment : Fragment() {
                         exception ->
 
                     if (exception is FirebaseAuthUserCollisionException){
-                        Toast.makeText(root.context, "This user already exist!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(root.context, exception.message, Toast.LENGTH_LONG).show()
                     }
                 }
         }

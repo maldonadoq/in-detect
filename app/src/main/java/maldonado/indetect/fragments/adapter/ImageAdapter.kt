@@ -13,6 +13,7 @@ import maldonado.indetect.R
 class ImageAdapter(_ctx: Context, _uploads: List<Upload>): RecyclerView.Adapter<ImageAdapter.ImageViewHolder>(){
     private var context: Context = _ctx
     private var uploads: List<Upload> = _uploads
+    private lateinit var listener: OnItemClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val v = LayoutInflater.from(context).inflate(R.layout.image_item, parent, false)
@@ -30,12 +31,31 @@ class ImageAdapter(_ctx: Context, _uploads: List<Upload>): RecyclerView.Adapter<
         Picasso.Builder(context).build()
             .load(uploadCurrent.getUrl())
             .fit()
-            .centerCrop()
+            .centerInside()
             .into(holder.imageView)
     }
 
-    class ImageViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+
+
+    class ImageViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var textName: TextView = itemView.findViewById(R.id.item_name)
         var imageView: ImageView = itemView.findViewById(R.id.item_image)
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+        }
+    }
+
+    interface OnItemClickListener{
+        fun OnItemClick(position: Int)
+        fun OnWhatEverClick(position: Int)
+        fun OnDeleteClick(position: Int)
+    }
+
+    fun setOnItemClickListener(_listener: OnItemClickListener){
+        listener = _listener
     }
 }

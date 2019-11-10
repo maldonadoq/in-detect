@@ -104,7 +104,7 @@ class ServerFragment : Fragment() {
         ivImageResult.visibility = View.VISIBLE
         resultDialog.setCancelable(true)
 
-        val tmp = Bitmap.createScaledBitmap(bitmap, 250, 250, false)
+        val tmp = Bitmap.createScaledBitmap(bitmap, 250, 400, false)
         uploadImage(tmp)
     }
 

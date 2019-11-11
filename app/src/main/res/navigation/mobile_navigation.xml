@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_local">
 
     <fragment
         android:id="@+id/nav_home"
@@ -40,7 +40,11 @@
         android:id="@+id/nav_local"
         android:name="maldonado.indetect.fragments.LocalFragment"
         android:label="@string/local"
-        tools:layout="@layout/fragment_local" />
+        tools:layout="@layout/fragment_local" >
+        <action
+            android:id="@+id/action_nav_local_to_nav_real_time"
+            app:destination="@id/nav_real_time" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_server"
@@ -80,4 +84,10 @@
             android:id="@+id/action_nav_profile_to_nav_home"
             app:destination="@id/nav_home" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_real_time"
+        android:name="maldonado.indetect.fragments.RealTimeFragment"
+        android:label="@string/real_time"
+        tools:layout="@layout/fragment_real_time" />
 </navigation>

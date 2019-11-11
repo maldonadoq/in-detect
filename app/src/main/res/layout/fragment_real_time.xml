@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/left_margin"
+    android:paddingLeft="@dimen/left_margin"
+    android:paddingTop="@dimen/top_margin"
+    android:paddingEnd="@dimen/right_margin"
+    android:paddingRight="@dimen/right_margin"
+    android:paddingBottom="@dimen/bottom_margin">
+
+    <com.otaliastudios.cameraview.CameraView
+        android:id="@+id/real_CameraView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <maldonado.indetect.real.Overlay
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

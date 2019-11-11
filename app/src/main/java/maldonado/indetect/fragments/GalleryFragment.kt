@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
 import maldonado.indetect.R
-import maldonado.indetect.fragments.adapter.ImageAdapter
-import maldonado.indetect.fragments.adapter.Upload
+import maldonado.indetect.adapter.ImageAdapter
+import maldonado.indetect.adapter.Upload
 
 class GalleryFragment : Fragment(), ImageAdapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView

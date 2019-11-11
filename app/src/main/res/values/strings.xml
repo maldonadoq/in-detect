@@ -48,4 +48,5 @@
     <string name="running">Running Processing</string>
 
     <string name="select">Select Action</string>
+    <string name="real_time">Real Time</string>
 </resources>

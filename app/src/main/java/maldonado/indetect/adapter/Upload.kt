@@ -1,4 +1,4 @@
-package maldonado.indetect.fragments.adapter
+package maldonado.indetect.adapter
 
 class Upload(_name: String, _url: String) {
     private var name: String = _name

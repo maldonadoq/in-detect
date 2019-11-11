@@ -12,10 +12,6 @@
         android:title="@string/toggle_camera"
         android:icon="@mipmap/ic_camera" />
     <item
-        android:id="@+id/m_real"
-        app:showAsAction="never"
-        android:title="@string/detect_object_rt" />
-    <item
         android:id="@+id/m_object"
         app:showAsAction="never"
         android:title="@string/detect_object"/>
@@ -23,4 +19,8 @@
         android:id="@+id/m_car"
         app:showAsAction="never"
         android:title="@string/classify_car"/>
+    <item
+        android:id="@+id/m_real"
+        app:showAsAction="never"
+        android:title="@string/detect_object_rt" />
 </menu>

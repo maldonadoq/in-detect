@@ -1,4 +1,4 @@
-package maldonado.indetect.fragments.adapter
+package maldonado.indetect.adapter
 
 import android.content.Context
 import android.view.*

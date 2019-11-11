@@ -11,6 +11,7 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.wonderkiln.camerakit.*
 import maldonado.indetect.R
@@ -24,8 +25,6 @@ class LocalFragment : Fragment() {
     private lateinit var btnDetectOk: FloatingActionButton
 
     private lateinit var cameraView: CameraView
-    private lateinit var imageViewTmp: ImageView
-
     private lateinit var ivImageResult: ImageView
     private lateinit var tvTextResults: TextView
     private lateinit var tvLoadingText: TextView
@@ -57,7 +56,6 @@ class LocalFragment : Fragment() {
         root = inflater.inflate(R.layout.fragment_local, container, false)
 
         cameraView = root.findViewById(R.id.local_CameraView)
-        imageViewTmp = ImageView(root.context)
         btnDetectOk = root.findViewById(R.id.local_BtnDetectOk)
 
         resultDialog = Dialog(root.context)
@@ -175,8 +173,8 @@ class LocalFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        /*executor.execute{ objectClassifier.close() }
-        executor.execute{ carClassifier.close() }*/
+        executor.execute{ objectClassifier.close() }
+        executor.execute{ carClassifier.close() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -202,6 +200,7 @@ class LocalFragment : Fragment() {
                 return true
             }
             R.id.m_real -> {
+                Navigation.findNavController(root).navigate(R.id.action_nav_local_to_nav_real_time)
                 return true
             }
         }

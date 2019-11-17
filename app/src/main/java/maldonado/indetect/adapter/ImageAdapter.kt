@@ -57,10 +57,10 @@ class ImageAdapter(_ctx: Context, _uploads: List<Upload>): RecyclerView.Adapter<
             menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
 
             val doDelete = menu?.add(Menu.NONE, 1, 1, "Delete")
-            val doWhatever = menu?.add(Menu.NONE, 2, 2, "Whatever")
+            val doRename = menu?.add(Menu.NONE, 2, 2, "Rename")
 
             doDelete?.setOnMenuItemClickListener(this)
-            doWhatever?.setOnMenuItemClickListener(this)
+            doRename?.setOnMenuItemClickListener(this)
         }
 
         override fun onMenuItemClick(menuItem: MenuItem?): Boolean {

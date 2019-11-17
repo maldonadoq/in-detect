@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/right_margin"
     android:paddingBottom="@dimen/bottom_margin">
 
-    <com.wonderkiln.camerakit.CameraView
+    <com.otaliastudios.cameraview.CameraView
         android:id="@+id/local_CameraView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

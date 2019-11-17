@@ -15,6 +15,7 @@
 
 
     <string name="classify_car">Classify Car</string>
+    <string name="classify_animal">Classify Animal</string>
     <string name="detect_object">Detect Object</string>
     <string name="classify_car_rt">Car Real Time</string>
     <string name="detect_object_rt">Object Real Time</string>

@@ -20,6 +20,10 @@
         app:showAsAction="never"
         android:title="@string/classify_car"/>
     <item
+        android:id="@+id/m_animal"
+        app:showAsAction="never"
+        android:title="@string/classify_animal"/>
+    <item
         android:id="@+id/m_real"
         app:showAsAction="never"
         android:title="@string/detect_object_rt" />

@@ -1,10 +1,7 @@
 package maldonado.indetect.fragments
 
 import android.app.Dialog
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.view.*
@@ -13,9 +10,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.wonderkiln.camerakit.*
+import com.otaliastudios.cameraview.CameraListener
+import com.otaliastudios.cameraview.CameraView
 import maldonado.indetect.R
 import maldonado.indetect.models.*
+import java.io.File
 import java.util.*
 import java.util.concurrent.Executors
 import kotlin.collections.HashMap
@@ -40,6 +39,7 @@ class LocalFragment : Fragment() {
     // model
     private lateinit var objectClassifier: ObjectClassifier
     private lateinit var carClassifier: CarClassifier
+    private lateinit var animalClassifier: AnimalClassifier
     private var btnType = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,24 +70,19 @@ class LocalFragment : Fragment() {
         aviLoaderHolder = dialogView.findViewById<View>(R.id.result_AviLoaderHolderView)
         tvTextResults.movementMethod = ScrollingMovementMethod()
 
-        cameraView.addCameraKitListener(object : CameraKitEventListener {
-            override fun onEvent(cameraKitEvent: CameraKitEvent) { }
-
-            override fun onError(cameraKitError: CameraKitError) { }
-
-            override fun onImage(cameraKitImage: CameraKitImage) {
-                val bitmap = cameraKitImage.bitmap
-                recognize(
-                    Bitmap.createScaledBitmap(bitmap, (bitmap.width*0.5).toInt(),
-                        (bitmap.height*0.5).toInt(), false))
+        cameraView.addCameraListener(object : CameraListener() {
+            override fun onPictureTaken(it: ByteArray?) {
+                val bitmap = BitmapFactory.decodeByteArray(it, 0, it!!.size)
+                recognize(Bitmap.createScaledBitmap(bitmap, (bitmap.width*0.5).toInt(),
+                    (bitmap.height*0.5).toInt(), false))
             }
 
-            override fun onVideo(cameraKitVideo: CameraKitVideo) { }
+            override fun onVideoTaken(it: File?) {   }
         })
 
-        btnDetectOk.setOnClickListener {
 
-            cameraView.captureImage()
+        btnDetectOk.setOnClickListener {
+            cameraView.capturePicture()
             resultDialog.show()
             tvTextResults.visibility = View.GONE
             ivImageResult.visibility = View.GONE
@@ -109,6 +104,7 @@ class LocalFragment : Fragment() {
             try {
                 objectClassifier = ObjectClassifier.create(root.context.assets)
                 carClassifier = CarClassifier.create(root.context.assets)
+                animalClassifier = AnimalClassifier.create(root.context.assets)
             } catch (e: Exception) {
                 throw RuntimeException("Error initializing TensorFlow!", e)
             }
@@ -153,6 +149,10 @@ class LocalFragment : Fragment() {
                 val results = carClassifier.recognizeImage(bitmap)
                 tvTextResults.text = recognitionToString(results)
             }
+            3 -> {
+                val results = animalClassifier.recognizeImage(bitmap)
+                tvTextResults.text = recognitionToString(results)
+            }
         }
 
         ivImageResult.setImageBitmap(bitmap)
@@ -175,6 +175,7 @@ class LocalFragment : Fragment() {
         super.onDestroy()
         executor.execute{ objectClassifier.close() }
         executor.execute{ carClassifier.close() }
+        executor.execute{ animalClassifier.close() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -189,6 +190,10 @@ class LocalFragment : Fragment() {
             }
             R.id.m_car -> {
                 btnType = 2
+                return true
+            }
+            R.id.m_animal -> {
+                btnType = 3
                 return true
             }
             R.id.m_front -> {

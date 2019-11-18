@@ -16,6 +16,18 @@ fun uniqueList(objectList: List<IClassifier.Recognition>): List<String>{
     return objects
 }
 
+fun animalList(objectList: List<IClassifier.Recognition>): List<IClassifier.Recognition>{
+    val animals = ArrayList<IClassifier.Recognition>()
+    val animalsT = listOf("Bird", "Cat", "Dog", "Horse", "Sheep", "Cow", "Elephant", "Bear", "Zebra", "Giraffe")
+    for (obj in objectList) {
+        if(animalsT.contains(obj.title)){
+            animals.add(obj)
+        }
+    }
+
+    return animals
+}
+
 fun loadDictionary(assetManager: AssetManager, filename: String): HashMap<String, String> {
     val dictionaryList = HashMap<String, String>()
     val reader = BufferedReader(InputStreamReader(assetManager.open(filename)))

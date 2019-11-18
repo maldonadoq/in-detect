@@ -9,14 +9,7 @@
         android:id="@+id/nav_home"
         android:name="maldonado.indetect.fragments.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_nav_home_to_nav_sign_in"
-            app:destination="@id/nav_sign_in" />
-        <action
-            android:id="@+id/action_nav_home_to_nav_sign_up"
-            app:destination="@id/nav_sign_up" />
-    </fragment>
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_gallery"
@@ -51,39 +44,6 @@
         android:name="maldonado.indetect.fragments.ServerFragment"
         android:label="@string/server"
         tools:layout="@layout/fragment_server" />
-
-    <fragment
-        android:id="@+id/nav_sign_in"
-        android:name="maldonado.indetect.fragments.SignInFragment"
-        android:label="@string/in"
-        tools:layout="@layout/fragment_sign_in" >
-        <action
-            android:id="@+id/action_nav_sign_in_to_nav_server"
-            app:destination="@id/nav_server" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_sign_up"
-        android:name="maldonado.indetect.fragments.SignUpFragment"
-        android:label="@string/up"
-        tools:layout="@layout/fragment_sign_up" >
-        <action
-            android:id="@+id/action_nav_sign_up_to_nav_server"
-            app:destination="@id/nav_server" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_profile"
-        android:name="maldonado.indetect.fragments.ProfileFragment"
-        android:label="@string/menu_profile"
-        tools:layout="@layout/fragment_profile" >
-        <action
-            android:id="@+id/action_nav_profile_to_nav_server"
-            app:destination="@id/nav_server" />
-        <action
-            android:id="@+id/action_nav_profile_to_nav_home"
-            app:destination="@id/nav_home" />
-    </fragment>
 
     <fragment
         android:id="@+id/nav_real_time"

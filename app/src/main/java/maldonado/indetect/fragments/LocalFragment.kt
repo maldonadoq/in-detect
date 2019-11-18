@@ -39,7 +39,6 @@ class LocalFragment : Fragment() {
     // model
     private lateinit var objectClassifier: ObjectClassifier
     private lateinit var carClassifier: CarClassifier
-    private lateinit var animalClassifier: AnimalClassifier
     private var btnType = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,6 +55,7 @@ class LocalFragment : Fragment() {
         root = inflater.inflate(R.layout.fragment_local, container, false)
 
         cameraView = root.findViewById(R.id.local_CameraView)
+        cameraView.playSounds = false
         btnDetectOk = root.findViewById(R.id.local_BtnDetectOk)
 
         resultDialog = Dialog(root.context)
@@ -104,7 +104,6 @@ class LocalFragment : Fragment() {
             try {
                 objectClassifier = ObjectClassifier.create(root.context.assets)
                 carClassifier = CarClassifier.create(root.context.assets)
-                animalClassifier = AnimalClassifier.create(root.context.assets)
             } catch (e: Exception) {
                 throw RuntimeException("Error initializing TensorFlow!", e)
             }
@@ -116,8 +115,9 @@ class LocalFragment : Fragment() {
         tvLoadingText.visibility = View.GONE
 
         when(btnType){
-            1 -> {
-                val results = objectClassifier.recognizeImage(bitmap)
+            1, 3 -> {
+                val res = objectClassifier.recognizeImage(bitmap)
+                val results = if(btnType == 1) res else animalList(res)
 
                 val canvas = Canvas(bitmap)
                 val boxPaint = Paint()
@@ -149,10 +149,6 @@ class LocalFragment : Fragment() {
                 val results = carClassifier.recognizeImage(bitmap)
                 tvTextResults.text = recognitionToString(results)
             }
-            3 -> {
-                val results = animalClassifier.recognizeImage(bitmap)
-                tvTextResults.text = recognitionToString(results)
-            }
         }
 
         ivImageResult.setImageBitmap(bitmap)
@@ -175,7 +171,7 @@ class LocalFragment : Fragment() {
         super.onDestroy()
         executor.execute{ objectClassifier.close() }
         executor.execute{ carClassifier.close() }
-        executor.execute{ animalClassifier.close() }
+        cameraView.destroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

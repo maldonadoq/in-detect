@@ -58,6 +58,7 @@ class ServerFragment : Fragment() {
         root = inflater.inflate(R.layout.fragment_server, container, false)
 
         cameraView = root.findViewById(R.id.server_CameraView)
+        cameraView.playSounds = false
         btnDetectOk = root.findViewById(R.id.server_BtnDetectOk)
 
         resultDialog = Dialog(root.context)
@@ -172,6 +173,11 @@ class ServerFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         cameraView.stop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cameraView.destroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

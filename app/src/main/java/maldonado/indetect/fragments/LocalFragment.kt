@@ -55,7 +55,6 @@ class LocalFragment : Fragment() {
         root = inflater.inflate(R.layout.fragment_local, container, false)
 
         cameraView = root.findViewById(R.id.local_CameraView)
-        cameraView.playSounds = false
         btnDetectOk = root.findViewById(R.id.local_BtnDetectOk)
 
         resultDialog = Dialog(root.context)
@@ -117,7 +116,7 @@ class LocalFragment : Fragment() {
         when(btnType){
             1, 3 -> {
                 val res = objectClassifier.recognizeImage(bitmap)
-                val results = if(btnType == 1) res else animalList(res)
+                val results = if(btnType == 1) animalList(res) else res
 
                 val canvas = Canvas(bitmap)
                 val boxPaint = Paint()
@@ -178,9 +177,10 @@ class LocalFragment : Fragment() {
         inflater.inflate(R.menu.menu_local, menu)
     }
 
+    @Suppress("DEPRECATION")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.m_object -> {
+            R.id.m_animal -> {
                 btnType = 1
                 return true
             }
@@ -188,7 +188,7 @@ class LocalFragment : Fragment() {
                 btnType = 2
                 return true
             }
-            R.id.m_animal -> {
+            R.id.m_object -> {
                 btnType = 3
                 return true
             }

@@ -81,7 +81,7 @@ class CarClassifier(
         val tMin = min(pq.size, RESULTS)
 
         for(i in 0 until tMin){
-            recognitions.add(pq.poll())
+            recognitions.add(pq.poll()!!)
         }
 
         return recognitions

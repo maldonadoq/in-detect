@@ -1,5 +1,6 @@
 package maldonado.indetect.fragments
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -49,6 +50,7 @@ class ServerFragment : Fragment() {
         db = FirebaseDatabase.getInstance().reference.child("Uploads")
     }
 
+    @SuppressLint("InflateParams")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,7 +60,6 @@ class ServerFragment : Fragment() {
         root = inflater.inflate(R.layout.fragment_server, container, false)
 
         cameraView = root.findViewById(R.id.server_CameraView)
-        cameraView.playSounds = false
         btnDetectOk = root.findViewById(R.id.server_BtnDetectOk)
 
         resultDialog = Dialog(root.context)
@@ -184,6 +185,7 @@ class ServerFragment : Fragment() {
         inflater.inflate(R.menu.menu_server, menu)
     }
 
+    @Suppress("DEPRECATION")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.m_front -> {

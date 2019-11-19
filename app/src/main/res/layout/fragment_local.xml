@@ -14,6 +14,8 @@
         android:id="@+id/local_CameraView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:cameraPlaySounds="false"
+        android:soundEffectsEnabled="false"
         android:layout_gravity="center" />
 
     <RelativeLayout

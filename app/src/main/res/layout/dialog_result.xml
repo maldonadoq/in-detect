@@ -66,6 +66,17 @@
             android:scrollbars="vertical"
             android:textSize="@dimen/size"
             />
+
+        <Button
+            android:id="@+id/result_BtnUpload"
+            android:layout_width="90dp"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="20dp"
+            android:background="@drawable/ic_local_style"
+            android:text="@string/upload"
+            android:textColor="@color/white" />
+
     </LinearLayout>
 
 </FrameLayout>

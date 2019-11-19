@@ -22,7 +22,7 @@
 
     <string name="toggle_camera">Toggle Camera</string>
     <string name="toggle_flash">Toggle Flash</string>
-    <string name="upload_photo">Upload Photo</string>
+    <string name="upload">Upload</string>
     <string name="image_result_descr">Image Result</string>
 
     <string name="local">Cellphone</string>

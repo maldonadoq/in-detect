@@ -23,7 +23,7 @@ class LocalFragment : Fragment() {
 
     private lateinit var btnDetectOk: FloatingActionButton
 
-    private lateinit var cameraView: CameraView
+    private lateinit var cameraViewL: CameraView
     private lateinit var ivImageResult: ImageView
     private lateinit var tvTextResults: TextView
     private lateinit var tvLoadingText: TextView
@@ -54,7 +54,7 @@ class LocalFragment : Fragment() {
 
         root = inflater.inflate(R.layout.fragment_local, container, false)
 
-        cameraView = root.findViewById(R.id.local_CameraView)
+        cameraViewL = root.findViewById(R.id.local_CameraView)
         btnDetectOk = root.findViewById(R.id.local_BtnDetectOk)
 
         resultDialog = Dialog(root.context)
@@ -69,7 +69,7 @@ class LocalFragment : Fragment() {
         aviLoaderHolder = dialogView.findViewById<View>(R.id.result_AviLoaderHolderView)
         tvTextResults.movementMethod = ScrollingMovementMethod()
 
-        cameraView.addCameraListener(object : CameraListener() {
+        cameraViewL.addCameraListener(object : CameraListener() {
             override fun onPictureTaken(it: ByteArray?) {
                 val bitmap = BitmapFactory.decodeByteArray(it, 0, it!!.size)
                 recognize(Bitmap.createScaledBitmap(bitmap, (bitmap.width*0.5).toInt(),
@@ -81,7 +81,7 @@ class LocalFragment : Fragment() {
 
 
         btnDetectOk.setOnClickListener {
-            cameraView.capturePicture()
+            cameraViewL.capturePicture()
             resultDialog.show()
             tvTextResults.visibility = View.GONE
             ivImageResult.visibility = View.GONE
@@ -158,19 +158,19 @@ class LocalFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        cameraView.start()
+        cameraViewL.start()
     }
 
     override fun onPause() {
         super.onPause()
-        cameraView.stop()
+        cameraViewL.stop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         executor.execute{ objectClassifier.close() }
         executor.execute{ carClassifier.close() }
-        cameraView.destroy()
+        cameraViewL.destroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -193,11 +193,11 @@ class LocalFragment : Fragment() {
                 return true
             }
             R.id.m_front -> {
-                cameraView.toggleFacing()
+                cameraViewL.toggleFacing()
                 return true
             }
             R.id.m_flash -> {
-                cameraView.toggleFlash()
+                cameraViewL.toggleFlash()
                 return true
             }
             R.id.m_real -> {

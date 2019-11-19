@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package maldonado.indetect.activities
 
 import android.app.AlertDialog

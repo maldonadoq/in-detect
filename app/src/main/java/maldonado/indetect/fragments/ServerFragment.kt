@@ -1,16 +1,21 @@
+@file:Suppress("DEPRECATION")
+
 package maldonado.indetect.fragments
 
-import android.annotation.SuppressLint
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
-import android.util.Log
 import android.view.*
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.graphics.blue
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.fragment.app.Fragment
 import com.android.volley.Request
 import com.android.volley.Response
@@ -30,7 +35,6 @@ import com.otaliastudios.cameraview.CameraView
 import maldonado.indetect.R
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.nio.ByteBuffer
 
 val pokeArray: Array<String> = arrayOf("Abra", "Aerodactyl", "Alakazam", "Arbok", "Arcanine", "Articuno", "Beedrill", "Bellsprout",
     "Blastoise", "Bulbasaur", "Butterfree", "Caterpie", "Chansey", "Charizard", "Charmander", "Charmeleon", "Clefable", "Clefairy", "Cloyster", "Cubone", "Dewgong",
@@ -50,14 +54,14 @@ val pokeArray: Array<String> = arrayOf("Abra", "Aerodactyl", "Alakazam", "Arbok"
 
 class ServerFragment : Fragment() {
 
+    private lateinit var progressDialog: ProgressDialog
+
     private lateinit var modelInterpreter: FirebaseModelInterpreter
     private lateinit var inputOutputOptions: FirebaseModelInputOutputOptions
-    private var imgData = ByteBuffer.allocateDirect(4 * 224 * 224 * 3)
-    private val intValues = IntArray(224 * 224)
-
 
     private lateinit var btnDetectOk: FloatingActionButton
-    private lateinit var cameraView: CameraView
+    private lateinit var btnUpload: Button
+    private lateinit var cameraViewS: CameraView
 
     private lateinit var ivImageResult: ImageView
     private lateinit var tvTextResults: TextView
@@ -67,6 +71,8 @@ class ServerFragment : Fragment() {
 
     private lateinit var storage: StorageReference
     private lateinit var db: DatabaseReference
+
+    private lateinit var imgBitmag: Bitmap
 
     private lateinit var root: View
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,7 +86,6 @@ class ServerFragment : Fragment() {
         conditionsBuilder = conditionsBuilder
             .requireCharging()
             .requireDeviceIdle()
-        Log.i("Model", "Conditions Builder")
 
         val conditions = conditionsBuilder.build()
         val cloudSource = FirebaseRemoteModel.Builder("pokedex")
@@ -88,25 +93,20 @@ class ServerFragment : Fragment() {
             .setInitialDownloadConditions(conditions)
             .setUpdatesDownloadConditions(conditions)
             .build()
-        Log.i("Model", "Cloud Source")
 
         FirebaseModelManager.getInstance().registerRemoteModel(cloudSource)
 
         val options = FirebaseModelOptions.Builder()
             .setRemoteModelName("pokedex")
             .build()
-        Log.i("Model", "Options")
 
         modelInterpreter = FirebaseModelInterpreter.getInstance(options)!!
-        Log.i("Model", "Interpreter")
         inputOutputOptions = FirebaseModelInputOutputOptions.Builder()
             .setInputFormat(0, FirebaseModelDataType.FLOAT32, intArrayOf(1, 224, 224, 3))
             .setOutputFormat(0, FirebaseModelDataType.FLOAT32, intArrayOf(1, 149))
             .build()
-        Log.i("Model", "Input options")
     }
 
-    @SuppressLint("InflateParams")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -115,7 +115,7 @@ class ServerFragment : Fragment() {
 
         root = inflater.inflate(R.layout.fragment_server, container, false)
 
-        cameraView = root.findViewById(R.id.server_CameraView)
+        cameraViewS = root.findViewById(R.id.server_CameraView)
         btnDetectOk = root.findViewById(R.id.server_BtnDetectOk)
 
         resultDialog = Dialog(root.context)
@@ -126,11 +126,12 @@ class ServerFragment : Fragment() {
 
         ivImageResult = dialogView.findViewById(R.id.result_IViewResult)
         tvTextResults = dialogView.findViewById(R.id.result_TvResult)
+        btnUpload = dialogView.findViewById(R.id.result_BtnUpload)
         tvLoadingText = dialogView.findViewById(R.id.result_TvLoadingRecognition)
         aviLoaderHolder = dialogView.findViewById<View>(R.id.result_AviLoaderHolderView)
         tvTextResults.movementMethod = ScrollingMovementMethod()
 
-        cameraView.addCameraListener(object : CameraListener() {
+        cameraViewS.addCameraListener(object : CameraListener() {
             override fun onPictureTaken(it: ByteArray?) {
                 val bitmap = BitmapFactory.decodeByteArray(it, 0, it!!.size)
                 recognize(Bitmap.createScaledBitmap(bitmap, (bitmap.width*0.5).toInt(),
@@ -142,10 +143,11 @@ class ServerFragment : Fragment() {
 
         btnDetectOk.setOnClickListener {
 
-            cameraView.capturePicture()
+            cameraViewS.capturePicture()
             resultDialog.show()
             tvTextResults.visibility = View.GONE
             ivImageResult.visibility = View.GONE
+            btnUpload.visibility = View.GONE
 
             //sendRequest()
         }
@@ -155,7 +157,7 @@ class ServerFragment : Fragment() {
             aviLoaderHolder.visibility = View.VISIBLE
         }
 
-        Log.i("Model", "Fragment Return")
+        progressDialog = ProgressDialog(root.context)
 
         return root
     }
@@ -165,66 +167,50 @@ class ServerFragment : Fragment() {
         tvLoadingText.visibility = View.GONE
 
         // Here Custom Model
-        val tmp = Bitmap.createScaledBitmap(bitmap, 224, 224, false)
-
-        Log.i("Model", "Bitmap ${tmp.width} x ${tmp.height}")
+        val tmp = Bitmap.createScaledBitmap(bitmap, 224, 224, true)
         val inputs = FirebaseModelInputs.Builder()
             .add(convertBitmapToByteBuffer(tmp))
             .build()
 
-        Log.i("Model", "Input")
-
-        /*var results = ""
+        var results = ""
         modelInterpreter.run(inputs, inputOutputOptions)
             .addOnSuccessListener {
-                Log.i("Model", "Success")
                 it.getOutput<Array<FloatArray>>(0)[0].forEachIndexed { index, fl ->
                     if (fl > .20){
                         results += "${pokeArray[index]}  $fl \n"
                     }
                 }
-                Log.i("Model", results)
-                Toast.makeText(root.context, results, Toast.LENGTH_SHORT).show()
+                tvTextResults.text = results
             }
             .addOnFailureListener {
-                Log.i("Model", "Failure")
                 Toast.makeText(root.context, it.message, Toast.LENGTH_SHORT).show()
             }
-            .addOnCompleteListener {
-                Log.i("Model", "Complete")
-                Toast.makeText(root.context, "Complete", Toast.LENGTH_SHORT).show()
-            }*/
 
         ivImageResult.setImageBitmap(bitmap)
         tvTextResults.visibility = View.VISIBLE
         ivImageResult.visibility = View.VISIBLE
+        btnUpload.visibility = View.VISIBLE
         resultDialog.setCancelable(true)
 
-        // val tmp = Bitmap.createScaledBitmap(bitmap, 290, 400, false)
-        //uploadImage(tmp)
+        imgBitmag = Bitmap.createScaledBitmap(bitmap, 290, 400, false)
 
+        btnUpload.setOnClickListener{
+            uploadImage()
+        }
     }
 
-    private fun convertBitmapToByteBuffer(bitmap: Bitmap?): ByteBuffer {
-        //Clear the ByteBuffer for a new image
-        imgData.rewind()
-        Log.i("Model", "Rewind")
-        bitmap?.getPixels(intValues, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
-        Log.i("Model", "Bitmap")
-
-        var pixel = 0
+    private fun convertBitmapToByteBuffer(bitmap: Bitmap?): Array<Array<Array<FloatArray> > > {
+        val batchNum = 0
+        val input = Array(1) { Array(224) { Array(224) { FloatArray(3) } } }
         for (i in 0 until 224) {
             for (j in 0 until 224) {
-                val currPixel = intValues[pixel++]
-                imgData.putFloat(((currPixel shr 16 and 0xFF) - 128) / 128.0f)
-                imgData.putFloat(((currPixel shr 8 and 0xFF) - 128) / 128.0f)
-                imgData.putFloat(((currPixel and 0xFF) - 128) / 128.0f)
+                val pixel = bitmap!!.getPixel(i, j)
+                input[batchNum][i][j][0] = (pixel.red - 128) / 128.0f
+                input[batchNum][i][j][1] = (pixel.green - 128) / 128.0f
+                input[batchNum][i][j][2] = (pixel.blue - 128) / 128.0f
             }
         }
-
-        Log.i("Model", "Return")
-
-        return imgData
+        return input
     }
 
     private fun sendRequest(){
@@ -238,24 +224,24 @@ class ServerFragment : Fragment() {
             Request.Method.GET, url,
             Response.Listener<String> {
                 response ->
-
-                Log.i("Request", "Response is: $response")
                 Toast.makeText(root.context, "Response is: $response", Toast.LENGTH_SHORT).show()
             },
             Response.ErrorListener {
-                Log.i("Request", "Fail")
                 Toast.makeText(root.context, "Fail", Toast.LENGTH_SHORT).show()
             })
 
         queue.add(stringRequest)
     }
 
-    private fun uploadImage(bitmap: Bitmap){
+    private fun uploadImage(){
         val fileReference = storage.child(System.currentTimeMillis().toString() + ".jpg")
 
         val bao = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bao)
+        imgBitmag.compress(Bitmap.CompressFormat.JPEG, 100, bao)
         val data = bao.toByteArray()
+
+        progressDialog.setMessage("Uploading Picture!!")
+        progressDialog.show()
 
         fileReference.putBytes(data)
             .addOnSuccessListener {
@@ -271,6 +257,9 @@ class ServerFragment : Fragment() {
                     .addOnFailureListener{t ->
                         imgDB.child("url").setValue(t.message.toString())
                     }
+
+                btnUpload.visibility = View.GONE
+                progressDialog.dismiss()
             }
             .addOnFailureListener{
                 Toast.makeText(resultDialog.context, it.message, Toast.LENGTH_SHORT).show()
@@ -279,17 +268,17 @@ class ServerFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        cameraView.start()
+        cameraViewS.start()
     }
 
     override fun onPause() {
         super.onPause()
-        cameraView.stop()
+        cameraViewS.stop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        cameraView.destroy()
+        cameraViewS.destroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -300,11 +289,11 @@ class ServerFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.m_front -> {
-                cameraView.toggleFacing()
+                cameraViewS.toggleFacing()
                 return true
             }
             R.id.m_flash -> {
-                cameraView.toggleFlash()
+                cameraViewS.toggleFlash()
                 return true
             }
             R.id.m_real -> {

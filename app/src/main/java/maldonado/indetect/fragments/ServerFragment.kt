@@ -14,9 +14,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.graphics.blue
-import androidx.core.graphics.green
-import androidx.core.graphics.red
 import androidx.fragment.app.Fragment
 import com.android.volley.Request
 import com.android.volley.Response
@@ -50,7 +47,7 @@ class ServerFragment : Fragment() {
     private lateinit var storage: StorageReference
     private lateinit var db: DatabaseReference
 
-    private lateinit var imgBitmag: Bitmap
+    private lateinit var imgBitmap: Bitmap
 
     private lateinit var root: View
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,8 +119,8 @@ class ServerFragment : Fragment() {
         aviLoaderHolder.visibility = View.GONE
         tvLoadingText.visibility = View.GONE
 
-        imgBitmag = Bitmap.createScaledBitmap(bitmap, 290, 400, false)
-        sendRequest(imgBitmag)
+        imgBitmap = Bitmap.createScaledBitmap(bitmap, 290, 400, false)
+        sendRequest()
 
         ivImageResult.setImageBitmap(bitmap)
         tvTextResults.visibility = View.VISIBLE
@@ -133,24 +130,10 @@ class ServerFragment : Fragment() {
 
     }
 
-    private fun convertBitmapToByteBuffer(bitmap: Bitmap?): Array<Array<Array<FloatArray> > > {
-        val batchNum = 0
-        val input = Array(1) { Array(224) { Array(224) { FloatArray(3) } } }
-        for (i in 0 until 224) {
-            for (j in 0 until 224) {
-                val pixel = bitmap!!.getPixel(i, j)
-                input[batchNum][i][j][0] = (pixel.red - 128) / 128.0f
-                input[batchNum][i][j][1] = (pixel.green - 128) / 128.0f
-                input[batchNum][i][j][2] = (pixel.blue - 128) / 128.0f
-            }
-        }
-        return input
-    }
-
-    private fun sendRequest(bitmap: Bitmap){
+    private fun sendRequest(){
         // To base64
         val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        imgBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
         val byteArray = byteArrayOutputStream .toByteArray()
         val encoded = Base64.encodeToString(byteArray, Base64.DEFAULT)
 
@@ -181,7 +164,7 @@ class ServerFragment : Fragment() {
         val fileReference = storage.child(System.currentTimeMillis().toString() + ".jpg")
 
         val bao = ByteArrayOutputStream()
-        imgBitmag.compress(Bitmap.CompressFormat.JPEG, 100, bao)
+        imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bao)
         val data = bao.toByteArray()
 
         progressDialog.setMessage("Uploading Picture!!")

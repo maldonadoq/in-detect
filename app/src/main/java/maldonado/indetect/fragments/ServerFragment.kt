@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.Base64
-import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
@@ -22,16 +21,10 @@ import androidx.fragment.app.Fragment
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.JsonRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions
-import com.google.firebase.ml.common.modeldownload.FirebaseModelManager
-import com.google.firebase.ml.common.modeldownload.FirebaseRemoteModel
-import com.google.firebase.ml.custom.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.otaliastudios.cameraview.CameraListener
@@ -40,30 +33,9 @@ import maldonado.indetect.R
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.util.*
-
-val pokeArray: Array<String> = arrayOf("Abra", "Aerodactyl", "Alakazam", "Arbok", "Arcanine", "Articuno", "Beedrill", "Bellsprout",
-    "Blastoise", "Bulbasaur", "Butterfree", "Caterpie", "Chansey", "Charizard", "Charmander", "Charmeleon", "Clefable", "Clefairy", "Cloyster", "Cubone", "Dewgong",
-    "Diglett", "Ditto", "Dodrio", "Doduo", "Dragonair", "Dragonite", "Dratini", "Drowzee", "Dugtrio", "Eevee", "Ekans", "Electabuzz",
-    "Electrode", "Exeggcute", "Exeggutor", "Farfetchd", "Fearow", "Flareon", "Gastly", "Gengar", "Geodude", "Gloom",
-    "Golbat", "Goldeen", "Golduck", "Golem", "Graveler", "Grimer", "Growlithe", "Gyarados", "Haunter", "Hitmonchan",
-    "Hitmonlee", "Horsea", "Hypno", "Ivysaur", "Jigglypuff", "Jolteon", "Jynx", "Kabuto",
-    "Kabutops", "Kadabra", "Kakuna", "Kangaskhan", "Kingler", "Koffing", "Krabby", "Lapras", "Lickitung", "Machamp",
-    "Machoke", "Machop", "Magikarp", "Magmar", "Magnemite", "Magneton", "Mankey", "Marowak", "Meowth", "Metapod",
-    "Mew", "Mewtwo", "Moltres", "Mrmime", "Muk", "Nidoking", "Nidoqueen", "Nidorina", "Nidorino", "Ninetales",
-    "Oddish", "Omanyte", "Omastar", "Onix", "Paras", "Parasect", "Persian", "Pidgeot", "Pidgeotto", "Pidgey",
-    "Pikachu", "Pinsir", "Poliwag", "Poliwhirl", "Poliwrath", "Ponyta", "Porygon", "Primeape", "Psyduck", "Raichu",
-    "Rapidash", "Raticate", "Rattata", "Rhydon", "Rhyhorn", "Sandshrew", "Sandslash", "Scyther", "Seadra",
-    "Seaking", "Seel", "Shellder", "Slowbro", "Slowpoke", "Snorlax", "Spearow", "Squirtle", "Starmie", "Staryu",
-    "Tangela", "Tauros", "Tentacool", "Tentacruel", "Vaporeon", "Venomoth", "Venonat", "Venusaur", "Victreebel",
-    "Vileplume", "Voltorb", "Vulpix", "Wartortle", "Weedle", "Weepinbell", "Weezing", "Wigglytuff", "Zapdos", "Zubat")
 
 class ServerFragment : Fragment() {
-
     private lateinit var progressDialog: ProgressDialog
-
-    private lateinit var modelInterpreter: FirebaseModelInterpreter
-    private lateinit var inputOutputOptions: FirebaseModelInputOutputOptions
 
     private lateinit var btnDetectOk: FloatingActionButton
     private lateinit var btnUpload: Button
@@ -87,30 +59,6 @@ class ServerFragment : Fragment() {
 
         storage = FirebaseStorage.getInstance().reference.child("Uploads")
         db = FirebaseDatabase.getInstance().reference.child("Uploads")
-
-        var conditionsBuilder: FirebaseModelDownloadConditions.Builder = FirebaseModelDownloadConditions.Builder().requireWifi()
-        conditionsBuilder = conditionsBuilder
-            .requireCharging()
-            .requireDeviceIdle()
-
-        val conditions = conditionsBuilder.build()
-        val cloudSource = FirebaseRemoteModel.Builder("pokedex")
-            .enableModelUpdates(true)
-            .setInitialDownloadConditions(conditions)
-            .setUpdatesDownloadConditions(conditions)
-            .build()
-
-        FirebaseModelManager.getInstance().registerRemoteModel(cloudSource)
-
-        val options = FirebaseModelOptions.Builder()
-            .setRemoteModelName("pokedex")
-            .build()
-
-        modelInterpreter = FirebaseModelInterpreter.getInstance(options)!!
-        inputOutputOptions = FirebaseModelInputOutputOptions.Builder()
-            .setInputFormat(0, FirebaseModelDataType.FLOAT32, intArrayOf(1, 224, 224, 3))
-            .setOutputFormat(0, FirebaseModelDataType.FLOAT32, intArrayOf(1, 149))
-            .build()
     }
 
     override fun onCreateView(
@@ -156,6 +104,10 @@ class ServerFragment : Fragment() {
             btnUpload.visibility = View.GONE
         }
 
+        btnUpload.setOnClickListener{
+            uploadImage()
+        }
+
         resultDialog.setOnDismissListener {
             tvLoadingText.visibility = View.VISIBLE
             aviLoaderHolder.visibility = View.VISIBLE
@@ -170,26 +122,6 @@ class ServerFragment : Fragment() {
         aviLoaderHolder.visibility = View.GONE
         tvLoadingText.visibility = View.GONE
 
-        // Here Custom Model
-        /*val tmp = Bitmap.createScaledBitmap(bitmap, 224, 224, true)
-        val inputs = FirebaseModelInputs.Builder()
-            .add(convertBitmapToByteBuffer(tmp))
-            .build()
-
-        var results = ""
-        modelInterpreter.run(inputs, inputOutputOptions)
-            .addOnSuccessListener {
-                it.getOutput<Array<FloatArray>>(0)[0].forEachIndexed { index, fl ->
-                    if (fl > .20){
-                        results += "${pokeArray[index]}  $fl \n"
-                    }
-                }
-                tvTextResults.text = results
-            }
-            .addOnFailureListener {
-                Toast.makeText(root.context, it.message, Toast.LENGTH_SHORT).show()
-            }*/
-
         imgBitmag = Bitmap.createScaledBitmap(bitmap, 290, 400, false)
         sendRequest(imgBitmag)
 
@@ -199,9 +131,6 @@ class ServerFragment : Fragment() {
         btnUpload.visibility = View.VISIBLE
         resultDialog.setCancelable(true)
 
-        /*btnUpload.setOnClickListener{
-            uploadImage()
-        }*/
     }
 
     private fun convertBitmapToByteBuffer(bitmap: Bitmap?): Array<Array<Array<FloatArray> > > {
@@ -219,36 +148,32 @@ class ServerFragment : Fragment() {
     }
 
     private fun sendRequest(bitmap: Bitmap){
-
         // To base64
         val byteArrayOutputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
         val byteArray = byteArrayOutputStream .toByteArray()
         val encoded = Base64.encodeToString(byteArray, Base64.DEFAULT)
 
-        Log.i("Json", "Size: :" + encoded.length.toString())
-
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(root.context)
         val url = "http://192.168.196.105:8000/api/v1.0/process"
-        //val url = "http://www.google.com/"
 
-
+        // Json Object
         val obj = JSONObject()
         obj.put("type", "png")
         obj.put("image", encoded)
 
+        // Json Request
         val jsonRequest = JsonObjectRequest(
             Request.Method.POST, url, obj,
             Response.Listener {
-                Log.i("Json", it.toString())
                 Toast.makeText(root.context, "Response is: $it", Toast.LENGTH_SHORT).show()
             },
             Response.ErrorListener {
-                //Log.i("Json", it.message)
                 Toast.makeText(root.context, it.message, Toast.LENGTH_SHORT).show()
             })
 
+        // Add Json Object Request to Queue
         queue.add(jsonRequest)
     }
 

@@ -8,6 +8,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
+import android.util.Base64
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
@@ -19,6 +21,8 @@ import androidx.core.graphics.red
 import androidx.fragment.app.Fragment
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.JsonRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -33,8 +37,10 @@ import com.google.firebase.storage.StorageReference
 import com.otaliastudios.cameraview.CameraListener
 import com.otaliastudios.cameraview.CameraView
 import maldonado.indetect.R
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.util.*
 
 val pokeArray: Array<String> = arrayOf("Abra", "Aerodactyl", "Alakazam", "Arbok", "Arcanine", "Articuno", "Beedrill", "Bellsprout",
     "Blastoise", "Bulbasaur", "Butterfree", "Caterpie", "Chansey", "Charizard", "Charmander", "Charmeleon", "Clefable", "Clefairy", "Cloyster", "Cubone", "Dewgong",
@@ -148,8 +154,6 @@ class ServerFragment : Fragment() {
             tvTextResults.visibility = View.GONE
             ivImageResult.visibility = View.GONE
             btnUpload.visibility = View.GONE
-
-            //sendRequest()
         }
 
         resultDialog.setOnDismissListener {
@@ -167,7 +171,7 @@ class ServerFragment : Fragment() {
         tvLoadingText.visibility = View.GONE
 
         // Here Custom Model
-        val tmp = Bitmap.createScaledBitmap(bitmap, 224, 224, true)
+        /*val tmp = Bitmap.createScaledBitmap(bitmap, 224, 224, true)
         val inputs = FirebaseModelInputs.Builder()
             .add(convertBitmapToByteBuffer(tmp))
             .build()
@@ -184,7 +188,10 @@ class ServerFragment : Fragment() {
             }
             .addOnFailureListener {
                 Toast.makeText(root.context, it.message, Toast.LENGTH_SHORT).show()
-            }
+            }*/
+
+        imgBitmag = Bitmap.createScaledBitmap(bitmap, 290, 400, false)
+        sendRequest(imgBitmag)
 
         ivImageResult.setImageBitmap(bitmap)
         tvTextResults.visibility = View.VISIBLE
@@ -192,11 +199,9 @@ class ServerFragment : Fragment() {
         btnUpload.visibility = View.VISIBLE
         resultDialog.setCancelable(true)
 
-        imgBitmag = Bitmap.createScaledBitmap(bitmap, 290, 400, false)
-
-        btnUpload.setOnClickListener{
+        /*btnUpload.setOnClickListener{
             uploadImage()
-        }
+        }*/
     }
 
     private fun convertBitmapToByteBuffer(bitmap: Bitmap?): Array<Array<Array<FloatArray> > > {
@@ -213,24 +218,38 @@ class ServerFragment : Fragment() {
         return input
     }
 
-    private fun sendRequest(){
+    private fun sendRequest(bitmap: Bitmap){
+
+        // To base64
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream .toByteArray()
+        val encoded = Base64.encodeToString(byteArray, Base64.DEFAULT)
+
+        Log.i("Json", "Size: :" + encoded.length.toString())
+
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(root.context)
-        val url = "http://192.168.43.128:8000"
+        val url = "http://192.168.196.105:8000/api/v1.0/process"
         //val url = "http://www.google.com/"
 
-        // Request a string response from the provided URL.
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            Response.Listener<String> {
-                response ->
-                Toast.makeText(root.context, "Response is: $response", Toast.LENGTH_SHORT).show()
+
+        val obj = JSONObject()
+        obj.put("type", "png")
+        obj.put("image", encoded)
+
+        val jsonRequest = JsonObjectRequest(
+            Request.Method.POST, url, obj,
+            Response.Listener {
+                Log.i("Json", it.toString())
+                Toast.makeText(root.context, "Response is: $it", Toast.LENGTH_SHORT).show()
             },
             Response.ErrorListener {
-                Toast.makeText(root.context, "Fail", Toast.LENGTH_SHORT).show()
+                //Log.i("Json", it.message)
+                Toast.makeText(root.context, it.message, Toast.LENGTH_SHORT).show()
             })
 
-        queue.add(stringRequest)
+        queue.add(jsonRequest)
     }
 
     private fun uploadImage(){

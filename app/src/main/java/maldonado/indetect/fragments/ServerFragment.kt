@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.Base64
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
@@ -48,6 +49,7 @@ class ServerFragment : Fragment() {
     private lateinit var db: DatabaseReference
 
     private lateinit var imgBitmap: Bitmap
+    private lateinit var resBitmap: Bitmap
 
     private lateinit var root: View
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -120,9 +122,14 @@ class ServerFragment : Fragment() {
         tvLoadingText.visibility = View.GONE
 
         imgBitmap = Bitmap.createScaledBitmap(bitmap, 290, 400, false)
-        sendRequest()
 
-        ivImageResult.setImageBitmap(bitmap)
+        if(sendRequest()){
+            ivImageResult.setImageBitmap(resBitmap)
+        }
+        else{
+            ivImageResult.setImageBitmap(bitmap)
+        }
+
         tvTextResults.visibility = View.VISIBLE
         ivImageResult.visibility = View.VISIBLE
         btnUpload.visibility = View.VISIBLE
@@ -130,7 +137,9 @@ class ServerFragment : Fragment() {
 
     }
 
-    private fun sendRequest(){
+    private fun sendRequest(): Boolean{
+        var res = false
+
         // To base64
         val byteArrayOutputStream = ByteArrayOutputStream()
         imgBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
@@ -146,18 +155,35 @@ class ServerFragment : Fragment() {
         obj.put("type", "png")
         obj.put("image", encoded)
 
+        /*val value: String = obj.get("image").toString()
+        val tmp = Base64.decode(value, Base64.DEFAULT)
+        resBitmap = BitmapFactory.decodeByteArray(tmp, 0, tmp!!.size)
+        res = true*/
+
         // Json Request
         val jsonRequest = JsonObjectRequest(
             Request.Method.POST, url, obj,
             Response.Listener {
                 Toast.makeText(root.context, "Response is: $it", Toast.LENGTH_SHORT).show()
+                val value: String = it.get("image").toString()
+                //val key: String = it.get("key").toString()
+
+                Log.i("Json", "Receive: $value")
+                val tmp = Base64.decode(value, Base64.DEFAULT)
+                resBitmap = BitmapFactory.decodeByteArray(tmp, 0, tmp!!.size)
+
+                res = true
+
             },
             Response.ErrorListener {
+                Log.i("Json", "Fail: " + it.message)
                 Toast.makeText(root.context, it.message, Toast.LENGTH_SHORT).show()
             })
 
         // Add Json Object Request to Queue
         queue.add(jsonRequest)
+
+        return res
     }
 
     private fun uploadImage(){

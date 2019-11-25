@@ -2,14 +2,13 @@
 
 package maldonado.indetect.fragments
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.ProgressDialog
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.*
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.Base64
-import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
@@ -28,9 +27,12 @@ import com.google.firebase.storage.StorageReference
 import com.otaliastudios.cameraview.CameraListener
 import com.otaliastudios.cameraview.CameraView
 import maldonado.indetect.R
+import maldonado.indetect.models.IClassifier
+import maldonado.indetect.models.uniqueList
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.util.*
 
 class ServerFragment : Fragment() {
     private lateinit var progressDialog: ProgressDialog
@@ -50,6 +52,8 @@ class ServerFragment : Fragment() {
 
     private lateinit var imgBitmap: Bitmap
     private lateinit var resBitmap: Bitmap
+    private lateinit var results: ArrayList<IClassifier.Recognition>
+    private lateinit var random: Random
 
     private lateinit var root: View
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +62,8 @@ class ServerFragment : Fragment() {
 
         storage = FirebaseStorage.getInstance().reference.child("Uploads")
         db = FirebaseDatabase.getInstance().reference.child("Uploads")
+        random = Random()
+        results = ArrayList()
     }
 
     override fun onCreateView(
@@ -117,29 +123,57 @@ class ServerFragment : Fragment() {
         return root
     }
 
-    private fun recognize(bitmap: Bitmap) {
+    private fun drawResults(){
         aviLoaderHolder.visibility = View.GONE
         tvLoadingText.visibility = View.GONE
 
-        imgBitmap = Bitmap.createScaledBitmap(bitmap, 290, 400, false)
+        val canvas = Canvas(resBitmap)
+        val boxPaint = Paint()
+        boxPaint.style = Paint.Style.STROKE
+        boxPaint.strokeWidth = 15.0f
 
-        if(sendRequest()){
-            ivImageResult.setImageBitmap(resBitmap)
-        }
-        else{
-            ivImageResult.setImageBitmap(bitmap)
+        val textPaint = Paint()
+        textPaint.color = Color.WHITE
+        textPaint.textSize = 50.0f
+
+        for (result in results) {
+            boxPaint.color = Color.argb(
+                255, random.nextInt(256), random.nextInt(
+                    256
+                ), random.nextInt(256)
+            )
+            canvas.drawRoundRect(result.location, 30.0f, 30.0f, boxPaint)
+
+            canvas.drawText(
+                String.format("%s %.2f", result.title, (100 * result.confidence)),
+                result.location.left + 40, result.location.top + 60, textPaint
+            )
         }
 
+        val objects = uniqueList(results)
+        tvTextResults.text = ""
+
+        for (obj in objects) {
+            tvTextResults.append(obj + "\n")
+        }
+
+        ivImageResult.setImageBitmap(resBitmap)
         tvTextResults.visibility = View.VISIBLE
         ivImageResult.visibility = View.VISIBLE
         btnUpload.visibility = View.VISIBLE
         resultDialog.setCancelable(true)
-
     }
 
-    private fun sendRequest(): Boolean{
-        var res = false
+    private fun recognize(bitmap: Bitmap) {
+        imgBitmap = Bitmap.createScaledBitmap(bitmap, 290, 400, false)
+        resBitmap = bitmap
 
+        results.clear()
+        sendRequest()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun sendRequest(){
         // To base64
         val byteArrayOutputStream = ByteArrayOutputStream()
         imgBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
@@ -148,42 +182,51 @@ class ServerFragment : Fragment() {
 
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(root.context)
-        val url = "http://192.168.196.105:8000/api/v1.0/process"
+        //val url = "http://192.168.196.105:8000/api/v1.0/process"
+        val url = "http://192.168.0.4:8000"
 
         // Json Object
         val obj = JSONObject()
         obj.put("type", "png")
         obj.put("image", encoded)
 
-        /*val value: String = obj.get("image").toString()
-        val tmp = Base64.decode(value, Base64.DEFAULT)
-        resBitmap = BitmapFactory.decodeByteArray(tmp, 0, tmp!!.size)
-        res = true*/
-
         // Json Request
         val jsonRequest = JsonObjectRequest(
             Request.Method.POST, url, obj,
             Response.Listener {
-                Toast.makeText(root.context, "Response is: $it", Toast.LENGTH_SHORT).show()
-                val value: String = it.get("image").toString()
-                //val key: String = it.get("key").toString()
 
-                Log.i("Json", "Receive: $value")
-                val tmp = Base64.decode(value, Base64.DEFAULT)
-                resBitmap = BitmapFactory.decodeByteArray(tmp, 0, tmp!!.size)
+                for(key in it.keys()){
+                    val tmp = JSONObject(it.get(key).toString())
 
-                res = true
+                    val loc = tmp.get("box").toString().split(",")
+
+                    results.add(
+                        IClassifier.Recognition(
+                            key,
+                            tmp.get("class").toString(),
+                            tmp.get("confidence").toString().toFloat(),
+                            RectF(
+                                loc[0].toFloat()*resBitmap.width,
+                                loc[1].toFloat()*resBitmap.height,
+                                loc[2].toFloat()*resBitmap.width,
+                                loc[3].toFloat()*resBitmap.height
+                            )
+                        )
+                    )
+                }
+                drawResults()
 
             },
             Response.ErrorListener {
-                Log.i("Json", "Fail: " + it.message)
                 Toast.makeText(root.context, it.message, Toast.LENGTH_SHORT).show()
+                aviLoaderHolder.visibility = View.GONE
+                //tvLoadingText.visibility = View.GONE
+                tvLoadingText.text = "Server isn't Working"
+                resultDialog.setCancelable(true)
             })
 
         // Add Json Object Request to Queue
         queue.add(jsonRequest)
-
-        return res
     }
 
     private fun uploadImage(){

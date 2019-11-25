@@ -75,6 +75,7 @@
             android:layout_margin="20dp"
             android:background="@drawable/ic_local_style"
             android:text="@string/upload"
+            android:visibility="gone"
             android:textColor="@color/white" />
 
     </LinearLayout>

@@ -9,17 +9,20 @@ import android.graphics.*
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.Base64
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -49,11 +52,14 @@ class ServerFragment : Fragment() {
 
     private lateinit var storage: StorageReference
     private lateinit var db: DatabaseReference
+    private lateinit var auth: FirebaseAuth
 
     private lateinit var imgBitmap: Bitmap
     private lateinit var resBitmap: Bitmap
     private lateinit var results: ArrayList<IClassifier.Recognition>
     private lateinit var random: Random
+    private var sessionID: String = ""
+    private lateinit var singletonNetwork: SingletonNetwork
 
     private lateinit var root: View
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +70,7 @@ class ServerFragment : Fragment() {
         db = FirebaseDatabase.getInstance().reference.child("Uploads")
         random = Random()
         results = ArrayList()
+        auth = FirebaseAuth.getInstance()
     }
 
     override fun onCreateView(
@@ -73,6 +80,8 @@ class ServerFragment : Fragment() {
     ): View? {
 
         root = inflater.inflate(R.layout.fragment_server, container, false)
+
+        singletonNetwork = SingletonNetwork.getInstance(root.context)
 
         cameraViewS = root.findViewById(R.id.server_CameraView)
         btnDetectOk = root.findViewById(R.id.server_BtnDetectOk)
@@ -101,6 +110,8 @@ class ServerFragment : Fragment() {
         })
 
         btnDetectOk.setOnClickListener {
+            //tvLoadingText.visibility = View.VISIBLE
+            //aviLoaderHolder.visibility = View.VISIBLE
 
             cameraViewS.capturePicture()
             resultDialog.show()
@@ -123,40 +134,11 @@ class ServerFragment : Fragment() {
         return root
     }
 
-    private fun drawResults(){
+    private fun drawResults(name: String, conf: Float){
         aviLoaderHolder.visibility = View.GONE
         tvLoadingText.visibility = View.GONE
 
-        val canvas = Canvas(resBitmap)
-        val boxPaint = Paint()
-        boxPaint.style = Paint.Style.STROKE
-        boxPaint.strokeWidth = 15.0f
-
-        val textPaint = Paint()
-        textPaint.color = Color.WHITE
-        textPaint.textSize = 50.0f
-
-        for (result in results) {
-            boxPaint.color = Color.argb(
-                255, random.nextInt(256), random.nextInt(
-                    256
-                ), random.nextInt(256)
-            )
-            canvas.drawRoundRect(result.location, 30.0f, 30.0f, boxPaint)
-
-            canvas.drawText(
-                String.format("%s %.2f", result.title, (100 * result.confidence)),
-                result.location.left + 40, result.location.top + 60, textPaint
-            )
-        }
-
-        val objects = uniqueList(results)
-        tvTextResults.text = ""
-
-        for (obj in objects) {
-            tvTextResults.append(obj + "\n")
-        }
-
+        tvTextResults.text = String.format("%s %.2f", name, 100*conf)
         ivImageResult.setImageBitmap(resBitmap)
         tvTextResults.visibility = View.VISIBLE
         ivImageResult.visibility = View.VISIBLE
@@ -169,12 +151,14 @@ class ServerFragment : Fragment() {
         resBitmap = bitmap
 
         results.clear()
+
         sendRequest()
     }
 
     @SuppressLint("SetTextI18n")
     private fun sendRequest(){
         // To base64
+        val url = "http://192.168.196.213:8080/api/v1.0/process"
         val byteArrayOutputStream = ByteArrayOutputStream()
         imgBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
         val byteArray = byteArrayOutputStream .toByteArray()
@@ -182,11 +166,10 @@ class ServerFragment : Fragment() {
 
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(root.context)
-        //val url = "http://192.168.196.105:8000/api/v1.0/process"
-        val url = "http://192.168.0.4:8000"
 
         // Json Object
         val obj = JSONObject()
+        obj.put("profile", auth.currentUser?.email.toString())
         obj.put("type", "png")
         obj.put("image", encoded)
 
@@ -194,38 +177,28 @@ class ServerFragment : Fragment() {
         val jsonRequest = JsonObjectRequest(
             Request.Method.POST, url, obj,
             Response.Listener {
+                Log.i("Json", it.toString())
+                //tmp = JSONObject(it.get(key).toString())
 
-                for(key in it.keys()){
-                    val tmp = JSONObject(it.get(key).toString())
+                val className = it.get("Class").toString()
+                val confidence = it.get("Confidence").toString().toFloat()
+                sessionID = it.get("Sessionid").toString()
 
-                    val loc = tmp.get("box").toString().split(",")
-
-                    results.add(
-                        IClassifier.Recognition(
-                            key,
-                            tmp.get("class").toString(),
-                            tmp.get("confidence").toString().toFloat(),
-                            RectF(
-                                loc[0].toFloat()*resBitmap.width,
-                                loc[1].toFloat()*resBitmap.height,
-                                loc[2].toFloat()*resBitmap.width,
-                                loc[3].toFloat()*resBitmap.height
-                            )
-                        )
-                    )
-                }
-                drawResults()
+                drawResults(className, confidence)
 
             },
             Response.ErrorListener {
                 Toast.makeText(root.context, it.message, Toast.LENGTH_SHORT).show()
                 aviLoaderHolder.visibility = View.GONE
-                //tvLoadingText.visibility = View.GONE
-                tvLoadingText.text = "Server isn't Working"
+                tvLoadingText.visibility = View.GONE
+                //tvLoadingText.text = "Server isn't Working"
                 resultDialog.setCancelable(true)
             })
 
         // Add Json Object Request to Queue
+        jsonRequest.retryPolicy = DefaultRetryPolicy(15000,
+            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
         queue.add(jsonRequest)
     }
 
@@ -239,12 +212,19 @@ class ServerFragment : Fragment() {
         progressDialog.setMessage("Uploading Picture!!")
         progressDialog.show()
 
+        val idUser = auth.currentUser?.uid.toString()
+
+        val obj = JSONObject()
+        obj.put("session", sessionID)
+        singletonNetwork.sendPostRequest(obj, "share")
+
         fileReference.putBytes(data)
             .addOnSuccessListener {
                 Toast.makeText(resultDialog.context, "Uploaded!", Toast.LENGTH_SHORT).show()
 
                 val imgDB = db.child(db.push().key.toString())
                 imgDB.child("name").setValue("No Name")
+                imgDB.child("id").setValue(idUser)
 
                 it.storage.downloadUrl
                     .addOnSuccessListener {t ->

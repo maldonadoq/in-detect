@@ -17,6 +17,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import maldonado.indetect.MainActivity
 import maldonado.indetect.R
+import maldonado.indetect.fragments.SingletonNetwork
+import org.json.JSONObject
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var txtName: EditText
@@ -26,6 +28,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var progressDialog: ProgressDialog
     private lateinit var auth: FirebaseAuth
     private lateinit var dbReference: DatabaseReference
+    private lateinit var singletonNetwork: SingletonNetwork
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +44,7 @@ class SignUpActivity : AppCompatActivity() {
         txtPassword = findViewById(R.id.su_TxtPassword)
         txtPhone = findViewById(R.id.su_TxtPhone)
         progressDialog = ProgressDialog(this)
+        singletonNetwork = SingletonNetwork.getInstance(this)
 
         auth = FirebaseAuth.getInstance()
         dbReference = FirebaseDatabase.getInstance().reference.child("User")
@@ -66,12 +70,16 @@ class SignUpActivity : AppCompatActivity() {
                             .setDisplayName(name)
                             .build()
 
-                        verifyEmail(user)
+                        val obj = JSONObject()
+                        obj.put("username", email)
+                        singletonNetwork.sendPostRequest(obj, "user/create")
+
+                        //verifyEmail(user)
                         user?.updateProfile(update)
 
                         val userDB = dbReference.child(user?.uid.toString())
-                        userDB.child("Type").setValue("Normal")
-                        userDB.child("Phone").setValue(phone)
+                        userDB.child("type").setValue("normal")
+                        userDB.child("phone").setValue(phone)
 
                         intent = Intent(this@SignUpActivity, MainActivity::class.java)
                         startActivity(intent)

@@ -1,5 +1,6 @@
 package maldonado.indetect.fragments
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +13,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import maldonado.indetect.R
 import maldonado.indetect.adapter.ImageAdapter
 import maldonado.indetect.adapter.Upload
@@ -79,6 +79,7 @@ class GalleryFragment : Fragment(), ImageAdapter.OnItemClickListener {
         Toast.makeText(root.context, "Normal Click at position: $position", Toast.LENGTH_SHORT).show()
     }
 
+    @SuppressLint("InflateParams")
     override fun onRenameClick(position: Int) {
         val dialogView = LayoutInflater.from(root.context).inflate(R.layout.dialog_rename, null)
         val builder = AlertDialog.Builder(root.context)

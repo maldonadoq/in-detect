@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import maldonado.indetect.MainActivity
 import maldonado.indetect.R
 
 class SignUpActivity : AppCompatActivity() {
@@ -72,7 +73,7 @@ class SignUpActivity : AppCompatActivity() {
                         userDB.child("Type").setValue("Normal")
                         userDB.child("Phone").setValue(phone)
 
-                        intent = Intent(this@SignUpActivity, AppActivity::class.java)
+                        intent = Intent(this@SignUpActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()
                     }

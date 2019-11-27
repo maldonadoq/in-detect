@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.InitActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="bottom|center"
+            android:layout_marginTop="80dp"
+            android:padding="@dimen/size"
+            android:src="@mipmap/img_dog"
+            android:contentDescription="@string/app_name" />
+
+        <Button
+            android:id="@+id/main_BtnSignIn"
+            android:layout_width="170dp"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom|center"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/ic_local_style"
+            android:text="@string/in"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/main_BtnSignUp"
+            android:layout_width="170dp"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom|center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_server_style"
+            android:text="@string/up"
+            android:textColor="@color/colorPrimary" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom|end"
+        >
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/main_Skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_done_white_24dp"/>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

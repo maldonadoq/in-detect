@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import maldonado.indetect.MainActivity
 import maldonado.indetect.R
 
 class SignInActivity : AppCompatActivity() {
@@ -96,7 +97,7 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun action(){
-        intent = Intent(this@SignInActivity, AppActivity::class.java)
+        intent = Intent(this@SignInActivity, MainActivity::class.java)
         startActivity(intent)
         finish()
     }

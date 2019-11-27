@@ -50,4 +50,11 @@
         android:name="maldonado.indetect.fragments.RealTimeFragment"
         android:label="@string/real_time"
         tools:layout="@layout/fragment_real_time" />
+
+    <fragment
+        android:id="@+id/nav_init"
+        android:name="maldonado.indetect.fragments.InitFragment"
+        android:label="@string/in"
+        tools:layout="@layout/fragment_init" />
+
 </navigation>

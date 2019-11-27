@@ -32,6 +32,10 @@
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
                 android:title="@string/menu_share" />
+            <item
+                android:id="@+id/nav_init"
+                android:icon="@drawable/ic_menu_init"
+                android:title="@string/in" />
         </menu>
     </item>
 

@@ -12,6 +12,7 @@ import org.json.JSONObject
 class SingletonNetwork(ctx: Context) {
     private var queue: RequestQueue = Volley.newRequestQueue(ctx)
     private var url: String = "http://192.168.196.213:8080/api/v1.0/"
+    //private var url: String = "http://192.168.42.39:8080/api/v1.0/"
 
     companion object {
         @Volatile private var INSTANCE: SingletonNetwork? = null

@@ -158,6 +158,7 @@ class ServerFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun sendRequest(){
         // To base64
+        //val url = "http://192.168.42.39:8080/api/v1.0/process"
         val url = "http://192.168.196.213:8080/api/v1.0/process"
         val byteArrayOutputStream = ByteArrayOutputStream()
         imgBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
